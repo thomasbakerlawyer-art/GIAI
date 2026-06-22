@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1781224644161,
+    "email": "thomasbakerlawyer@gmail.com",
+    "cardType": "black",
+    "employment": "Business Owner",
+    "occupation": "software engineer",
+    "income": "$25,000+",
+    "status": "APPROVED",
+    "date": "2026-06-12T00:37:24.161Z"
+  },
+  {
+    "id": 1781224720791,
+    "email": "thomasbakerlawyer@gmail.com",
+    "cardType": "gold",
+    "employment": "Business Owner",
+    "occupation": "software engineer",
+    "income": "$25,000+",
+    "status": "APPROVED",
+    "date": "2026-06-12T00:38:40.791Z"
+  },
+  {
+    "id": 1781224840732,
+    "email": "chikwadojesse97@gmail.com",
+    "cardType": "gold",
+    "employment": "Business Owner",
+    "occupation": "software engineer",
+    "income": "$25,000+",
+    "status": "APPROVED",
+    "date": "2026-06-12T00:40:40.732Z"
+  },
+  {
+    "id": 1781230793146,
+    "email": "chikwadojesse97@gmail.com",
+    "cardType": "black",
+    "employment": "Business Owner",
+    "occupation": "software engineer",
+    "income": "$25,000+",
+    "status": "APPROVED",
+    "date": "2026-06-12T02:19:53.146Z"
+  },
+  {
+    "id": 1781264271674,
+    "email": "alexpetersonplc@gmail.com",
+    "cardType": "gold",
+    "employment": "Business Owner",
+    "occupation": "software engineer",
+    "income": "$25,000+",
+    "status": "APPROVED",
+    "date": "2026-06-12T11:37:51.675Z"
+  },
+  {
+    "id": 1781276077332,
+    "email": "soboroto97@gmail.com",
+    "cardType": "gold",
+    "employment": "Business Owner",
+    "occupation": "software engineer",
+    "income": "$100,000+",
+    "status": "APPROVED",
+    "date": "2026-06-12T14:54:37.332Z"
+  },
+  {
+    "id": 1781413072719,
+    "email": "soboroto97@gmail.com",
+    "cardType": "black",
+    "employment": "Self-Employed",
+    "occupation": "software engineer",
+    "income": "$100,000+",
+    "idFile": "1781413072707-509250462-Screenshot 2026-06-13 at 12.51.19.png",
+    "proofFile": "1781413072712-545810527-Screenshot 2026-06-13 at 12.51.19.png",
+    "status": "APPROVED",
+    "date": "2026-06-14T04:57:52.719Z"
+  },
+  {
+    "id": 1781704525148,
+    "email": "fedrick440@gmail.com",
+    "cardType": "gold",
+    "employment": "Self-Employed",
+    "occupation": "software engineer",
+    "income": "$100,000+",
+    "idFile": "1781704525133-779033491-Screenshot 2026-06-17 at 06.04.54.png",
+    "proofFile": "1781704525139-953521294-Screenshot 2026-06-17 at 14.04.35.png",
+    "status": "APPROVED",
+    "date": "2026-06-17T13:55:25.148Z"
+  },
+  {
+    "id": 1781704930043,
+    "email": "fedrick440@gmail.com",
+    "cardType": "black",
+    "employment": "Business Owner",
+    "occupation": "software engineer",
+    "income": "$50,000 - $75,000",
+    "idFile": "1781704930035-120870207-Screenshot 2026-06-17 at 14.04.35.png",
+    "proofFile": "1781704930040-303710394-Screenshot 2026-06-17 at 14.50.39.png",
+    "status": "APPROVED",
+    "date": "2026-06-17T14:02:10.043Z"
+  }
+]

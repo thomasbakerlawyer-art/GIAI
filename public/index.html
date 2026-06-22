@@ -1,0 +1,839 @@
+Index
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BINANCE • GIAI</title>
+<style>
+
+/* ========================= */
+/* FIX DARK LINE AT TOP      */
+/* ========================= */
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { margin:0; padding:0; background:#050505; }
+body { overflow-x:hidden; }
+
+/* Remove any dark dot / line artifacts */
+body::before, body::after { display:none !important; }
+
+/* ========================= */
+/* STATS ROW — RESPONSIVE    */
+/* ========================= */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 50px;
+  width: 100%;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media(max-width: 900px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media(max-width: 480px) {
+  .stats { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .stat-card h3 { font-size: 26px; }
+  .stat-card p { font-size: 12px; }
+}
+
+/* ========================= */
+/* YOUTUBE-STYLE VIDEO       */
+/* ========================= */
+
+.youtube-video-wrap {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #000;
+  border: 1px solid rgba(240,185,11,0.15);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+.youtube-video-wrap video {
+  width: 100%;
+  display: block;
+  background: #000;
+}
+
+/* ========================= */
+/* FOOTER FIX                */
+/* ========================= */
+
+.site-footer {
+  padding: 80px 8% 40px;
+  background: #080808;
+  border-top: 1px solid rgba(240,185,11,0.1);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 40px;
+  margin-bottom: 50px;
+}
+
+.footer-grid h3, .footer-grid h4 { color: #f0b90b; margin-bottom: 16px; }
+.footer-grid p { color: #666; margin-bottom: 8px; line-height: 1.7; font-size: 14px; }
+
+@media(max-width: 600px) {
+  .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 25px; }
+}
+
+/* ========================= */
+/* SECTION SPACING FIX       */
+/* ========================= */
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+@media(max-width: 600px) {
+  .plan-grid { grid-template-columns: 1fr; }
+  .steps-grid { grid-template-columns: 1fr; }
+  .rules-grid { grid-template-columns: 1fr; }
+  .review-grid { grid-template-columns: 1fr; }
+  .vision-section { flex-direction: column; padding: 60px 5%; gap: 40px; }
+  .vision-content h1 { font-size: 32px; }
+  .merch-section { flex-direction: column; padding: 60px 5%; gap: 40px; }
+  .merch-left h1 { font-size: 36px; }
+  .card-section { flex-direction: column; padding: 60px 5%; gap: 40px; }
+  .card-content h1 { font-size: 34px; }
+  .support-feature { flex-direction: column; padding: 60px 5%; gap: 40px; }
+  .support-left h1 { font-size: 34px; }
+  .ceo-box { flex-direction: column; padding: 30px; }
+  .ceo-content h2 { font-size: 30px; }
+  .trust-container { grid-template-columns: 1fr; }
+  .partner-boxes { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 52px; }
+  .hero h2 { font-size: 24px; }
+  .section-title { font-size: 36px; }
+  .trust-left h2 { font-size: 30px; }
+  .users-title { font-size: 38px; }
+  .ronaldo-grid { grid-template-columns: 1fr; }
+  .users-video-box { height: 450px; }
+  .video-caption h2 { font-size: 30px; }
+  .rep-card { flex-direction: column; }
+  .rep-img { width: 100%; height: 260px; }
+  .countries { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media(max-width: 768px) {
+  .top-nav { padding: 14px 20px; }
+  .nav-logo { font-size: 18px; }
+  .hero { padding: 120px 20px 60px; }
+  .hero h1 { font-size: 60px; }
+  .video-layout { flex-direction: column; }
+  .video-box { height: 400px; }
+  .card-features { grid-template-columns: 1fr; }
+  .vision-grid { grid-template-columns: 1fr; }
+  .support-grid { grid-template-columns: 1fr; }
+  .trust-stats { grid-template-columns: 1fr 1fr; }
+}
+
+@media(min-width: 1400px) {
+  .hero h1 { font-size: 110px; }
+  .hero h2 { font-size: 50px; }
+  .section-title { font-size: 72px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="top-nav">
+  <div class="nav-logo">BINANCE • GIAI</div>
+  <div class="nav-buttons">
+    <button class="nav-btn login-nav" onclick="window.location.href='login.html'">Sign in</button>
+    <button class="nav-btn create-nav" onclick="openAuth()">Create Account</button>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div id="ticker">Loading Live Market...</div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="glow glow2"></div>
+  <div class="glow glow3"></div>
+  <div class="hero-content">
+
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Binance_Logo.png" class="binance-logo">
+    <h1>BINANCE</h1>
+    <h2>Global Investor Acquisition Initiative</h2>
+    <p class="sub">2026 / 2027 • Powered by AI</p>
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat-card live-investors">
+        <h3 id="liveInvestors">8,241</h3>
+        <p>Live Investors</p>
+      </div>
+      <div class="stat-card">
+        <h3>300M+</h3>
+        <p>Users Worldwide</p>
+      </div>
+      <div class="stat-card">
+        <h3>180+</h3>
+        <p>Countries Active</p>
+      </div>
+      <div class="stat-card">
+        <h3>AI</h3>
+        <p>Automated Trading</p>
+      </div>
+    </div>
+
+    <div class="hero-buttons">
+      <button class="primary-btn" onclick="openDashboard()">Explore Dashboard</button>
+      <button class="secondary-btn" onclick="scrollToRankings()">Live Rankings</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- AI VIDEO SECTION — plays only when in view -->
+<section class="vision-section">
+  <div class="vision-video">
+   <video class="cinematic-video scroll-video" loop playsinline>
+  <source src="img/aivideo.MOV" type="video/mp4">
+</video>
+ </div>
+  <div class="vision-content">
+    <h1>AI Infrastructure &amp; Future Expansion</h1>
+    <p>
+      The Binance GIAI infrastructure integrates automated portfolio systems, blockchain verification layers,
+      and institutional AI-driven market analysis. Our systems are engineered to scale across international
+      markets, processing thousands of investor transactions simultaneously with zero downtime.
+    </p>
+    <div class="vision-grid">
+      <div class="vision-card">
+        <h3>AI Security</h3>
+        <p>Multi-layer verification infrastructure that monitors every transaction and flags suspicious activity in real time, ensuring full portfolio protection.</p>
+      </div>
+      <div class="vision-card">
+        <h3>Blockchain</h3>
+        <p>Distributed ledger systems operating across 180+ countries, providing transparent and immutable records of all investment activity.</p>
+      </div>
+      <div class="vision-card">
+        <h3>Institutional</h3>
+        <p>Enterprise-grade infrastructure built to handle institutional capital flows, with compliance frameworks aligned to global financial standards.</p>
+      </div>
+      <div class="vision-card">
+        <h3>Expansion</h3>
+        <p>Continuous global onboarding of verified investors and representatives, with new regional divisions launching throughout 2026 and 2027.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<h2 class="section-title">How The GIAI System Works</h2>
+<div class="steps-grid">
+  <div class="step-card">
+    <div class="step-number">01</div>
+    <h3>Choose Representative</h3>
+    <p>Select a verified global representative participating in the current GIAI competition season. Each representative operates within a specific regional investment division and builds their ranking through investor support.</p>
+  </div>
+  <div class="step-card">
+    <div class="step-number">02</div>
+    <h3>Select Investment Plan</h3>
+    <p>Choose from six structured investment plans ranging from $200 to $45,000+. Each plan offers a fixed return percentage and duration, managed entirely through Binance's AI-powered portfolio systems.</p>
+  </div>
+  <div class="step-card">
+    <div class="step-number">03</div>
+    <h3>Receive Confirmation</h3>
+    <p>Your deposit request is reviewed and approved by our team through the Binance AI verification system. Once approved, your investment begins immediately and your Dashboard updates in real time.</p>
+  </div>
+</div>
+
+<!-- REPRESENTATIVES -->
+<section class="representatives">
+  <h2 class="section-title">Global Representatives</h2>
+
+  <div class="rep-card">
+    <div class="rep-rank-badge" id="rank-Robert-Rachel">#1</div>
+    <img src="img/IMG_robertrachel.PNG" class="rep-img">
+    <div class="rep-content">
+      <div class="rep-top">
+        <div>
+          <h3>Robert Rachel</h3>
+          <p>North African Investment Division</p>
+        </div>
+        <button onclick="localStorage.setItem('selectedRepresentative','Robert Rachel'); openPlans();">Support Representative</button>
+      </div>
+      <div class="rep-total-votes">
+        Total Votes: <span id="total-Robert-Rachel">0</span>
+      </div>
+      <div class="countries">
+        <div class="country"><h4>Tunisia</h4><p><span id="counter-Robert-Rachel-Tunisia">0</span> Investors</p></div>
+<div class="country"><h4>Algeria</h4><p><span id="counter-Robert-Rachel-Algeria">0</span> Investors</p></div>
+<div class="country"><h4>Norway</h4><p><span id="counter-Robert-Rachel-Norway">0</span> Investors</p></div>
+       <div class="country"><h4>Germany</h4><p><span id="counter-Robert-Rachel-Germany">0</span> Investors</p></div>
+        <div class="country"><h4>France</h4><p><span id="counter-Robert-Rachel-France">0</span> Investors</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rep-card">
+    <div class="rep-rank-badge" id="rank-Michael-Scott">#1</div>
+    <img src="img/IMG_michealscott.PNG" class="rep-img">
+    <div class="rep-content">
+      <div class="rep-top">
+        <div>
+          <h3>Michael Scott</h3>
+          <p>European Investment Division</p>
+        </div>
+        <button onclick="localStorage.setItem('selectedRepresentative','Michael Scott'); openPlans();">Support Representative</button>
+      </div>
+      <div class="rep-total-votes">
+        Total Votes: <span id="total-Michael-Scott">0</span>
+      </div>
+      <div class="countries">
+        <div class="country"><h4>Tunisia</h4><p><span id="counter-Michael-Scott-Tunisia">0</span> Investors</p></div>
+        <div class="country"><h4>UK</h4><p><span id="counter-Michael-Scott-UK">0</span> Investors</p></div>
+        <div class="country"><h4>Italy</h4><p><span id="counter-Michael-Scott-Italy">0</span> Investors</p></div>
+        <div class="country"><h4>Spain</h4><p><span id="counter-Michael-Scott-Spain">0</span> Investors</p></div>
+        <div class="country"><h4>Belgium</h4><p><span id="counter-Michael-Scott-Belgium">0</span> Investors</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rep-card">
+    <div class="rep-rank-badge" id="rank-Lincoln-Hayes">#1</div>
+    <img src="img/IMG_lincolnhayes.PNG" class="rep-img">
+    <div class="rep-content">
+      <div class="rep-top">
+        <div>
+          <h3>Lincoln Hayes</h3>
+          <p>Global Expansion Division</p>
+        </div>
+        <button onclick="localStorage.setItem('selectedRepresentative','Lincoln Hayes'); openPlans();">Support Representative</button>
+      </div>
+      <div class="rep-total-votes">
+        Total Votes: <span id="total-Lincoln-Hayes">0</span>
+      </div>
+      <div class="countries">
+        <div class="country"><h4>Tunisia</h4><p><span id="counter-Lincoln-Hayes-Tunisia">0</span> Investors</p></div>
+        <div class="country"><h4>Brazil</h4><p><span id="counter-Lincoln-Hayes-Brazil">0</span> Investors</p></div>
+        <div class="country"><h4>Japan</h4><p><span id="counter-Lincoln-Hayes-Japan">0</span> Investors</p></div>
+        <div class="country"><h4>Singapore</h4><p><span id="counter-Lincoln-Hayes-Singapore">0</span> Investors</p></div>
+        <div class="country"><h4>Dubai</h4><p><span id="counter-Lincoln-Hayes-Dubai">0</span> Investors</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rep-card">
+    <div class="rep-rank-badge" id="rank-Amber-Agrawal">#1</div>
+    <img src="img/amberagrawal.PNG" class="rep-img">
+    <div class="rep-content">
+      <div class="rep-top">
+        <div>
+          <h3>Amber Agrawal</h3>
+          <p>Asia-Pacific Investment Division</p>
+        </div>
+        <button onclick="localStorage.setItem('selectedRepresentative','Amber Agrawal'); openPlans();">Support Representative</button>
+      </div>
+      <div class="rep-total-votes">
+        Total Votes: <span id="total-Amber-Agrawal">0</span>
+      </div>
+      <div class="countries">
+        <div class="country"><h4>Tunisia</h4><p><span id="counter-Amber-Agrawal-Tunisia">0</span> Investors</p></div>
+        <div class="country"><h4>Australia</h4><p><span id="counter-Amber-Agrawal-Australia">0</span> Investors</p></div>
+        <div class="country"><h4>Malaysia</h4><p><span id="counter-Amber-Agrawal-Malaysia">0</span> Investors</p></div>
+        <div class="country"><h4>Thailand</h4><p><span id="counter-Amber-Agrawal-Thailand">0</span> Investors</p></div>
+        <div class="country"><h4>Indonesia</h4><p><span id="counter-Amber-Agrawal-Indonesia">0</span> Investors</p></div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- MERCH SECTION -->
+<section id="merch-store" class="merch-section">
+  <div class="merch-left">
+    <h1>Official Binance GIAI Merchandise</h1>
+    <p>
+      Exclusive limited-edition apparel and accessories designed for verified members of the Global Investor Acquisition Initiative.
+      Premium branded hoodies, caps, jerseys, and footwear are released in seasonal drops throughout each GIAI competition cycle.
+      Each piece represents your position within the global investment network.
+    </p>
+    <button onclick="window.location.href='merch.html'">Explore Merchandise</button>
+  </div>
+  <div class="merch-right">
+    <div class="merch-image">
+     <video class="cinematic-video scroll-video" loop playsinline>
+  <source src="img/vidmerch.mov" type="video/mp4">
+</video>
+    </div>
+     </div>
+</section>
+
+<!-- INVESTMENT PLANS -->
+<section class="plans">
+  <h2 class="section-title">Current Investment Plans</h2>
+  <div class="plan-grid">
+
+    <div class="plan-card">
+      <div class="soft-glow"></div>
+      <h3>Starter Plan</h3>
+      <p>Deposit: $200 – $999</p>
+      <p>Interest: 25%</p>
+      <p>Duration: 1 Day</p>
+      <p style="color:#888;font-size:13px;margin-top:8px;">Ideal for new investors entering the GIAI system for the first time.</p>
+      <div class="profit">Total Return: $250</div>
+      <button class="plan-btn" onclick="goToPlan('Starter Plan')">Activate Plan</button>
+    </div>
+
+    <div class="plan-card">
+      <div class="soft-glow"></div>
+      <h3>Standard Plan</h3>
+      <p>Deposit: $1,000 – $2,999</p>
+      <p>Interest: 45%</p>
+      <p>Duration: 2 Days</p>
+      <p style="color:#888;font-size:13px;margin-top:8px;">Built for investors looking for fast mid-range returns with moderate capital.</p>
+      <div class="profit">Total Return: $1,450</div>
+      <button class="plan-btn" onclick="goToPlan('Standard Plan')">Activate Plan</button>
+    </div>
+
+    <div class="plan-card">
+      <div class="soft-glow"></div>
+      <h3>Premium Plan</h3>
+      <p>Deposit: $3,000 – $7,999</p>
+      <p>Interest: 55%</p>
+      <p>Duration: 5 Days</p>
+      <p style="color:#888;font-size:13px;margin-top:8px;">For serious investors seeking strong, consistent returns over a short cycle.</p>
+      <div class="profit">Total Return: $4,650</div>
+      <button class="plan-btn" onclick="goToPlan('Premium Plan')">Activate Plan</button>
+    </div>
+
+    <div class="plan-card">
+      <div class="soft-glow"></div>
+      <h3>Contact Manager Plan</h3>
+      <p>Deposit: $8,000 – $14,999</p>
+      <p>Interest: 85%</p>
+      <p>Duration: 14 Days</p>
+      <p style="color:#888;font-size:13px;margin-top:8px;">Includes a dedicated investment manager and priority support throughout the cycle.</p>
+      <div class="profit">Total Return: $14,800</div>
+      <button class="plan-btn" onclick="goToPlan('Contact Manager Plan')">Activate Plan</button>
+    </div>
+
+    <div class="plan-card">
+      <div class="soft-glow"></div>
+      <h3>Capital Boost Plan</h3>
+      <p>Deposit: $15,000 – $44,999</p>
+      <p>Interest: 95%</p>
+      <p>Duration: 22 Days</p>
+      <p style="color:#888;font-size:13px;margin-top:8px;">High-performance institutional-grade plan designed for accelerated portfolio growth.</p>
+      <div class="profit">Total Return: $29,250</div>
+      <button class="plan-btn" onclick="goToPlan('Capital Boost Plan')">Activate Plan</button>
+    </div>
+
+    <div class="plan-card">
+      <div class="soft-glow"></div>
+      <h3>Rapid Return Plan</h3>
+      <p>Deposit: $45,000+</p>
+      <p>Interest: 100.15%</p>
+      <p>Duration: 35 Days</p>
+      <p style="color:#888;font-size:13px;margin-top:8px;">Our most powerful plan. Designed exclusively for elite investors seeking maximum portfolio expansion.</p>
+      <div class="profit">Total Return: $90,067.50</div>
+      <button class="plan-btn" onclick="goToPlan('Rapid Return Plan')">Activate Plan</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews">
+  <h2 class="section-title">What Our Clients Say</h2>
+  <div class="review-grid">
+
+    <div class="review-card">
+      <div class="review-top">
+        <img src="img/IMG_1streview.jpg" class="review-avatar">
+        <div><h4>Daniel Morgan</h4><div class="stars">★★★★★</div></div>
+      </div>
+      <p>The onboarding experience was smooth and professional. The live dashboard and AI tracking system made every step easy to follow. I had full visibility of my investment from day one.</p>
+    </div>
+
+    <div class="review-card">
+      <div class="review-top">
+        <img src="img/IMG_3rdreview.JPG" class="review-avatar">
+        <div><h4>Fatima Rashed</h4><div class="stars">★★★★★</div></div>
+      </div>
+      <p>I joined through the representative program and the support team guided me through every step. The process was transparent, the returns were exactly as described, and everything feels premium and secure.</p>
+    </div>
+
+    <div class="review-card">
+      <div class="review-top">
+        <img src="https://randomuser.me/api/portraits/men/75.jpg" class="review-avatar">
+        <div><h4>James Carter</h4><div class="stars">★★★★★</div></div>
+      </div>
+      <p>The live market system, portfolio tracking, and investment transparency are honestly impressive compared to any platform I have used before. The profit popup alone tells you this is a serious operation.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- GLOBAL REPRESENTATION -->
+<section class="users-video-section">
+  <div class="users-content">
+    <h1 class="users-title">Global Representation</h1>
+    <p class="users-desc">
+      Binance representatives are expanding investor networks worldwide through GIAI using
+      elite global partnerships, AI-powered onboarding systems, and strategic investor
+      acquisition programs across six international divisions.
+    </p>
+    <div class="ronaldo-grid">
+      <div class="ronaldo-card">
+        <h3>Global Influence</h3>
+        <p>Driving verified investor awareness across international markets through structured regional campaigns and AI-powered outreach.</p>
+      </div>
+      <div class="ronaldo-card">
+        <h3>Strategic Growth</h3>
+        <p>Building stronger global representation through competition-based investment programs that reward top-performing representatives.</p>
+      </div>
+      <div class="ronaldo-card">
+        <h3>AI Expansion</h3>
+        <p>Advanced onboarding systems powered by automated analytics that verify, track, and scale investor activity in real time.</p>
+      </div>
+      <div class="ronaldo-card">
+        <h3>Premium Access</h3>
+        <p>Exclusive recognition, merchandise, and portfolio privileges for the highest-ranked representatives across all global divisions.</p>
+      </div>
+    </div>
+  </div>
+  <div class="users-video-box">
+    <video class="cinematic-video scroll-video" loop playsinline preload="auto">
+     <source src="img/ronaldo300m.MP4" type="video/mp4">
+    </video>
+   <div class="video-overlay"></div>
+    <div class="video-caption">
+      <h2>300M+ GLOBAL USERS</h2>
+      <p>Building the future of digital investment.</p>
+    </div>
+  </div>
+</section>
+
+<!-- COMPETITION RULES -->
+<section class="rules-section">
+  <h2 class="section-title">Competition Rules &amp; Guidelines</h2>
+  <div class="rules-grid">
+    <div class="rule-card">
+      <h3>Verified Participation</h3>
+      <p>All investor activity and onboarding requests are monitored through Binance AI verification systems. Only deposits processed through official wallet addresses and confirmed by our team count toward representative rankings during the active competition season.</p>
+    </div>
+    <div class="rule-card">
+      <h3>Representative Rankings</h3>
+      <p>Rankings increase based on verified investor onboarding and approved deposit activity. Every $500 invested under a representative awards them one vote. Rankings are updated dynamically throughout the season and displayed live on the homepage.</p>
+    </div>
+    <div class="rule-card">
+      <h3>Security &amp; Compliance</h3>
+      <p>All representatives and investors must operate within Binance global compliance policies and regional financial guidelines. Accounts flagged for irregular activity are suspended pending AI verification review.</p>
+    </div>
+    <div class="rule-card">
+      <h3>Live Competition Tracking</h3>
+      <p>Voting statistics, onboarding activity, and investment growth are updated dynamically throughout the competition period. The current season ranking resets at the start of each new GIAI cycle.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE MARKET -->
+<section class="market-section">
+  <h2 class="section-title">Live Market Prices</h2>
+  <div class="market-board">
+    <div class="market-scroll">
+      <div class="coin-row"><span>BTC / USDT</span><span id="btc-price">$0</span><span class="green">LIVE</span></div>
+      <div class="coin-row"><span>ETH / USDT</span><span id="eth-price">$0</span><span class="green">LIVE</span></div>
+      <div class="coin-row"><span>SOL / USDT</span><span id="sol-price">$0</span><span class="green">LIVE</span></div>
+      <div class="coin-row"><span>BNB / USDT</span><span id="bnb-price">$0</span><span class="green">LIVE</span></div>
+      <div class="coin-row"><span>XRP / USDT</span><span id="xrp-price">$0</span><span class="green">LIVE</span></div>
+      <div class="coin-row"><span>DOGE / USDT</span><span id="doge-price">$0</span><span class="green">LIVE</span></div>
+      <div class="coin-row"><span>ADA / USDT</span><span id="ada-price">$0</span><span class="green">LIVE</span></div>
+      <div class="coin-row"><span>AVAX / USDT</span><span id="avax-price">$0</span><span class="green">LIVE</span></div>
+      <div class="coin-row"><span>LINK / USDT</span><span id="link-price">$0</span><span class="green">LIVE</span></div>
+      <div class="coin-row"><span>SHIB / USDT</span><span id="shib-price">$0</span><span class="green">LIVE</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- BINANCE SYSTEM — YOUTUBE STYLE VIDEO -->
+<section class="video-section">
+  <div class="video-heading">
+    <h2 class="section-title">Inside The Binance GIAI System</h2>
+    <p class="video-sub">
+      A complete breakdown of how the Global Investor Acquisition Initiative operates across
+      international markets — covering AI-driven investment infrastructure, representative
+      expansion programs, and the full investor onboarding journey from signup to payout.
+    </p>
+  </div>
+  <div class="video-layout">
+    <div class="youtube-video-wrap">
+<video controls preload="metadata">
+  <source src="img/binanceglobal.MOV" type="video/mp4">
+</video>
+   </div>
+    <div class="video-info-grid">
+      <div class="video-info-card">
+        <h3>AI Infrastructure</h3>
+        <p>Advanced trading systems monitor global market activity in real time, executing portfolio adjustments automatically based on live data feeds and predictive AI models.</p>
+      </div>
+      <div class="video-info-card">
+        <h3>Global Expansion</h3>
+        <p>Representatives across six international divisions build verified investor networks, contributing to regional rankings and the global GIAI competition leaderboard.</p>
+      </div>
+      <div class="video-info-card">
+        <h3>Investor Growth</h3>
+        <p>Structured investment plans designed for scalable portfolio development, with fixed returns, clear durations, and real-time progress tracking through the Dashboard.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST SECTION -->
+<section class="trust-section">
+  <div class="trust-container">
+    <div class="trust-left">
+      <p class="trust-small">TRUSTED WORLDWIDE</p>
+      <h2>7+ Years Of Excellence Built On Trust &amp; Performance</h2>
+      <p class="trust-text">
+        Since 2017, Binance GIAI has continued to expand globally through advanced AI-powered investment
+        systems, secure blockchain infrastructure, and trusted regional partnerships across more than
+        180 countries. Every investment cycle is managed through verified, transparent systems designed
+        to protect and grow investor capital.
+      </p>
+      <div class="trust-stats">
+        <div class="trust-stat"><h3>7+</h3><p>Years Experience</p></div>
+        <div class="trust-stat"><h3>180+</h3><p>Countries Active</p></div>
+        <div class="trust-stat"><h3>5M+</h3><p>Global Investors</p></div>
+        <div class="trust-stat"><h3>24/7</h3><p>AI Trading Systems</p></div>
+      </div>
+    </div>
+    <div class="trust-right">
+      <img src="img/IMG_binancebulding.jpg" alt="Binance Building">
+    </div>
+  </div>
+  <div class="partner-boxes">
+    <div class="partner-card">
+      <h3>Blockchain Security</h3>
+      <p>Enterprise-grade infrastructure designed for secure and transparent investment operations. Every transaction is recorded on-chain and verifiable by all parties.</p>
+    </div>
+    <div class="partner-card">
+      <h3>Global Partnerships</h3>
+      <p>Integrated with leading blockchain ecosystems and digital financial networks worldwide, including institutional custody and settlement providers.</p>
+    </div>
+    <div class="partner-card">
+      <h3>AI Automation</h3>
+      <p>Advanced machine learning systems continuously analyze market movement, optimize portfolio performance, and trigger risk-adjusted rebalancing automatically.</p>
+    </div>
+    <div class="partner-card">
+      <h3>24/7 Support</h3>
+      <p>Professional representatives and live AI assistance are available throughout every investment cycle, from onboarding to final payout approval.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BINANCE CARD SECTION -->
+<section class="card-section">
+
+  <div class="card-section-inner">
+
+    <!-- LEFT — IMAGE -->
+    <div class="card-image-wrap" onclick="goToCards()" style="cursor:pointer;">
+      <img src="img/binancecarde.png" alt="GIAI Cards">
+    </div>
+
+    <!-- RIGHT — INFO -->
+    <div class="card-info-side">
+
+      <h1 class="card-section-title">Apply for a GIAI Card</h1>
+      <p class="card-section-sub">
+        Unlock spending power up to $500,000 based on your investment tier.
+      </p>
+
+      <div class="card-info-grid">
+
+        <div class="card-info-box gold-box">
+          <div class="card-info-amount">$80K</div>
+          <div class="card-info-label">Gold Card Limit</div>
+          <p class="card-info-desc">
+            Spend now, pay back later. Your Gold Card is backed by your active
+            investment portfolio, giving you everyday spending power worldwide
+            while your funds continue to grow.
+          </p>
+        </div>
+
+        <div class="card-info-box black-box">
+          <div class="card-info-amount">$500K</div>
+          <div class="card-info-label">Black Card Limit</div>
+          <p class="card-info-desc">
+            Our most exclusive tier. Unlimited global acceptance, priority
+            concierge support, and the highest credit line — reserved for our
+            top-tier investors.
+          </p>
+        </div>
+
+      </div>
+
+      <button class="card-section-btn" onclick="goToCards()">
+        View My Cards
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+<script>
+function goToCards() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (user) {
+    window.location.href = "dashboard.html#cards";
+  } else {
+    window.location.href = "signup.html";
+  }
+}
+</script>
+
+<!-- CEO SECTION -->
+<section class="ceo-section">
+  <div class="ceo-box">
+    <img src="img/IMG_richardteng.jpg" class="rep-img">
+    <div class="ceo-content">
+      <h2>Leadership &amp; AI Infrastructure</h2>
+      <p>
+        Under the leadership of Richard Teng and the strategic vision originally shaped by Yi He,
+        Binance continues expanding its AI-powered global investment infrastructure across over
+        180 countries worldwide. The executive team drives continuous innovation across trading
+        systems, compliance frameworks, and regional expansion programs.
+      </p>
+      <br>
+      <p>
+        The Global Investor Acquisition Initiative combines advanced trading systems, automated
+        AI market analysis, investor onboarding, and regional representative competitions to
+        accelerate worldwide financial expansion. Each season introduces new divisions, new
+        investment structures, and new opportunities for verified participants.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE PROFIT POPUP -->
+<div class="live-profit-popup" id="profitPopup">
+  <div class="profit-header">Live Investment Activity</div>
+  <div class="profit-user" id="profitUser">Loading Investor...</div>
+  <div class="profit-amount" id="profitAmount">+$0</div>
+  <div class="profit-plan" id="profitPlan">Starter Plan</div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <h3>BINANCE • GIAI</h3>
+      <p>Global Investor Acquisition Initiative — connecting verified investors and representatives across 180+ countries through AI-powered portfolio systems.</p>
+    </div>
+    <div>
+      <h4>Resources</h4>
+      <p>Investment Rules</p>
+      <p>FAQ</p>
+      <p>Security Policy</p>
+      <p>Compliance</p>
+    </div>
+    <div>
+      <h4>Support</h4>
+      <p>Live Chat Assistance</p>
+      <p>Deposit Verification</p>
+      <p>Withdrawal Help</p>
+      <p>Portfolio Queries</p>
+    </div>
+    <div>
+      <h4>Legal</h4>
+      <p>Terms of Service</p>
+      <p>Privacy Policy</p>
+      <p>AML Compliance</p>
+      <p>Risk Disclosure</p>
+    </div>
+  </div>
+  <p class="footer-copy">© 2026 Binance GIAI. All Rights Reserved.</p>
+</footer>
+
+<!-- FLOATING CHAT -->
+<div id="chatButton">💬</div>
+<div id="chatWindow">
+  <div class="chat-header">
+    Binance Support
+    <span id="closeChat">✕</span>
+  </div>
+  <div id="chatMessages">
+    <div class="bot-message">Hello 👋 Welcome to Binance GIAI Support. How can we help you today?</div>
+  </div>
+  <div class="chat-input">
+    <input type="text" id="userMessage" placeholder="Type your message...">
+    <button onclick="sendMessage()">➤</button>
+  </div>
+</div>
+
+<!-- AUTH -->
+<section class="auth-section">
+  <div class="close-auth" onclick="closeAuth()">✕</div>
+  <div class="auth-box">
+    <button onclick="window.location.href='/signup.html'">Create Account</button>
+    <p class="signin-link">Already have an account? <span onclick="window.location.href='login.html'">Sign In</span></p>
+  </div>
+</section>
+
+<!-- LANGUAGE -->
+<div class="language-floating">
+  <button id="lang-btn">🇺🇸 EN ▼</button>
+  <div class="language-menu" id="languageMenu">
+    <div onclick="changeLanguage('en')">🇺🇸 English</div>
+    <div onclick="changeLanguage('fr')">🇫🇷 Français</div>
+    <div onclick="changeLanguage('es')">🇪🇸 Español</div>
+    <div onclick="changeLanguage('de')">🇩🇪 Deutsch</div>
+    <div onclick="changeLanguage('ar')">🇸🇦 العربية</div>
+    <div onclick="changeLanguage('zh-CN')">🇨🇳 中文</div>
+  </div>
+</div>
+
+<!-- ANNOUNCEMENT BANNER -->
+<div id="announcementBanner">
+  <span id="announcementText"></span>
+  <button id="announcementClose" onclick="document.getElementById('announcementBanner').style.display='none'">✕</button>
+</div>
+
+<!-- TRANSLATOR (HIDDEN) -->
+<div id="google_translate_element" style="display:none;"></div>
+<script>
+function googleTranslateElementInit(){
+  new google.translate.TranslateElement({pageLanguage:'en',autoDisplay:false},'google_translate_element');
+}
+</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script src="script.js"></script>
+
+</body>
+</html>

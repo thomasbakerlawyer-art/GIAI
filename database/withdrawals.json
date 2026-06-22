@@ -1,0 +1,170 @@
+[
+  {
+    "id": 1780687913165,
+    "email": "thomasbakerlawyer@gmail.com",
+    "amount": 50000,
+    "status": "APPROVED",
+    "date": "2026-06-05T19:31:53.165Z"
+  },
+  {
+    "id": 1780701194126,
+    "email": "chikwadojesse97@gmail.com",
+    "amount": 100000,
+    "status": "APPROVED",
+    "date": "2026-06-05T23:13:14.126Z"
+  },
+  {
+    "id": 1780701224894,
+    "email": "chikwadojesse97@gmail.com",
+    "amount": 5000,
+    "status": "APPROVED",
+    "date": "2026-06-05T23:13:44.894Z"
+  },
+  {
+    "id": 1780707441526,
+    "email": "soboroto97@gmail.com",
+    "amount": 2500,
+    "status": "APPROVED",
+    "date": "2026-06-06T00:57:21.526Z"
+  },
+  {
+    "id": 1780864577609,
+    "email": "emmanuel@gmail.com",
+    "amount": 5000,
+    "status": "APPROVED",
+    "date": "2026-06-07T20:36:17.609Z"
+  },
+  {
+    "id": 1780995572334,
+    "email": "soniafedrick440@gmail.com",
+    "amount": 2500,
+    "status": "APPROVED",
+    "date": "2026-06-09T08:59:32.334Z"
+  },
+  {
+    "id": 1781087232037,
+    "email": "soniafedrick440@gmail.com",
+    "amount": 999,
+    "status": "APPROVED",
+    "date": "2026-06-10T10:27:12.037Z"
+  },
+  {
+    "id": 1781094786466,
+    "email": "emmanuel@gmail.com",
+    "amount": 5000,
+    "status": "APPROVED",
+    "date": "2026-06-10T12:33:06.466Z"
+  },
+  {
+    "id": 1781116482830,
+    "email": "jesse97@gmail.com",
+    "amount": 4000,
+    "status": "APPROVED",
+    "date": "2026-06-10T18:34:42.830Z"
+  },
+  {
+    "id": 1781117982474,
+    "email": "blah97@gmail.com",
+    "amount": 5000,
+    "status": "APPROVED",
+    "date": "2026-06-10T18:59:42.474Z"
+  },
+  {
+    "id": 1781117988689,
+    "email": "blah97@gmail.com",
+    "amount": 5000,
+    "status": "REJECTED",
+    "date": "2026-06-10T18:59:48.689Z"
+  },
+  {
+    "id": 1781118019690,
+    "email": "blah97@gmail.com",
+    "amount": 500,
+    "status": "APPROVED",
+    "date": "2026-06-10T19:00:19.690Z"
+  },
+  {
+    "id": 1781120613834,
+    "email": "blah97@gmail.com",
+    "amount": 5000,
+    "status": "PENDING",
+    "date": "2026-06-10T19:43:33.834Z"
+  },
+  {
+    "id": 1781121198572,
+    "email": "blah97@gmail.com",
+    "amount": 5000,
+    "status": "PENDING",
+    "date": "2026-06-10T19:53:18.572Z"
+  },
+  {
+    "id": 1781121216834,
+    "email": "blah97@gmail.com",
+    "amount": 2000,
+    "status": "APPROVED",
+    "date": "2026-06-10T19:53:36.834Z"
+  },
+  {
+    "id": 1781122447833,
+    "email": "blah97@gmail.com",
+    "amount": 2000,
+    "status": "APPROVED",
+    "date": "2026-06-10T20:14:07.833Z"
+  },
+  {
+    "id": 1781311484739,
+    "email": "soniafedrick440@gmail.com",
+    "amount": 450,
+    "status": "APPROVED",
+    "date": "2026-06-13T00:44:44.739Z"
+  },
+  {
+    "id": 1781421683115,
+    "email": "thomasbakerlawyer@gmail.com",
+    "amount": 90000,
+    "status": "PENDING",
+    "date": "2026-06-14T07:21:23.115Z"
+  },
+  {
+    "id": 1781421715108,
+    "email": "plc@gmail.com",
+    "amount": 30000,
+    "status": "APPROVED",
+    "date": "2026-06-14T07:21:55.108Z"
+  },
+  {
+    "id": 1781425911515,
+    "email": "josie@gmail.com",
+    "amount": 1000,
+    "status": "APPROVED",
+    "date": "2026-06-14T08:31:51.515Z"
+  },
+  {
+    "id": 1781915924954,
+    "email": "thomasbakerlawyer@gmail.com",
+    "amount": 200000,
+    "status": "APPROVED",
+    "date": "2026-06-20T00:38:44.954Z"
+  },
+  {
+    "id": 1781915982576,
+    "email": "thomasbakerlawyer@gmail.com",
+    "amount": 5000,
+    "status": "APPROVED",
+    "date": "2026-06-20T00:39:42.576Z"
+  },
+  {
+    "id": 1781916013560,
+    "email": "thomasbakerlawyer@gmail.com",
+    "amount": 50000,
+    "status": "APPROVED",
+    "date": "2026-06-20T00:40:13.560Z"
+  },
+  {
+    "id": 1781918594114,
+    "email": "soniafedrick440@gmail.com",
+    "amount": 2000,
+    "status": "PENDING",
+    "date": "2026-06-20T01:23:14.114Z"
+  }
+]

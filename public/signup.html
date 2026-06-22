@@ -1,0 +1,600 @@
+Signup.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Account • GIAI</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+
+body{
+  background:#050505;
+  color:white;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:30px 16px;
+}
+
+.container{
+  width:100%;
+  max-width:520px;
+  background:#101010;
+  padding:40px 36px;
+  border-radius:24px;
+  border:1px solid rgba(240,185,11,0.15);
+  box-shadow:0 0 60px rgba(0,0,0,0.6);
+}
+
+.logo{
+  text-align:center;
+  font-size:34px;
+  font-weight:bold;
+  color:#f0b90b;
+  letter-spacing:1px;
+  margin-bottom:6px;
+}
+
+.subtitle{
+  text-align:center;
+  color:#777;
+  font-size:13.5px;
+  margin-bottom:30px;
+  line-height:1.6;
+}
+
+/* ── Section divider ── */
+.section-label{
+  font-size:11px;
+  font-weight:bold;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:#f0b90b;
+  opacity:0.7;
+  margin:22px 0 12px;
+}
+
+/* ── Input group ── */
+.input-group{margin-bottom:14px;position:relative;}
+
+.input-group label{
+  display:block;
+  margin-bottom:7px;
+  font-size:13px;
+  color:#aaa;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea{
+  width:100%;
+  padding:14px 16px;
+  border:1px solid #222;
+  border-radius:12px;
+  background:#0b0b0b;
+  color:white;
+  font-size:14px;
+  outline:none;
+  transition:border-color .25s,box-shadow .25s;
+}
+
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus{
+  border-color:#f0b90b;
+  box-shadow:0 0 0 3px rgba(240,185,11,0.12);
+}
+
+.input-group input::placeholder,
+.input-group textarea::placeholder{color:#444;}
+
+/* ── Country search ── */
+.country-wrapper{position:relative;}
+
+#countryDisplay{
+  width:100%;
+  padding:14px 16px;
+  border:1px solid #222;
+  border-radius:12px;
+  background:#0b0b0b;
+  color:white;
+  font-size:14px;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  transition:border-color .25s;
+  user-select:none;
+}
+
+#countryDisplay:hover,
+#countryDisplay.open{
+  border-color:#f0b90b;
+}
+
+#countryDisplay .arrow{
+  font-size:10px;
+  color:#666;
+  transition:transform .2s;
+}
+
+#countryDisplay.open .arrow{transform:rotate(180deg);}
+
+.country-dropdown{
+  display:none;
+  position:absolute;
+  top:calc(100% + 6px);
+  left:0;width:100%;
+  background:#111;
+  border:1px solid #2a2a2a;
+  border-radius:12px;
+  z-index:100;
+  overflow:hidden;
+  box-shadow:0 8px 30px rgba(0,0,0,0.5);
+}
+
+.country-dropdown.open{display:block;}
+
+#countrySearch{
+  width:100%;
+  padding:12px 16px;
+  border:none;
+  border-bottom:1px solid #1e1e1e;
+  background:#0d0d0d;
+  color:white;
+  font-size:14px;
+  outline:none;
+}
+
+#countrySearch::placeholder{color:#444;}
+
+.country-list{
+  max-height:200px;
+  overflow-y:auto;
+  scrollbar-width:thin;
+  scrollbar-color:#2a2a2a transparent;
+}
+
+.country-list::-webkit-scrollbar{width:4px;}
+.country-list::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:4px;}
+
+.country-item{
+  padding:11px 16px;
+  font-size:14px;
+  cursor:pointer;
+  color:#ccc;
+  transition:background .15s;
+}
+
+.country-item:hover,.country-item.selected{
+  background:rgba(240,185,11,0.1);
+  color:#f0b90b;
+}
+
+.no-results{padding:12px 16px;font-size:13px;color:#555;text-align:center;}
+
+/* ── Wallet section ── */
+.wallet-tabs{
+  display:flex;
+  gap:8px;
+  margin-bottom:12px;
+}
+
+.wallet-tab{
+  flex:1;
+  padding:10px 6px;
+  border:1px solid #2a2a2a;
+  border-radius:10px;
+  background:#0b0b0b;
+  color:#777;
+  font-size:12px;
+  font-weight:bold;
+  cursor:pointer;
+  text-align:center;
+  transition:.2s;
+}
+
+.wallet-tab:hover{border-color:#f0b90b;color:#f0b90b;}
+
+.wallet-tab.active{
+  border-color:#f0b90b;
+  background:rgba(240,185,11,0.08);
+  color:#f0b90b;
+}
+
+.wallet-input-area{display:none;}
+.wallet-input-area.active{display:block;}
+
+/* ── Submit button ── */
+.signup-btn{
+  width:100%;
+  padding:16px;
+  border:none;
+  border-radius:12px;
+  background:#f0b90b;
+  color:#000;
+  font-weight:bold;
+  font-size:15px;
+  cursor:pointer;
+  margin-top:8px;
+  transition:opacity .2s,transform .15s;
+  letter-spacing:.3px;
+}
+
+.signup-btn:hover{opacity:.9;transform:scale(1.01);}
+.signup-btn:active{transform:scale(0.99);}
+
+.bottom-text{
+  text-align:center;
+  margin-top:22px;
+  color:#666;
+  font-size:13.5px;
+}
+
+.bottom-text a{color:#f0b90b;text-decoration:none;font-weight:bold;}
+.bottom-text a:hover{text-decoration:underline;}
+
+/* ── Error / helper text ── */
+.field-error{
+  font-size:12px;
+  color:#ff5c5c;
+  margin-top:5px;
+  display:none;
+}
+
+@media(max-width:520px){
+  .container{padding:30px 20px;}
+  .logo{font-size:27px;}
+  .wallet-tab{font-size:11px;padding:9px 4px;}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="logo">BINANCE • GIAI</div>
+  <div class="subtitle">Create your investor account and gain access to our AI‑powered global investment infrastructure.</div>
+
+  <form id="signupForm" novalidate>
+
+    <!-- ── Personal Info ── -->
+    <div class="section-label">Personal Information</div>
+
+    <div class="input-group">
+      <label>Username</label>
+      <input type="text" id="username" placeholder="Enter a unique username" required>
+    </div>
+
+    <div class="input-group">
+      <label>Full Name</label>
+      <input type="text" id="name" placeholder="Enter your full name" required>
+    </div>
+
+    <div class="input-group">
+      <label>Email Address</label>
+      <input type="email" id="email" placeholder="name@example.com" required>
+    </div>
+
+    <div class="input-group">
+      <label>Phone Number</label>
+      <input type="tel" id="phone" placeholder="+1 234 567 890" required>
+    </div>
+
+    <!-- ── Security ── -->
+    <div class="section-label">Security</div>
+
+    <div class="input-group">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Create a strong password" required>
+    </div>
+
+    <div class="input-group">
+      <label>Confirm Password</label>
+      <input type="password" id="confirmPassword" placeholder="Re-enter your password" required>
+      <div class="field-error" id="passwordError">Passwords do not match.</div>
+    </div>
+
+    <!-- ── Location ── -->
+    <div class="section-label">Location</div>
+
+    <div class="input-group">
+      <label>Country</label>
+      <div class="country-wrapper">
+        <div id="countryDisplay">
+          <span id="countryDisplayText" style="color:#444;">Select your country</span>
+          <span class="arrow">▼</span>
+        </div>
+        <input type="hidden" id="country" required>
+        <div class="country-dropdown" id="countryDropdown">
+          <input type="text" id="countrySearch" placeholder="Search country..." autocomplete="off">
+          <div class="country-list" id="countryList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Wallet ── -->
+    <div class="section-label">Wallet Address</div>
+
+    <div class="wallet-tabs">
+      <div class="wallet-tab active" data-wallet="btc" onclick="selectWallet('btc')">BTC</div>
+      <div class="wallet-tab" data-wallet="eth" onclick="selectWallet('eth')">ETH</div>
+      <div class="wallet-tab" data-wallet="usdt" onclick="selectWallet('usdt')">USDT TRC20</div>
+    </div>
+
+    <div class="wallet-input-area active" id="wallet-btc">
+      <div class="input-group">
+        <input type="text" id="walletBTC" placeholder="Enter your BTC wallet address">
+      </div>
+    </div>
+
+    <div class="wallet-input-area" id="wallet-eth">
+      <div class="input-group">
+        <input type="text" id="walletETH" placeholder="Enter your ETH wallet address">
+      </div>
+    </div>
+
+    <div class="wallet-input-area" id="wallet-usdt">
+      <div class="input-group">
+        <input type="text" id="walletUSDT" placeholder="Enter your USDT TRC20 wallet address">
+      </div>
+    </div>
+
+<!-- ── Security Question ── -->
+<div class="section-label">Security Question</div>
+
+<div class="input-group">
+  <label>Select a Security Question</label>
+  <select id="secretQuestion" required>
+    <option value="">Choose a question...</option>
+    <option value="pet">What was the name of your first pet?</option>
+    <option value="mother">What is your mother's maiden name?</option>
+    <option value="city">What city were you born in?</option>
+    <option value="school">What was the name of your primary school?</option>
+    <option value="food">What is your favourite food?</option>
+    <option value="car">What was your first car?</option>
+    <option value="friend">What is the name of your childhood best friend?</option>
+  </select>
+</div>
+
+<div class="input-group">
+  <label>Your Answer</label>
+  <input type="text" id="secretAnswer" placeholder="Your answer (you'll need this to reset your password)" required>
+</div>
+
+    <!-- ── Referral ── -->
+    <div class="section-label">Referral <span style="font-size:10px;color:#555;font-weight:normal;text-transform:none;letter-spacing:0">(Optional)</span></div>
+
+    <div class="input-group">
+      <input type="text" id="referrer" placeholder="Enter referrer ID if you have one">
+    </div>
+
+    <button type="submit" class="signup-btn">Create Account</button>
+
+  </form>
+
+  <div class="bottom-text">
+    Already have an account? <a href="/login.html">Sign In</a>
+  </div>
+
+</div>
+
+<script>
+// ==============================
+// COUNTRY LIST — all ~195 countries, generated via JS (no manual list in HTML)
+// ==============================
+const ALL_COUNTRIES = [
+  "Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda",
+  "Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain",
+  "Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan",
+  "Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria",
+  "Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada",
+  "Central African Republic","Chad","Chile","China","Colombia","Comoros",
+  "Congo","Costa Rica","Croatia","Cuba","Cyprus","Czech Republic","Denmark",
+  "Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador",
+  "Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji",
+  "Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece",
+  "Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras",
+  "Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel",
+  "Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Kuwait",
+  "Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya",
+  "Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia",
+  "Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius",
+  "Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco",
+  "Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand",
+  "Nicaragua","Niger","Nigeria","North Korea","North Macedonia","Norway","Oman",
+  "Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru",
+  "Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda",
+  "Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines",
+  "Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal",
+  "Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia",
+  "Solomon Islands","Somalia","South Africa","South Korea","South Sudan",
+  "Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria",
+  "Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga",
+  "Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda",
+  "Ukraine","UAE","United Kingdom","United States","Uruguay","Uzbekistan",
+  "Vanuatu","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"
+].sort();
+
+let selectedCountry = "";
+
+const countryList    = document.getElementById("countryList");
+const countrySearch  = document.getElementById("countrySearch");
+const countryDisplay = document.getElementById("countryDisplay");
+const countryDropdown= document.getElementById("countryDropdown");
+const countryDisplayText = document.getElementById("countryDisplayText");
+const countryHidden  = document.getElementById("country");
+
+function renderCountries(filter=""){
+  countryList.innerHTML="";
+  const filtered = ALL_COUNTRIES.filter(c=>c.toLowerCase().includes(filter.toLowerCase()));
+  if(filtered.length===0){
+    countryList.innerHTML='<div class="no-results">No country found</div>';
+    return;
+  }
+  filtered.forEach(country=>{
+    const div=document.createElement("div");
+    div.className="country-item"+(country===selectedCountry?" selected":"");
+    div.textContent=country;
+    div.onclick=()=>{
+      selectedCountry=country;
+      countryDisplayText.textContent=country;
+      countryDisplayText.style.color="white";
+      countryHidden.value=country;
+      countryDropdown.classList.remove("open");
+      countryDisplay.classList.remove("open");
+      countrySearch.value="";
+      renderCountries();
+    };
+    countryList.appendChild(div);
+  });
+}
+
+renderCountries();
+
+countryDisplay.addEventListener("click",()=>{
+  const isOpen=countryDropdown.classList.contains("open");
+  countryDropdown.classList.toggle("open");
+  countryDisplay.classList.toggle("open");
+  if(!isOpen) setTimeout(()=>countrySearch.focus(),50);
+});
+
+countrySearch.addEventListener("input",()=>renderCountries(countrySearch.value));
+
+document.addEventListener("click",(e)=>{
+  if(!e.target.closest(".country-wrapper")){
+    countryDropdown.classList.remove("open");
+    countryDisplay.classList.remove("open");
+  }
+});
+
+// ==============================
+// WALLET TAB SWITCHER
+// ==============================
+let activeWallet = "btc";
+
+function selectWallet(type){
+  document.querySelectorAll(".wallet-tab").forEach(t=>t.classList.remove("active"));
+  document.querySelectorAll(".wallet-input-area").forEach(a=>a.classList.remove("active"));
+  document.querySelector(`[data-wallet="${type}"]`).classList.add("active");
+  document.getElementById(`wallet-${type}`).classList.add("active");
+  activeWallet = type;
+}
+
+// ==============================
+// FORM SUBMISSION
+// ==============================
+document.getElementById("signupForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const username        = document.getElementById("username").value.trim();
+  const name            = document.getElementById("name").value.trim();
+  const email           = document.getElementById("email").value.trim();
+  const phone           = document.getElementById("phone").value.trim();
+  const password        = document.getElementById("password").value;
+  const confirmPassword = document.getElementById("confirmPassword").value;
+  const country         = document.getElementById("country").value;
+  const referrer        = document.getElementById("referrer").value.trim();
+  const walletBTC       = document.getElementById("walletBTC").value.trim();
+  const walletETH       = document.getElementById("walletETH").value.trim();
+  const walletUSDT      = document.getElementById("walletUSDT").value.trim();
+
+  if (password !== confirmPassword) {
+    document.getElementById("passwordError").style.display = "block";
+    document.getElementById("confirmPassword").focus();
+    return;
+  }
+  document.getElementById("passwordError").style.display = "none";
+
+  if (!country) {
+    alert("Please select your country.");
+    return;
+  }
+
+  if (!walletBTC && !walletETH && !walletUSDT) {
+    alert("Please enter at least one wallet address.");
+    return;
+  }
+
+  const secretQuestion = document.getElementById("secretQuestion").value;
+  const secretAnswer   = document.getElementById("secretAnswer").value.trim();
+
+  if (!secretQuestion) {
+    alert("Please select a security question.");
+    return;
+  }
+
+  if (!secretAnswer) {
+    alert("Please enter an answer to your security question.");
+    return;
+  }
+
+  const payload = {
+    username, name, email, phone,
+    password, country, referrer,
+    secretQuestion,
+    secretAnswer,
+    wallet: { btc: walletBTC, eth: walletETH, usdt_trc20: walletUSDT }
+  };
+
+  try {
+    const response = await fetch("/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+    alert(data.message);
+
+    if (data.success) {
+      localStorage.setItem("user", JSON.stringify(data.user));
+      window.location.href = "/dashboard.html";
+    }
+
+  } catch(err) {
+    alert("Something went wrong. Please try again.");
+    console.error(err);
+  }
+
+});
+
+</script>
+
+<div id="google_translate_element" style="display:none;"></div>
+
+<script>
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement(
+    { pageLanguage: 'en', autoDisplay: false },
+    'google_translate_element'
+  );
+}
+
+// Remember the language the user picked on index.html
+// and apply it automatically on this page
+function applyStoredLanguage() {
+  const lang = localStorage.getItem("giai_language");
+  if (!lang || lang === "en") return;
+
+  const trySet = setInterval(() => {
+    const select = document.querySelector(".goog-te-combo");
+    if (select) {
+      select.value = lang;
+      select.dispatchEvent(new Event("change"));
+      clearInterval(trySet);
+    }
+  }, 300);
+}
+
+window.addEventListener("load", () => {
+  applyStoredLanguage();
+});
+</script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>

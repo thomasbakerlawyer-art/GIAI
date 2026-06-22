@@ -1,0 +1,489 @@
+[
+  {
+    "id": 1780948564106,
+    "email": "soniafedrick440@gmail.com",
+    "name": "sonia",
+    "messages": [
+      {
+        "sender": "user",
+        "text": "soniafedrick440@gmail.com",
+        "date": "2026-06-08T19:56:04.106Z"
+      },
+      {
+        "sender": "user",
+        "text": "hi",
+        "date": "2026-06-08T19:56:18.754Z"
+      },
+      {
+        "sender": "user",
+        "text": "hello",
+        "date": "2026-06-08T19:56:28.218Z"
+      },
+      {
+        "sender": "admin",
+        "text": "rrrrr",
+        "date": "2026-06-08T20:12:06.569Z"
+      },
+      {
+        "sender": "user",
+        "text": "soniafedrick440@gmail.com",
+        "date": "2026-06-08T20:14:02.922Z"
+      },
+      {
+        "sender": "user",
+        "text": "hi",
+        "date": "2026-06-08T20:14:09.929Z"
+      },
+      {
+        "sender": "admin",
+        "text": "rrrrr",
+        "date": "2026-06-08T20:14:27.409Z"
+      },
+      {
+        "sender": "user",
+        "text": "soniafedrick440@gmail.com",
+        "date": "2026-06-08T20:14:50.022Z"
+      },
+      {
+        "sender": "user",
+        "text": "soniafedrick440@gmail.com",
+        "date": "2026-06-08T20:27:22.883Z"
+      },
+      {
+        "sender": "user",
+        "text": "hi",
+        "date": "2026-06-08T20:27:27.931Z"
+      },
+      {
+        "sender": "admin",
+        "text": "hello",
+        "date": "2026-06-08T20:27:52.569Z"
+      },
+      {
+        "sender": "admin",
+        "text": "hi",
+        "date": "2026-06-08T20:30:04.185Z"
+      },
+      {
+        "sender": "user",
+        "text": "soniafedrick440@gmail.com",
+        "date": "2026-06-08T20:37:50.595Z"
+      },
+      {
+        "sender": "user",
+        "text": "hello",
+        "date": "2026-06-08T20:37:57.465Z"
+      },
+      {
+        "sender": "admin",
+        "text": "hi",
+        "date": "2026-06-08T20:38:25.225Z"
+      },
+      {
+        "sender": "user",
+        "text": "soniafedrick440@gmail.com",
+        "date": "2026-06-08T20:39:05.458Z"
+      },
+      {
+        "sender": "user",
+        "text": "hello",
+        "date": "2026-06-08T20:39:14.570Z"
+      },
+      {
+        "sender": "user",
+        "text": "soniafedrick440@gmail.com",
+        "date": "2026-06-08T20:53:28.977Z"
+      },
+      {
+        "sender": "user",
+        "text": "hi",
+        "date": "2026-06-08T20:53:34.640Z"
+      },
+      {
+        "sender": "admin",
+        "text": "how are you",
+        "date": "2026-06-08T20:54:07.097Z"
+      },
+      {
+        "sender": "user",
+        "text": "soniafedrick440@gmail.com",
+        "date": "2026-06-08T21:01:15.714Z"
+      },
+      {
+        "sender": "user",
+        "text": "hi",
+        "date": "2026-06-08T21:01:25.402Z"
+      },
+      {
+        "sender": "user",
+        "text": "hi",
+        "date": "2026-06-08T21:04:01.794Z"
+      },
+      {
+        "sender": "user",
+        "text": "hi",
+        "date": "2026-06-08T21:04:31.187Z"
+      },
+      {
+        "sender": "admin",
+        "text": "hello",
+        "date": "2026-06-08T21:30:13.843Z"
+      },
+      {
+        "sender": "user",
+        "text": "soniafedrick440@gmail.com",
+        "date": "2026-06-10T07:04:00.491Z"
+      },
+      {
+        "sender": "bot",
+        "text": "A support representative will respond shortly.",
+        "date": "2026-06-10T07:04:00.491Z"
+      },
+      {
+        "sender": "user",
+        "text": "hi",
+        "date": "2026-06-10T07:04:09.413Z"
+      },
+      {
+        "sender": "bot",
+        "text": "Hello 👋 How can we assist you today?",
+        "date": "2026-06-10T07:04:09.413Z"
+      },
+      {
+        "sender": "user",
+        "text": "how do i withdraw",
+        "date": "2026-06-10T07:53:49.795Z"
+      },
+      {
+        "sender": "bot",
+        "text": "To withdraw funds, open your dashboard and click Withdraw.",
+        "date": "2026-06-10T07:53:49.795Z"
+      },
+      {
+        "sender": "user",
+        "text": "how to deposit",
+        "date": "2026-06-10T16:02:20.964Z"
+      },
+      {
+        "sender": "bot",
+        "text": "To make a deposit, select Deposit, choose a representative and complete payment.",
+        "date": "2026-06-10T16:02:20.964Z"
+      },
+      {
+        "sender": "user",
+        "text": "whats your name",
+        "date": "2026-06-10T16:03:04.017Z"
+      },
+      {
+        "sender": "bot",
+        "text": "A support representative will respond shortly.",
+        "date": "2026-06-10T16:03:04.017Z"
+      },
+      {
+        "sender": "admin",
+        "text": "what",
+        "date": "2026-06-10T16:03:48.860Z"
+      },
+      {
+        "sender": "user",
+        "text": "hey",
+        "date": "2026-06-11T02:02:59.858Z"
+      },
+      {
+        "sender": "bot",
+        "text": "A support representative will respond shortly.",
+        "date": "2026-06-11T02:02:59.858Z"
+      },
+      {
+        "sender": "user",
+        "text": "withdraw",
+        "date": "2026-06-11T02:36:38.338Z"
+      },
+      {
+        "sender": "bot",
+        "text": "To withdraw funds, open your dashboard and click Withdraw.",
+        "date": "2026-06-11T02:36:38.338Z"
+      },
+      {
+        "sender": "user",
+        "text": "deposit",
+        "date": "2026-06-11T02:37:57.594Z"
+      },
+      {
+        "sender": "bot",
+        "text": "💰 To deposit funds, go to your Dashboard and click 'Deposit'. Select a representative, choose a plan, and send payment to one of our wallet addresses. Once confirmed, click 'I HAVE PAID' and our team will approve it shortly.",
+        "date": "2026-06-11T02:37:57.594Z"
+      },
+      {
+        "sender": "user",
+        "text": "hello",
+        "date": "2026-06-11T02:46:37.466Z"
+      },
+      {
+        "sender": "bot",
+        "text": "Hello 👋 Welcome to Binance GIAI Support! How can we assist you today? You can ask us about deposits, withdrawals, investment plans, representatives, profits, voting, or reinvestments.",
+        "date": "2026-06-11T02:46:37.466Z"
+      }
+    ],
+    "unread": true
+  },
+  {
+    "id": 1780985058068,
+    "email": "chikwadojesse97@gmail.com",
+    "name": "chikwado jesse sopuru",
+    "messages": [
+      {
+        "sender": "user",
+        "text": "chikwadojesse97@gmail.com",
+        "date": "2026-06-09T06:04:18.068Z"
+      },
+      {
+        "sender": "user",
+        "text": "hi",
+        "date": "2026-06-09T06:04:29.140Z"
+      },
+      {
+        "sender": "admin",
+        "text": "hello",
+        "date": "2026-06-09T06:05:08.416Z"
+      },
+      {
+        "sender": "user",
+        "text": "i want to make enquireries",
+        "date": "2026-06-09T06:05:43.288Z"
+      },
+      {
+        "sender": "user",
+        "text": "chikwadojesse97@gmail.com",
+        "date": "2026-06-09T06:20:09.737Z"
+      },
+      {
+        "sender": "user",
+        "text": "how do i deposit",
+        "date": "2026-06-09T06:20:24.520Z"
+      },
+      {
+        "sender": "user",
+        "text": "withdraw",
+        "date": "2026-06-09T06:21:22.451Z"
+      },
+      {
+        "sender": "user",
+        "text": "chikwadojesse97@gmail.com",
+        "date": "2026-06-09T06:35:12.721Z"
+      },
+      {
+        "sender": "bot",
+        "text": "Hello 👋 How can we assist you today?",
+        "date": "2026-06-09T06:35:12.721Z"
+      },
+      {
+        "sender": "user",
+        "text": "i want to make withdraw",
+        "date": "2026-06-09T06:35:34.178Z"
+      },
+      {
+        "sender": "bot",
+        "text": "To withdraw funds, open your dashboard and click Withdraw.",
+        "date": "2026-06-09T06:35:34.178Z"
+      },
+      {
+        "sender": "user",
+        "text": "what about deposit",
+        "date": "2026-06-09T06:35:53.172Z"
+      },
+      {
+        "sender": "bot",
+        "text": "To make a deposit, select Deposit, choose a representative and complete payment.",
+        "date": "2026-06-09T06:35:53.172Z"
+      }
+    ]
+  },
+  {
+    "id": 1781095292499,
+    "email": "emmanuel@gmail.com",
+    "name": "emmanuel",
+    "messages": [
+      {
+        "sender": "user",
+        "text": "emmanuel@gmail.com",
+        "date": "2026-06-10T12:41:32.499Z"
+      },
+      {
+        "sender": "bot",
+        "text": "A support representative will respond shortly.",
+        "date": "2026-06-10T12:41:32.500Z"
+      },
+      {
+        "sender": "user",
+        "text": "hi",
+        "date": "2026-06-10T12:41:41.809Z"
+      },
+      {
+        "sender": "bot",
+        "text": "Hello 👋 How can we assist you today?",
+        "date": "2026-06-10T12:41:41.809Z"
+      },
+      {
+        "sender": "user",
+        "text": "how can i withdraw ?",
+        "date": "2026-06-10T12:42:37.194Z"
+      },
+      {
+        "sender": "bot",
+        "text": "To withdraw funds, open your dashboard and click Withdraw.",
+        "date": "2026-06-10T12:42:37.194Z"
+      },
+      {
+        "sender": "user",
+        "text": "how can i deposit",
+        "date": "2026-06-10T12:43:02.267Z"
+      },
+      {
+        "sender": "bot",
+        "text": "To make a deposit, select Deposit, choose a representative and complete payment.",
+        "date": "2026-06-10T12:43:02.267Z"
+      },
+      {
+        "sender": "user",
+        "text": "where are you",
+        "date": "2026-06-10T12:43:20.465Z"
+      },
+      {
+        "sender": "bot",
+        "text": "A support representative will respond shortly.",
+        "date": "2026-06-10T12:43:20.465Z"
+      }
+    ],
+    "unread": true
+  },
+  {
+    "id": 1781096159898,
+    "email": "thomasbakerlawyer@gmail.com",
+    "name": "thomas",
+    "messages": [
+      {
+        "sender": "user",
+        "text": "thomasbakerlawyer@gmail.com",
+        "date": "2026-06-10T12:55:59.898Z"
+      },
+      {
+        "sender": "bot",
+        "text": "A support representative will respond shortly.",
+        "date": "2026-06-10T12:55:59.898Z"
+      },
+      {
+        "sender": "user",
+        "text": "hi",
+        "date": "2026-06-10T12:56:09.801Z"
+      },
+      {
+        "sender": "bot",
+        "text": "Hello 👋 How can we assist you today?",
+        "date": "2026-06-10T12:56:09.801Z"
+      },
+      {
+        "sender": "user",
+        "text": "i want to make a deposit",
+        "date": "2026-06-10T12:57:47.090Z"
+      },
+      {
+        "sender": "bot",
+        "text": "To make a deposit, select Deposit, choose a representative and complete payment.",
+        "date": "2026-06-10T12:57:47.090Z"
+      },
+      {
+        "sender": "user",
+        "text": "how are you",
+        "date": "2026-06-10T12:58:04.353Z"
+      },
+      {
+        "sender": "bot",
+        "text": "A support representative will respond shortly.",
+        "date": "2026-06-10T12:58:04.353Z"
+      }
+    ],
+    "unread": true
+  },
+  {
+    "id": 1781113005754,
+    "email": "jesse97@gmail.com",
+    "name": "jesse",
+    "messages": [
+      {
+        "sender": "user",
+        "text": "hi",
+        "date": "2026-06-10T17:36:45.754Z"
+      },
+      {
+        "sender": "bot",
+        "text": "Hello 👋 How can we assist you today?",
+        "date": "2026-06-10T17:36:45.754Z"
+      },
+      {
+        "sender": "user",
+        "text": "call administrator",
+        "date": "2026-06-10T17:37:06.265Z"
+      },
+      {
+        "sender": "bot",
+        "text": "A support representative will respond shortly.",
+        "date": "2026-06-10T17:37:06.272Z"
+      },
+      {
+        "sender": "admin",
+        "text": "hi",
+        "date": "2026-06-10T17:40:08.332Z"
+      }
+    ],
+    "unread": false
+  },
+  {
+    "id": 1781347780891,
+    "email": "soboroto97@gmail.com",
+    "name": "soboroto",
+    "messages": [
+      {
+        "sender": "user",
+        "text": "hi",
+        "date": "2026-06-13T10:49:40.891Z"
+      },
+      {
+        "sender": "bot",
+        "text": "Hello 👋 Welcome to Binance GIAI Support! How can we assist you today? You can ask us about deposits, withdrawals, investment plans, representatives, profits, voting, or reinvestments.",
+        "date": "2026-06-13T10:49:40.891Z"
+      },
+      {
+        "sender": "user",
+        "text": "how do i invest",
+        "date": "2026-06-13T10:49:58.371Z"
+      },
+      {
+        "sender": "bot",
+        "text": "📊 We offer 6 investment plans ranging from $200 to $45,000+, with returns from 25% to 100.15%. To see all plans and activate one, go to your Dashboard and click 'Plans'. Would you like details on a specific plan?",
+        "date": "2026-06-13T10:49:58.371Z"
+      },
+      {
+        "sender": "user",
+        "text": "how do i deposit",
+        "date": "2026-06-13T10:50:14.033Z"
+      },
+      {
+        "sender": "bot",
+        "text": "💰 To make a deposit:\n\n1. Log into your account and open your Dashboard\n2. Click the 'Deposit' button\n3. Select your preferred Representative\n4. Choose an Investment Plan that matches your budget\n5. You will be shown our wallet addresses (BTC, USDT TRC20, or ETH)\n6. Send the exact amount to any of the wallets\n7. Click 'I HAVE PAID' to submit your deposit request\n8. Our team will verify and approve your deposit — your balance will update automatically.\n\nMinimum deposit is $200. Need help choosing a plan?",
+        "date": "2026-06-13T10:50:14.033Z"
+      },
+      {
+        "sender": "user",
+        "text": "how to withdraw",
+        "date": "2026-06-13T11:40:01.610Z"
+      },
+      {
+        "sender": "bot",
+        "text": "🏦 To withdraw your funds:\n\n1. Open your Dashboard\n2. Click the 'Withdraw' button\n3. Enter the amount you wish to withdraw\n4. Submit your withdrawal request\n5. Our team reviews and approves withdrawals manually\n\n⚠️ Important: Withdrawals are only available after your active investment plan has completed its full duration. If your plan is still running, you must wait until it finishes before withdrawing.",
+        "date": "2026-06-13T11:40:01.616Z"
+      }
+    ],
+    "unread": true
+  }
+]

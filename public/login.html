@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login • BINANCE GIAI</title>
+<style>
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: #050505;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  overflow: hidden;
+}
+
+.bg-glow {
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  background: rgba(240,185,11,0.05);
+  border-radius: 50%;
+  filter: blur(100px);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.login-wrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  padding: 20px;
+}
+
+.login-logo {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.login-logo img {
+  width: 55px;
+  margin-bottom: 14px;
+  filter: drop-shadow(0 0 16px rgba(240,185,11,0.4));
+}
+
+.login-logo h1 {
+  font-size: 22px;
+  font-weight: 900;
+  color: #f0b90b;
+  letter-spacing: 2px;
+}
+
+.login-logo p {
+  color: #555;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+.login-box {
+  background: #0f0f0f;
+  border: 1px solid rgba(240,185,11,0.15);
+  border-radius: 24px;
+  padding: 40px 36px;
+}
+
+.login-box h2 {
+  font-size: 24px;
+  margin-bottom: 6px;
+  color: #fff;
+}
+
+.login-box .welcome-sub {
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+.input-group {
+  margin-bottom: 16px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 15px 18px;
+  background: #161616;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  color: white;
+  font-size: 15px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.input-group input:focus {
+  border-color: rgba(240,185,11,0.4);
+  background: #1a1a1a;
+}
+
+.input-group input::placeholder { color: #333; }
+
+.forgot-row {
+  text-align: right;
+  margin-top: -8px;
+  margin-bottom: 20px;
+}
+
+.forgot-row span {
+  font-size: 12px;
+  color: #f0b90b;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: 0.2s;
+}
+
+.forgot-row span:hover { opacity: 1; }
+
+.login-btn {
+  width: 100%;
+  padding: 16px;
+  background: #f0b90b;
+  border: none;
+  border-radius: 12px;
+  color: black;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: 0.2s;
+  letter-spacing: 0.5px;
+}
+
+.login-btn:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+#msg {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 14px;
+  color: #f0b90b;
+  min-height: 20px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0;
+}
+
+.divider span {
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.06);
+}
+
+.divider p {
+  color: #444;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.signup-row {
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+}
+
+.signup-row span {
+  color: #f0b90b;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.signup-row span:hover { opacity: 0.8; }
+
+.security-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+  color: #333;
+  font-size: 12px;
+}
+
+/* ========================= */
+/* FORGOT PASSWORD POPUP     */
+/* ========================= */
+
+.forgot-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+  z-index: 99999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.forgot-overlay.open {
+  display: flex;
+}
+
+.forgot-box {
+  background: #0f0f0f;
+  border: 1px solid rgba(240,185,11,0.15);
+  border-radius: 24px;
+  padding: 40px 36px;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+}
+
+.forgot-box h2 {
+  font-size: 22px;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.forgot-box p {
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.forgot-close {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #555;
+  background: none;
+  border: none;
+  transition: 0.2s;
+}
+
+.forgot-close:hover { color: #f0b90b; }
+
+.forgot-step { display: none; }
+.forgot-step.active { display: block; }
+
+.forgot-input {
+  width: 100%;
+  padding: 15px 18px;
+  background: #161616;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  color: white;
+  font-size: 15px;
+  outline: none;
+  margin-bottom: 16px;
+  transition: 0.2s;
+}
+
+.forgot-input:focus {
+  border-color: rgba(240,185,11,0.4);
+  background: #1a1a1a;
+}
+
+.forgot-input::placeholder { color: #333; }
+
+.forgot-btn {
+  width: 100%;
+  padding: 15px;
+  background: #f0b90b;
+  border: none;
+  border-radius: 12px;
+  color: black;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.forgot-btn:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.password-hint {
+  font-size: 12px;
+  color: #444;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+@media(max-width: 480px) {
+  .login-box { padding: 30px 22px; }
+  .login-wrap { padding: 16px; }
+  .forgot-box { padding: 30px 22px; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+
+<div class="login-wrap">
+
+  <div class="login-logo">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Binance_Logo.png" alt="Binance">
+    <h1>BINANCE • GIAI</h1>
+    <p>Global Investor Acquisition Initiative</p>
+  </div>
+
+  <div class="login-box">
+
+    <h2>Welcome Back 👋</h2>
+    <p class="welcome-sub">Sign in to access your investment dashboard.</p>
+
+    <div class="input-group">
+      <label>Email Address</label>
+      <input type="email" id="email" placeholder="name@example.com"
+        onkeydown="if(event.key==='Enter') login()">
+    </div>
+
+    <div class="input-group">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Enter your password"
+        onkeydown="if(event.key==='Enter') login()">
+    </div>
+
+    <div class="forgot-row">
+      <span onclick="openForgot()">Forgot password?</span>
+    </div>
+
+    <button class="login-btn" onclick="login()">Sign In</button>
+
+    <div id="msg"></div>
+
+    <div class="divider">
+      <span></span>
+      <p>Don't have an account?</p>
+      <span></span>
+    </div>
+
+    <div class="signup-row">
+      New to GIAI?
+      <span onclick="window.location.href='index.html'">Create Account</span>
+    </div>
+
+  </div>
+
+  <div class="security-badge">
+    🔒 Secured by Binance AI Infrastructure
+  </div>
+
+</div>
+
+<!-- FORGOT PASSWORD POPUP -->
+<div class="forgot-overlay" id="forgotOverlay">
+  <div class="forgot-box">
+    <button class="forgot-close" onclick="closeForgot()">✕</button>
+
+    <!-- STEP 1: Enter Email -->
+    <div class="forgot-step active" id="forgotStep1">
+      <h2>Reset Password 🔐</h2>
+      <p>Enter the email address linked to your GIAI account.</p>
+      <input type="email" id="forgotEmail" class="forgot-input"
+        placeholder="name@example.com"
+        onkeydown="if(event.key==='Enter') submitForgotEmail()">
+      <button class="forgot-btn" onclick="submitForgotEmail()">Continue</button>
+      <div id="forgotMsg1" style="margin-top:14px;text-align:center;font-size:13px;color:#f0b90b;min-height:18px;"></div>
+    </div>
+
+    <!-- STEP 2: Answer Security Question -->
+    <div class="forgot-step" id="forgotStep2">
+      <h2>Security Question 🔒</h2>
+      <p id="securityQuestionText" style="color:#f0b90b;font-weight:bold;margin-bottom:16px;line-height:1.6;font-size:15px;"></p>
+      <p style="color:#555;font-size:13px;margin-bottom:16px;">
+        Answer the security question you set when you created your account.
+      </p>
+      <input type="text" id="securityAnswer" class="forgot-input"
+        placeholder="Your answer..."
+        onkeydown="if(event.key==='Enter') submitSecurityAnswer()">
+      <button class="forgot-btn" onclick="submitSecurityAnswer()">Verify Answer</button>
+      <div id="forgotMsg2" style="margin-top:14px;text-align:center;font-size:13px;color:#f0b90b;min-height:18px;"></div>
+    </div>
+
+    <!-- STEP 3: Set New Password -->
+    <div class="forgot-step" id="forgotStep3">
+      <h2>New Password 🔑</h2>
+      <p>Choose a strong new password for your account.</p>
+      <p class="password-hint">Must be at least 6 characters.</p>
+      <input type="password" id="newPassword" class="forgot-input"
+        placeholder="New password"
+        onkeydown="if(event.key==='Enter') submitNewPassword()">
+      <input type="password" id="confirmNewPassword" class="forgot-input"
+        placeholder="Confirm new password"
+        onkeydown="if(event.key==='Enter') submitNewPassword()">
+      <button class="forgot-btn" onclick="submitNewPassword()">Reset Password</button>
+      <div id="forgotMsg3" style="margin-top:14px;text-align:center;font-size:13px;color:#f0b90b;min-height:18px;"></div>
+    </div>
+
+    <!-- STEP 4: Success -->
+    <div class="forgot-step" id="forgotStep4">
+      <h2>Password Reset ✅</h2>
+      <p>Your password has been updated successfully. You can now sign in with your new password.</p>
+      <button class="forgot-btn" onclick="closeForgot()">Back to Sign In</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+async function login() {
+  const email    = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const msg      = document.getElementById("msg");
+
+  if (!email || !password) {
+    msg.innerText = "Please enter your email and password.";
+    return;
+  }
+
+  msg.innerText = "Signing in...";
+
+  try {
+    const response = await fetch("/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await response.json();
+    msg.innerText = data.message;
+    if (data.success) {
+      localStorage.setItem("user", JSON.stringify(data.user));
+      window.location.href = "/dashboard.html";
+    }
+  } catch (err) {
+    msg.innerText = "Connection error. Please try again.";
+  }
+}
+
+/* ========================= */
+/* FORGOT PASSWORD — 4 STEPS */
+/* ========================= */
+
+let verifiedForgotEmail = "";
+
+function openForgot() {
+  ["forgotStep1","forgotStep2","forgotStep3","forgotStep4"].forEach(id => {
+    document.getElementById(id).classList.remove("active");
+  });
+  document.getElementById("forgotStep1").classList.add("active");
+  document.getElementById("forgotEmail").value        = "";
+  document.getElementById("securityAnswer").value     = "";
+  document.getElementById("newPassword").value        = "";
+  document.getElementById("confirmNewPassword").value = "";
+  ["forgotMsg1","forgotMsg2","forgotMsg3"].forEach(id => {
+    document.getElementById(id).innerText = "";
+  });
+  verifiedForgotEmail = "";
+  document.getElementById("forgotOverlay").classList.add("open");
+}
+
+function closeForgot() {
+  document.getElementById("forgotOverlay").classList.remove("open");
+}
+
+function goToStep(num) {
+  ["forgotStep1","forgotStep2","forgotStep3","forgotStep4"].forEach(id => {
+    document.getElementById(id).classList.remove("active");
+  });
+  document.getElementById("forgotStep" + num).classList.add("active");
+}
+
+// STEP 1 — check email exists and get security question
+async function submitForgotEmail() {
+  const email = document.getElementById("forgotEmail").value.trim();
+  const msg   = document.getElementById("forgotMsg1");
+
+  if (!email) { msg.innerText = "Please enter your email."; return; }
+
+  msg.innerText = "Checking...";
+
+  try {
+    const res  = await fetch("/get-security-question", {
+      method:  "POST",
+      headers: { "Content-Type": "application/json" },
+      body:    JSON.stringify({ email })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      verifiedForgotEmail = email;
+      document.getElementById("securityQuestionText").innerText = data.question;
+      msg.innerText = "";
+      goToStep(2);
+    } else {
+      msg.innerText = data.message || "No account found.";
+    }
+  } catch (err) {
+    msg.innerText = "Connection error. Please try again.";
+  }
+}
+
+// STEP 2 — verify security answer
+async function submitSecurityAnswer() {
+  const answer = document.getElementById("securityAnswer").value.trim();
+  const msg    = document.getElementById("forgotMsg2");
+
+  if (!answer) { msg.innerText = "Please enter your answer."; return; }
+
+  msg.innerText = "Verifying...";
+
+  try {
+    const res  = await fetch("/verify-security-answer", {
+      method:  "POST",
+      headers: { "Content-Type": "application/json" },
+      body:    JSON.stringify({ email: verifiedForgotEmail, answer })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      msg.innerText = "";
+      goToStep(3);
+    } else {
+      msg.innerText = data.message || "Incorrect answer.";
+    }
+  } catch (err) {
+    msg.innerText = "Connection error. Please try again.";
+  }
+}
+
+// STEP 3 — set new password
+async function submitNewPassword() {
+  const newPass     = document.getElementById("newPassword").value;
+  const confirmPass = document.getElementById("confirmNewPassword").value;
+  const msg         = document.getElementById("forgotMsg3");
+
+  if (!newPass)                { msg.innerText = "Please enter a new password."; return; }
+  if (newPass.length < 6)      { msg.innerText = "Password must be at least 6 characters."; return; }
+  if (newPass !== confirmPass) { msg.innerText = "Passwords do not match."; return; }
+
+  msg.innerText = "Updating...";
+
+  try {
+    const res  = await fetch("/reset-password", {
+      method:  "POST",
+      headers: { "Content-Type": "application/json" },
+      body:    JSON.stringify({ email: verifiedForgotEmail, newPassword: newPass })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      msg.innerText = "";
+      goToStep(4);
+    } else {
+      msg.innerText = data.message || "Reset failed.";
+    }
+  } catch (err) {
+    msg.innerText = "Connection error. Please try again.";
+  }
+}
+
+// Close when clicking outside the box
+document.getElementById("forgotOverlay").addEventListener("click", function(e) {
+  if (e.target === this) closeForgot();
+});
+
+// TRANSLATOR
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement(
+    { pageLanguage: 'en', autoDisplay: false },
+    'google_translate_element'
+  );
+}
+
+function applyStoredLanguage() {
+  const lang = localStorage.getItem("giai_language");
+  if (!lang || lang === "en") return;
+  const trySet = setInterval(() => {
+    const select = document.querySelector(".goog-te-combo");
+    if (select) {
+      select.value = lang;
+      select.dispatchEvent(new Event("change"));
+      clearInterval(trySet);
+    }
+  }, 300);
+}
+
+function changeLanguage(lang) {
+  localStorage.setItem("giai_language", lang);
+  const select = document.querySelector(".goog-te-combo");
+  if (select) { select.value = lang; select.dispatchEvent(new Event("change")); }
+  const labels = { "en":"🇺🇸 EN","fr":"🇫🇷 FR","es":"🇪🇸 ES","de":"🇩🇪 DE","ar":"🇸🇦 AR","zh-CN":"🇨🇳 CN" };
+  document.getElementById("lang-btn").textContent = (labels[lang] || "🇺🇸 EN") + " ▼";
+  document.getElementById("langMenu").classList.remove("show-language");
+}
+
+window.addEventListener("load", applyStoredLanguage);
+
+</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>

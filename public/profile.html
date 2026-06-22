@@ -1,0 +1,147 @@
+PROFILE.HTML
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Profile</title>
+
+<style>
+
+body{
+background:#050505;
+color:white;
+font-family:Arial;
+padding:40px;
+}
+
+.box{
+max-width:700px;
+margin:auto;
+background:#101010;
+padding:40px;
+border-radius:30px;
+border:1px solid rgba(240,185,11,0.15);
+}
+
+h1{
+margin-bottom:30px;
+}
+
+.item{
+margin-bottom:20px;
+font-size:20px;
+}
+
+span{
+color:#f0b90b;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<h1>
+Investor Profile
+</h1>
+
+<div class="item">
+Name:
+<span id="name"></span>
+</div>
+
+<div class="item">
+Email:
+<span id="email"></span>
+</div>
+
+<div class="item">
+Balance:
+<span id="balance"></span>
+</div>
+
+<div class="item">
+Plan:
+<span id="plan"></span>
+</div>
+
+</div>
+
+<script>
+
+const user =
+JSON.parse(
+localStorage.getItem("user")
+);
+
+document.getElementById("name")
+.innerText =
+user.name;
+
+document.getElementById("email")
+.innerText =
+user.email;
+
+document.getElementById("balance")
+.innerText =
+"$" + user.balance;
+
+document.getElementById("plan")
+.innerText =
+user.plan;
+
+<div id="google_translate_element" style="display:none;"></div>
+
+<script>
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement(
+    { pageLanguage: 'en', autoDisplay: false },
+    'google_translate_element'
+  );
+}
+
+</script>
+
+<div id="google_translate_element" style="display:none;"></div>
+
+<script>
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement(
+    { pageLanguage: 'en', autoDisplay: false },
+    'google_translate_element'
+  );
+}
+
+// Remember the language the user picked on index.html
+// and apply it automatically on this page
+function applyStoredLanguage() {
+  const lang = localStorage.getItem("giai_language");
+  if (!lang || lang === "en") return;
+
+  const trySet = setInterval(() => {
+    const select = document.querySelector(".goog-te-combo");
+    if (select) {
+      select.value = lang;
+      select.dispatchEvent(new Event("change"));
+      clearInterval(trySet);
+    }
+  }, 300);
+}
+
+window.addEventListener("load", () => {
+  applyStoredLanguage();
+});
+</script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>

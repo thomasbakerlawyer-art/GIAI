@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Merchandise • BINANCE GIAI</title>
+<link rel="stylesheet" href="style.css">
+<style>
+
+/* ========================= */
+/* MERCH PAGE                */
+/* ========================= */
+
+.merch-hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 80px;
+  padding: 160px 8% 100px;
+  flex-wrap: wrap;
+}
+
+.merch-hero-left {
+  flex: 1;
+  min-width: 300px;
+}
+
+.merch-hero-left h1 {
+  font-size: 64px;
+  line-height: 1.1;
+  margin-bottom: 25px;
+}
+
+.merch-hero-left h1 span {
+  color: #f0b90b;
+}
+
+.merch-hero-left p {
+  font-size: 18px;
+  line-height: 1.9;
+  color: #aaa;
+  max-width: 560px;
+  margin-bottom: 40px;
+}
+
+.merch-hero-right {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  justify-content: center;
+}
+
+.merch-hero-image {
+  width: 100%;
+  max-width: 620px;
+  height: 700px;
+  border-radius: 35px;
+  overflow: hidden;
+  border: 1px solid rgba(240,185,11,0.15);
+  background: #0b0b0b;
+}
+
+.merch-hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* GRID */
+
+.merch-store {
+  padding: 80px 8%;
+  background: #000;
+}
+
+.merch-store-title {
+  font-size: 48px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.merch-store-sub {
+  text-align: center;
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 60px;
+}
+
+.merch-product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+/* PRODUCT CARD — AMAZON STYLE */
+
+.merch-product-card {
+  background: #0f0f0f;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid rgba(240,185,11,0.1);
+  transition: 0.35s;
+  display: flex;
+  flex-direction: column;
+}
+
+.merch-product-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(240,185,11,0.35);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+}
+
+.merch-product-img {
+  width: 100%;
+  height: 320px;
+  object-fit: cover;
+  display: block;
+  background: #111;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.merch-product-body {
+  padding: 22px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.merch-product-tag {
+  font-size: 11px;
+  color: #f0b90b;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.merch-product-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.merch-product-desc {
+  font-size: 14px;
+  color: #777;
+  line-height: 1.7;
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+.merch-product-rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.merch-stars {
+  color: #f0b90b;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.merch-rating-count {
+  color: #555;
+  font-size: 12px;
+}
+
+.merch-product-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.merch-price-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.merch-price {
+  font-size: 26px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.merch-price-sub {
+  font-size: 11px;
+  color: #444;
+  margin-top: 2px;
+}
+
+.merch-buy-btn {
+  padding: 13px 22px;
+  background: #f0b90b;
+  color: #000;
+  border: none;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+
+.merch-buy-btn:hover {
+  opacity: 0.88;
+  transform: scale(1.03);
+}
+
+/* PURCHASE POPUP */
+
+.merch-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+  z-index: 999999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.merch-popup-overlay.open {
+  display: flex;
+}
+
+.merch-popup-box {
+  background: #0f0f0f;
+  border: 1px solid rgba(240,185,11,0.15);
+  border-radius: 24px;
+  padding: 36px;
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+}
+
+.merch-popup-close {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #555;
+  background: none;
+  border: none;
+  transition: 0.2s;
+}
+
+.merch-popup-close:hover {
+  color: #f0b90b;
+}
+
+.merch-popup-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #fff;
+}
+
+.merch-popup-price {
+  font-size: 32px;
+  font-weight: 800;
+  color: #f0b90b;
+  margin-bottom: 24px;
+}
+
+.merch-popup-label {
+  font-size: 12px;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  margin-top: 18px;
+}
+
+.merch-wallet-card {
+  background: #161616;
+  border: 1px solid rgba(240,185,11,0.12);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+}
+
+.merch-wallet-card h4 {
+  color: #f0b90b;
+  font-size: 13px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.merch-wallet-address {
+  font-size: 13px;
+  color: #bbb;
+  word-break: break-all;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.merch-wallet-address:hover {
+  color: #f0b90b;
+}
+
+.merch-copy-hint {
+  font-size: 11px;
+  color: #444;
+  margin-top: 6px;
+}
+
+.merch-popup-note {
+  margin-top: 20px;
+  padding: 14px 16px;
+  background: rgba(240,185,11,0.06);
+  border-radius: 12px;
+  font-size: 13px;
+  color: #888;
+  line-height: 1.6;
+  border: 1px solid rgba(240,185,11,0.08);
+}
+
+.merch-paid-btn {
+  margin-top: 20px;
+  width: 100%;
+  padding: 16px;
+  background: #f0b90b;
+  color: #000;
+  border: none;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.merch-paid-btn:hover {
+  opacity: 0.88;
+}
+
+/* FOOTER */
+
+.merch-footer {
+  padding: 60px 8%;
+  background: #080808;
+  border-top: 1px solid rgba(240,185,11,0.08);
+  text-align: center;
+  color: #444;
+  font-size: 14px;
+}
+
+/* MOBILE */
+
+@media(max-width: 900px) {
+  .merch-hero { flex-direction: column; padding-top: 120px; }
+  .merch-hero-left h1 { font-size: 42px; }
+  .merch-hero-image { height: 500px; }
+  .merch-store-title { font-size: 36px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="top-nav">
+  <div class="nav-logo" onclick="window.location.href='index.html'" style="cursor:pointer;">
+    BINANCE • GIAI
+  </div>
+  <div class="nav-buttons">
+    <button class="nav-btn login-nav" onclick="window.location.href='login.html'">Sign in</button>
+    <button class="nav-btn create-nav" onclick="window.location.href='index.html'">Back to Home</button>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div id="ticker">Loading Live Market...</div>
+</div>
+
+<!-- HERO -->
+<section class="merch-hero">
+  <div class="merch-hero-left">
+    <h1>Official Binance <span>GIAI</span> Collection</h1>
+    <p>
+      Limited-edition apparel and accessories crafted for members of the Global Investor Acquisition Initiative.
+      Each piece is designed with a luxury streetwear aesthetic rooted in modern crypto culture —
+      built for the investor who moves differently.
+    </p>
+    <button class="merch-buy-btn" style="padding:16px 32px;font-size:16px;" onclick="document.getElementById('storeSection').scrollIntoView({behavior:'smooth'})">
+      Shop the Collection ↓
+    </button>
+  </div>
+  <div class="merch-hero-right">
+    <div class="merch-hero-image">
+      <img src="img/binancehoodie.png" alt="GIAI Hoodie">
+    </div>
+  </div>
+</section>
+
+<!-- STORE -->
+<section class="merch-store" id="storeSection">
+  <h2 class="merch-store-title">Shop All Items</h2>
+  <p class="merch-store-sub">Free worldwide shipping on orders over $300 · Limited stock available</p>
+
+  <div class="merch-product-grid">
+
+    <!-- HOODIE -->
+    <div class="merch-product-card">
+      <img src="img/hoodie.png" alt="GIAI Hoodie" class="merch-product-img">
+      <div class="merch-product-body">
+        <div class="merch-product-tag">Limited Edition</div>
+        <div class="merch-product-name">GIAI Signature Hoodie</div>
+        <div class="merch-product-desc">
+          Heavyweight 400gsm cotton blend with embroidered GIAI branding across the chest.
+          Oversized fit, drop shoulder, kangaroo pocket. Available in black and midnight navy.
+          Worn by verified GIAI members globally.
+        </div>
+        <div class="merch-product-rating">
+          <span class="merch-stars">★★★★★</span>
+          <span class="merch-rating-count">(284 reviews)</span>
+        </div>
+        <div class="merch-product-footer">
+          <div class="merch-price-block">
+            <div class="merch-price">$189</div>
+            <div class="merch-price-sub">Free shipping · Ships in 3–5 days</div>
+          </div>
+          <button class="merch-buy-btn" onclick="openMerchPopup('GIAI Signature Hoodie', '$189')">
+            Buy — $189
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAP -->
+    <div class="merch-product-card">
+      <img src="img/hat.png" alt="GIAI Cap" class="merch-product-img">
+      <div class="merch-product-body">
+        <div class="merch-product-tag">Member Exclusive</div>
+        <div class="merch-product-name">GIAI Structured Cap</div>
+        <div class="merch-product-desc">
+          Six-panel structured cap with tonal GIAI embroidery on the front and a gold-finish
+          adjustable strap at the back. Made from premium twill fabric with a curved brim.
+          One size fits all.
+        </div>
+        <div class="merch-product-rating">
+          <span class="merch-stars">★★★★★</span>
+          <span class="merch-rating-count">(156 reviews)</span>
+        </div>
+        <div class="merch-product-footer">
+          <div class="merch-price-block">
+            <div class="merch-price">$65</div>
+            <div class="merch-price-sub">Free shipping · Ships in 2–4 days</div>
+          </div>
+          <button class="merch-buy-btn" onclick="openMerchPopup('GIAI Structured Cap', '$65')">
+            Buy — $65
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SNEAKERS -->
+    <div class="merch-product-card">
+      <img src="img/streetsneakers.png" alt="GIAI Sneakers" class="merch-product-img">
+      <div class="merch-product-body">
+        <div class="merch-product-tag">Season Drop</div>
+        <div class="merch-product-name">GIAI Low-Top Sneakers</div>
+        <div class="merch-product-desc">
+          Clean silhouette low-top sneaker with debossed GIAI logo on the tongue and heel tab.
+          Vulcanized rubber sole, cushioned insole, and premium leather upper.
+          Ships in black and white colourways. Sizes EU 38–47.
+        </div>
+        <div class="merch-product-rating">
+          <span class="merch-stars">★★★★☆</span>
+          <span class="merch-rating-count">(98 reviews)</span>
+        </div>
+        <div class="merch-product-footer">
+          <div class="merch-price-block">
+            <div class="merch-price">$245</div>
+            <div class="merch-price-sub">Free shipping · Ships in 5–7 days</div>
+          </div>
+          <button class="merch-buy-btn" onclick="openMerchPopup('GIAI Low-Top Sneakers', '$245')">
+            Buy — $245
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- JERSEY -->
+    <div class="merch-product-card">
+      <img src="img/elitejersey.png" alt="GIAI Jersey" class="merch-product-img">
+      <div class="merch-product-body">
+        <div class="merch-product-tag">Representative Edition</div>
+        <div class="merch-product-name">GIAI Performance Jersey</div>
+        <div class="merch-product-desc">
+          Lightweight performance jersey worn by top-ranked GIAI representatives.
+          Moisture-wicking fabric with sublimated GIAI graphics and representative
+          division badge on the sleeve. Available in S, M, L, XL, XXL.
+        </div>
+        <div class="merch-product-rating">
+          <span class="merch-stars">★★★★★</span>
+          <span class="merch-rating-count">(211 reviews)</span>
+        </div>
+        <div class="merch-product-footer">
+          <div class="merch-price-block">
+            <div class="merch-price">$120</div>
+            <div class="merch-price-sub">Free shipping · Ships in 3–5 days</div>
+          </div>
+          <button class="merch-buy-btn" onclick="openMerchPopup('GIAI Performance Jersey', '$120')">
+            Buy — $120
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PURCHASE POPUP -->
+<div class="merch-popup-overlay" id="merchPopup">
+  <div class="merch-popup-box">
+    <button class="merch-popup-close" onclick="closeMerchPopup()">✕</button>
+    <div class="merch-popup-title" id="popupItemName">Item Name</div>
+    <div class="merch-popup-price" id="popupItemPrice">$0</div>
+
+    <div class="merch-popup-label">Send payment to any wallet below</div>
+
+    <div class="merch-wallet-card">
+      <h4>BTC</h4>
+      <div class="merch-wallet-address" onclick="copyAddress(this)">
+        bc1qa4g38u9mxn43td5mt67jh320sy6nne9tfaewg6
+      </div>
+      <div class="merch-copy-hint">Click address to copy</div>
+    </div>
+
+    <div class="merch-wallet-card">
+      <h4>USDT TRC20</h4>
+      <div class="merch-wallet-address" onclick="copyAddress(this)">
+        TBkxc6SZkXSYTop9NPJLz3TvLayDSrPedQ
+      </div>
+      <div class="merch-copy-hint">Click address to copy</div>
+    </div>
+
+    <div class="merch-wallet-card">
+      <h4>ETH</h4>
+      <div class="merch-wallet-address" onclick="copyAddress(this)">
+        0x21b7f254a06F222a1bed905f9d7b13665B42Bb65
+      </div>
+      <div class="merch-copy-hint">Click address to copy</div>
+    </div>
+
+    <div class="merch-popup-note">
+      📦 After sending payment, screenshot your transaction and send it to our support chat so we can confirm your order and arrange delivery.
+    </div>
+
+    <button class="merch-paid-btn" onclick="merchPaid()">
+      ✅ I Have Paid — Notify Support
+    </button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="merch-footer">
+  © 2026 Binance GIAI. All Rights Reserved. · Official Merchandise Store
+</div>
+
+<!-- TRANSLATOR -->
+<div id="google_translate_element" style="display:none;"></div>
+
+<script>
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement(
+    { pageLanguage: 'en', autoDisplay: false },
+    'google_translate_element'
+  );
+}
+
+function applyStoredLanguage() {
+  const lang = localStorage.getItem("giai_language");
+  if (!lang || lang === "en") return;
+  const trySet = setInterval(() => {
+    const select = document.querySelector(".goog-te-combo");
+    if (select) {
+      select.value = lang;
+      select.dispatchEvent(new Event("change"));
+      clearInterval(trySet);
+    }
+  }, 300);
+}
+window.addEventListener("load", applyStoredLanguage);
+
+// TICKER
+fetch("/crypto-prices").then(r => r.json()).then(data => {
+  const t = document.getElementById("ticker");
+  if (t) t.textContent =
+    `BTC $${data.btc?.toLocaleString()} · ETH $${data.eth?.toLocaleString()} · BNB $${data.bnb?.toLocaleString()} · SOL $${data.sol?.toLocaleString()} · XRP $${data.xrp?.toLocaleString()} · DOGE $${data.doge?.toLocaleString()}`;
+}).catch(() => {});
+
+// POPUP
+function openMerchPopup(name, price) {
+  document.getElementById("popupItemName").textContent = name;
+  document.getElementById("popupItemPrice").textContent = price;
+  document.getElementById("merchPopup").classList.add("open");
+}
+
+function closeMerchPopup() {
+  document.getElementById("merchPopup").classList.remove("open");
+}
+
+function copyAddress(el) {
+  navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+    const orig = el.textContent;
+    el.textContent = "✅ Copied!";
+    el.style.color = "#00d26a";
+    setTimeout(() => {
+      el.textContent = orig;
+      el.style.color = "";
+    }, 2000);
+  });
+}
+
+function merchPaid() {
+  closeMerchPopup();
+  alert("✅ Thank you! Please send your payment screenshot to our support chat and we will confirm your order shortly.");
+}
+</script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+[
+  {
+    "id": 1781739076508,
+    "email": "fedrick440@gmail.com",
+    "cardType": "gold",
+    "stops": [
+      {
+        "city": "rome",
+        "lat": 41.8933203,
+        "lng": 12.4829321,
+        "durationDays": 15
+      },
+      {
+        "city": "new york",
+        "lat": 40.7127281,
+        "lng": -74.0060152,
+        "durationDays": 15
+      },
+      {
+        "city": "milan",
+        "lat": 45.4641943,
+        "lng": 9.1896346,
+        "durationDays": 15
+      }
+    ],
+    "startedAt": 1781739609597,
+    "paused": false,
+    "pausedAtStopIndex": null,
+    "pausedProgress": null,
+    "createdOrUpdatedAt": "2026-06-17T23:40:09.597Z"
+  },
+  {
+    "id": 1781740978196,
+    "email": "thomasbakerlawyer@gmail.com",
+    "cardType": "black",
+    "address": {
+      "name": "Chibuzor Victor",
+      "address": "Obosi",
+      "city": "Onitsha",
+      "country": "Nigeria",
+      "postal": "00123"
+    },
+    "totalDays": 14,
+    "stops": [
+      {
+        "city": "Dubai, UAE",
+        "lat": 25.2048,
+        "lng": 55.2708,
+        "durationDays": 0
+      },
+      {
+        "city": "Cairo, Egypt",
+        "lat": 30.0444,
+        "lng": 31.2357,
+        "durationDays": 4
+      },
+      {
+        "city": "Casablanca, Morocco",
+        "lat": 33.5731,
+        "lng": -7.5898,
+        "durationDays": 6
+      },
+      {
+        "city": "Onitsha, Nigeria",
+        "lat": 6.1461619,
+        "lng": 6.8019088,
+        "durationDays": 4
+      }
+    ],
+    "startedAt": 1781740978359,
+    "paused": false,
+    "pausedAtStopIndex": null,
+    "pausedProgress": null,
+    "createdOrUpdatedAt": "2026-06-18T00:02:58.359Z"
+  },
+  {
+    "id": 1781741456774,
+    "email": "chikwadojesse97@gmail.com",
+    "cardType": "gold",
+    "address": {
+      "name": "chikwado jesse sopuru",
+      "address": "12 Avenue Habib Bourguiba",
+      "city": "tunis",
+      "country": "tunisia",
+      "postal": "1001"
+    },
+    "totalDays": 160,
+    "stops": [
+      {
+        "city": "Dubai, UAE",
+        "lat": 25.2048,
+        "lng": 55.2708,
+        "durationDays": 0
+      },
+      {
+        "city": "Istanbul, Turkey",
+        "lat": 41.0082,
+        "lng": 28.9784,
+        "durationDays": 74
+      },
+      {
+        "city": "Frankfurt, Germany",
+        "lat": 50.1109,
+        "lng": 8.6821,
+        "durationDays": 54
+      },
+      {
+        "city": "tunis, tunisia",
+        "lat": 36.8002068,
+        "lng": 10.1857757,
+        "durationDays": 32
+      }
+    ],
+    "startedAt": 1781741495175,
+    "paused": false,
+    "pausedAtStopIndex": null,
+    "pausedProgress": null,
+    "createdOrUpdatedAt": "2026-06-18T00:11:35.175Z"
+  }
+]

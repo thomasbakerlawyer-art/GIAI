@@ -1,0 +1,1289 @@
+[
+  {
+    "id": 1779086375250,
+    "name": "chikwado jesse sopuru",
+    "email": "chikwadojesse97@gmail.com",
+    "password": "12345678",
+    "balance": 110619,
+    "plan": "Rapid Return",
+    "rank": "VIP Investor",
+    "transactions": [
+      {
+        "type": "GOLD CARD SHIPPING SUBMITTED",
+        "amount": 0,
+        "date": "2026-06-18T00:10:53.963Z"
+      },
+      {
+        "type": "BLACK CARD ACTIVATED",
+        "amount": 0,
+        "date": "2026-06-12T02:24:41.220Z"
+      },
+      {
+        "type": "GOLD CARD ACTIVATED",
+        "amount": 0,
+        "date": "2026-06-12T00:40:53.172Z"
+      },
+      {
+        "type": "WITHDRAWAL APPROVED",
+        "amount": 5000,
+        "date": "2026-06-05T23:13:57.806Z"
+      },
+      {
+        "type": "WITHDRAWAL APPROVED",
+        "amount": 100000,
+        "date": "2026-06-05T23:13:26.358Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "45000",
+        "date": "2026-06-05T23:12:31.814Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "2000",
+        "date": "2026-05-20T17:52:28.770Z"
+      },
+      {
+        "type": "PLAN ACTIVATED",
+        "amount": 1000,
+        "plan": "Premium Plan",
+        "date": "2026-05-20T17:51:46.700Z"
+      },
+      {
+        "type": "PLAN ACTIVATED",
+        "amount": 200,
+        "plan": "Basic Plan",
+        "date": "2026-05-20T10:37:38.667Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "500",
+        "date": "2026-05-20T10:37:26.379Z"
+      },
+      {
+        "type": "PLAN ACTIVATED",
+        "amount": 200,
+        "plan": "Basic Plan",
+        "date": "2026-05-20T09:51:11.059Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "4987",
+        "date": "2026-05-20T09:37:18.787Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "3000",
+        "date": "2026-05-20T09:37:03.795Z"
+      },
+      {
+        "type": "PLAN ACTIVATED",
+        "amount": 1000,
+        "plan": "Premium Plan",
+        "date": "2026-05-20T09:36:30.763Z"
+      },
+      {
+        "type": "PLAN ACTIVATED",
+        "amount": 1000,
+        "plan": "Premium Plan",
+        "date": "2026-05-20T09:10:32.507Z"
+      },
+      {
+        "type": "PROFIT CLAIMED",
+        "amount": 172,
+        "date": "2026-05-20T09:03:40.379Z"
+      },
+      {
+        "type": "PROFIT CLAIMED",
+        "amount": 208,
+        "date": "2026-05-20T09:03:35.873Z"
+      },
+      {
+        "type": "PLAN ACTIVATED",
+        "amount": 1000,
+        "plan": "Premium Plan",
+        "date": "2026-05-20T09:02:10.987Z"
+      },
+      {
+        "type": "PLAN ACTIVATED",
+        "amount": 1000,
+        "plan": "Premium Plan",
+        "date": "2026-05-20T09:01:46.523Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "566",
+        "date": "2026-05-20T09:01:14.764Z"
+      },
+      {
+        "type": "PLAN ACTIVATED",
+        "amount": 1000,
+        "plan": "Premium Plan",
+        "date": "2026-05-20T01:11:05.668Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "566",
+        "date": "2026-05-20T01:07:32.035Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "5000",
+        "date": "2026-05-20T01:07:28.819Z"
+      },
+      {
+        "type": "PROFIT CLAIMED",
+        "amount": 120,
+        "date": "2026-05-20T01:06:50.203Z"
+      },
+      {
+        "type": "PLAN ACTIVATED",
+        "amount": 1000,
+        "plan": "Premium Plan",
+        "date": "2026-05-20T01:06:37.509Z"
+      },
+      {
+        "type": "PLAN ACTIVATED",
+        "amount": 200,
+        "plan": "Basic Plan",
+        "date": "2026-05-20T00:37:22.618Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "500",
+        "date": "2026-05-19T23:51:45.892Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "1000",
+        "date": "2026-05-19T23:35:20.590Z"
+      },
+      {
+        "type": "PLAN ACTIVATED",
+        "amount": 200,
+        "plan": "Basic Plan",
+        "date": "2026-05-19T23:35:00.620Z"
+      },
+      {
+        "type": "PLAN ACTIVATED",
+        "amount": 200,
+        "plan": "Basic Plan",
+        "date": "2026-05-19T14:12:45.236Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "5000",
+        "date": "2026-05-19T14:12:02.644Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "5000",
+        "date": "2026-05-19T14:11:59.395Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "6000",
+        "date": "2026-05-19T14:11:55.683Z"
+      },
+      {
+        "type": "PLAN ACTIVATION",
+        "plan": "Premium Plan",
+        "amount": 1000,
+        "profit": 450,
+        "date": "2026-05-19T13:08:20.612Z"
+      },
+      {
+        "type": "PLAN ACTIVATION",
+        "plan": "Basic Plan",
+        "amount": 200,
+        "profit": 50,
+        "date": "2026-05-19T13:08:13.819Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "5000",
+        "date": "2026-05-18T23:12:34.098Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "5000",
+        "date": "2026-05-18T22:44:31.413Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "5000",
+        "date": "2026-05-18T22:44:26.342Z"
+      }
+    ],
+    "investmentAmount": 45000,
+    "representative": "Robert Rachel",
+    "investmentStart": 1780701151805,
+    "totalVotes": 100,
+    "profitPercent": 100.15,
+    "investmentDuration": 35,
+    "reinvestmentCount": 0,
+    "goldCardStatus": "shipping",
+    "blackCardStatus": "active",
+    "blackCardNumber": "GIAI5460485558863522",
+    "goldCardShipping": {
+      "name": "chikwado jesse sopuru",
+      "address": "12 Avenue Habib Bourguiba",
+      "city": "tunis",
+      "country": "tunisia",
+      "postal": "1001"
+    }
+  },
+  {
+    "id": 1780587602405,
+    "name": "thomas",
+    "email": "thomasbakerlawyer@gmail.com",
+    "password": "12345678",
+    "balance": 25500,
+    "investmentAmount": 25500,
+    "rank": "VIP Investor",
+    "totalVotes": 1,
+    "status": "ACTIVE",
+    "transactions": [
+      {
+        "type": "REINVESTMENT APPROVED",
+        "amount": 25500,
+        "date": "2026-06-22T03:48:35.761Z"
+      },
+      {
+        "type": "INVESTMENT CYCLE COMPLETED",
+        "amount": 0,
+        "date": "2026-06-20T00:41:35.712Z"
+      },
+      {
+        "type": "BALANCE INVESTED",
+        "amount": 25000,
+        "date": "2026-06-20T00:40:35.646Z"
+      },
+      {
+        "type": "WITHDRAWAL APPROVED",
+        "amount": 50000,
+        "date": "2026-06-20T00:40:25.097Z"
+      },
+      {
+        "type": "WITHDRAWAL APPROVED",
+        "amount": 5000,
+        "date": "2026-06-20T00:39:56.207Z"
+      },
+      {
+        "type": "INVESTMENT CYCLE COMPLETED",
+        "amount": 0,
+        "date": "2026-06-20T00:39:23.705Z"
+      },
+      {
+        "type": "BALANCE INVESTED",
+        "amount": 80000,
+        "date": "2026-06-20T00:39:16.631Z"
+      },
+      {
+        "type": "INVESTMENT CYCLE COMPLETED",
+        "amount": 0,
+        "date": "2026-06-20T00:39:13.291Z"
+      },
+      {
+        "type": "BALANCE INVESTED",
+        "amount": 80000,
+        "date": "2026-06-20T00:39:10.289Z"
+      },
+      {
+        "type": "WITHDRAWAL APPROVED",
+        "amount": 200000,
+        "date": "2026-06-20T00:39:01.137Z"
+      },
+      {
+        "type": "INVESTMENT CYCLE COMPLETED",
+        "amount": 0,
+        "date": "2026-06-18T00:04:20.716Z"
+      },
+      {
+        "type": "BALANCE INVESTED",
+        "amount": 280000,
+        "date": "2026-06-18T00:04:07.764Z"
+      },
+      {
+        "type": "INVESTMENT CYCLE COMPLETED",
+        "amount": 0,
+        "date": "2026-06-18T00:03:55.072Z"
+      },
+      {
+        "type": "BALANCE INVESTED",
+        "amount": 280000,
+        "date": "2026-06-18T00:03:44.098Z"
+      },
+      {
+        "type": "INVESTMENT CYCLE COMPLETED",
+        "amount": 0,
+        "date": "2026-06-18T00:03:39.788Z"
+      },
+      {
+        "type": "BALANCE INVESTED",
+        "amount": 280000,
+        "date": "2026-06-18T00:03:37.371Z"
+      },
+      {
+        "type": "INVESTMENT DEACTIVATED BY ADMIN",
+        "amount": 0,
+        "date": "2026-06-14T06:13:15.039Z"
+      },
+      {
+        "type": "BLACK CARD SHIPPING SUBMITTED",
+        "amount": 0,
+        "date": "2026-06-12T14:45:46.571Z"
+      },
+      {
+        "type": "GOLD CARD SHIPPING SUBMITTED",
+        "amount": 0,
+        "date": "2026-06-12T11:31:26.273Z"
+      },
+      {
+        "type": "GOLD CARD ACTIVATED",
+        "amount": 0,
+        "date": "2026-06-12T00:39:07.380Z"
+      },
+      {
+        "type": "BLACK CARD ACTIVATED",
+        "amount": 0,
+        "date": "2026-06-12T00:37:51.389Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "50000",
+        "date": "2026-06-05T20:17:37.167Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "8000",
+        "date": "2026-06-05T20:06:05.006Z"
+      },
+      {
+        "type": "WITHDRAWAL APPROVED",
+        "amount": 50000,
+        "date": "2026-06-05T19:40:12.359Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "2000",
+        "date": "2026-06-05T18:58:43.270Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "500",
+        "date": "2026-06-05T18:47:20.438Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "45000",
+        "date": "2026-06-05T18:46:54.478Z"
+      }
+    ],
+    "investmentStart": 1782100115752,
+    "profitPercent": 95,
+    "investmentDuration": 22,
+    "reinvestmentCount": 1,
+    "blackCardStatus": "shipping",
+    "goldCardStatus": "shipping",
+    "goldCardShipping": {
+      "name": "Chibuzor Victor",
+      "address": "Obosi",
+      "city": "Onitsha",
+      "country": "Nigeria",
+      "postal": "00123"
+    },
+    "blackCardShipping": {
+      "name": "Chibuzor Victor",
+      "address": "Obosi",
+      "city": "Onitsha",
+      "country": "Nigeria",
+      "postal": "00123"
+    },
+    "cycleCompleted": false,
+    "lastCycleProfit": 0,
+    "plan": "Capital Boost",
+    "representatives": [
+      {
+        "name": "Robert Rachel",
+        "votes": 1
+      }
+    ],
+    "representative": "Robert Rachel"
+  },
+  {
+    "id": 1780588437002,
+    "name": "test",
+    "email": "test.test@gmail.com",
+    "password": "12345678",
+    "balance": 0,
+    "plan": "None",
+    "rank": "Starter Investor",
+    "totalVotes": 0,
+    "status": "ACTIVE",
+    "transactions": []
+  },
+  {
+    "id": 1780690906303,
+    "name": "alexpeterson",
+    "email": "alexpetersonplc@gmail.com",
+    "password": "12345678",
+    "balance": 29850,
+    "investmentAmount": 29850,
+    "rank": "VIP Investor",
+    "totalVotes": 73,
+    "status": "ACTIVE",
+    "transactions": [
+      {
+        "type": "REINVESTMENT APPROVED",
+        "amount": 29850,
+        "date": "2026-06-20T01:24:21.530Z"
+      },
+      {
+        "type": "INVESTMENT CYCLE COMPLETED",
+        "amount": 0,
+        "date": "2026-06-20T00:57:25.810Z"
+      },
+      {
+        "type": "BALANCE INVESTED",
+        "amount": 28850,
+        "date": "2026-06-20T00:57:23.410Z"
+      },
+      {
+        "type": "INVESTMENT CYCLE COMPLETED",
+        "amount": 0,
+        "date": "2026-06-20T00:41:52.242Z"
+      },
+      {
+        "type": "BALANCE INVESTED",
+        "amount": 28850,
+        "date": "2026-06-20T00:41:50.288Z"
+      },
+      {
+        "type": "GOLD CARD ACTIVATED",
+        "amount": 0,
+        "date": "2026-06-14T06:29:09.203Z"
+      },
+      {
+        "type": "INVESTMENT DEACTIVATED BY ADMIN",
+        "amount": 3850.0000000000005,
+        "date": "2026-06-14T05:44:27.420Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": 7000,
+        "date": "2026-06-13T09:01:28.187Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "3000",
+        "date": "2026-06-12T11:41:04.963Z"
+      },
+      {
+        "type": "REINVESTMENT APPROVED",
+        "amount": 15000,
+        "date": "2026-06-12T02:27:54.136Z"
+      },
+      {
+        "type": "INVESTMENT CYCLE COMPLETED",
+        "amount": 2800,
+        "date": "2026-06-11T01:10:38.152Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "7000",
+        "date": "2026-06-05T23:10:22.494Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "50000",
+        "date": "2026-06-05T23:10:20.985Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "5000",
+        "date": "2026-06-05T20:22:24.222Z"
+      }
+    ],
+    "investmentStart": 1781918661521,
+    "profitPercent": 95,
+    "investmentDuration": 22,
+    "reinvestmentCount": 1,
+    "cycleCompleted": false,
+    "goldCardStatus": "active",
+    "representatives": [
+      {
+        "name": "Michael Scott",
+        "votes": 71
+      },
+      {
+        "name": "Lincoln Hayes",
+        "votes": 2
+      }
+    ],
+    "lastCycleProfit": 0,
+    "goldCardNumber": "GIAI6108094888490745",
+    "representative": "Lincoln Hayes",
+    "plan": "Capital Boost"
+  },
+  {
+    "id": 1780706455640,
+    "name": "soboroto",
+    "email": "soboroto97@gmail.com",
+    "password": "12345678",
+    "balance": 39000,
+    "plan": "Capital Boost",
+    "rank": "VIP Investor",
+    "totalVotes": 62,
+    "status": "ACTIVE",
+    "transactions": [
+      {
+        "type": "BLACK CARD SHIPPING SUBMITTED",
+        "amount": 0,
+        "date": "2026-06-14T06:28:40.916Z"
+      },
+      {
+        "type": "BLACK CARD ACTIVATED",
+        "amount": 0,
+        "date": "2026-06-14T06:28:15.412Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": 1000,
+        "date": "2026-06-13T10:59:51.258Z"
+      },
+      {
+        "type": "GOLD CARD SHIPPING SUBMITTED",
+        "amount": 0,
+        "date": "2026-06-13T10:48:33.850Z"
+      },
+      {
+        "type": "GOLD CARD ACTIVATED",
+        "amount": 0,
+        "date": "2026-06-13T10:48:02.187Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": 30000,
+        "date": "2026-06-13T10:45:13.683Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "1000",
+        "date": "2026-06-06T13:26:13.984Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "5000",
+        "date": "2026-06-06T12:55:22.798Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "2000",
+        "date": "2026-06-06T02:42:07.959Z"
+      },
+      {
+        "type": "WITHDRAWAL APPROVED",
+        "amount": 2500,
+        "date": "2026-06-06T00:57:42.150Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "2000",
+        "date": "2026-06-06T00:54:51.328Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "500",
+        "date": "2026-06-06T00:42:33.126Z"
+      }
+    ],
+    "investmentAmount": 39000,
+    "representative": "Robert Rachel",
+    "investmentStart": 1781348391250,
+    "profitPercent": 95,
+    "investmentDuration": 22,
+    "reinvestmentCount": 0,
+    "goldCardStatus": "shipping",
+    "cycleCompleted": false,
+    "representatives": [
+      {
+        "name": "Lincoln Hayes",
+        "votes": 60
+      },
+      {
+        "name": "Robert Rachel",
+        "votes": 2
+      }
+    ],
+    "goldCardNumber": "GIAI2035218232988642",
+    "goldCardShipping": {
+      "name": "Chibuzor Victor",
+      "address": "Obosi",
+      "city": "Onitsha",
+      "country": "Nigeria",
+      "postal": "00123"
+    },
+    "blackCardStatus": "shipping",
+    "blackCardNumber": "GIAI4687291991655086",
+    "blackCardShipping": {
+      "name": "Chibuzor Victor",
+      "address": "Obosi",
+      "city": "Onitsha",
+      "country": "Nigeria",
+      "postal": "00123"
+    }
+  },
+  {
+    "id": 1780746857016,
+    "name": "emmanuel",
+    "email": "emmanuel@gmail.com",
+    "password": "12345678",
+    "balance": 70200,
+    "plan": "Capital Boost",
+    "rank": "VIP Investor",
+    "totalVotes": 72,
+    "status": "ACTIVE",
+    "transactions": [
+      {
+        "type": "INVESTMENT DEACTIVATED BY ADMIN",
+        "amount": 34200,
+        "date": "2026-06-14T05:30:15.215Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "3000",
+        "date": "2026-06-12T19:02:42.444Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "20000",
+        "date": "2026-06-12T14:57:48.523Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "8000",
+        "date": "2026-06-10T23:10:24.187Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "5000",
+        "date": "2026-06-10T12:34:52.705Z"
+      },
+      {
+        "type": "WITHDRAWAL APPROVED",
+        "amount": 5000,
+        "date": "2026-06-10T12:33:53.178Z"
+      },
+      {
+        "type": "WITHDRAWAL APPROVED",
+        "amount": 5000,
+        "date": "2026-06-07T20:36:32.927Z"
+      }
+    ],
+    "investmentAmount": 0,
+    "investmentStart": 0,
+    "profitPercent": 0,
+    "investmentDuration": 0,
+    "reinvestmentCount": 0,
+    "representative": "Michael Scott",
+    "lastCycleProfit": 34200,
+    "cycleCompleted": true
+  },
+  {
+    "id": 1780779491845,
+    "name": "sonia",
+    "email": "soniafedrick440@gmail.com",
+    "password": "12345678",
+    "balance": 2450,
+    "plan": "Standard Plan",
+    "rank": "Standard Investor",
+    "totalVotes": 6,
+    "status": "ACTIVE",
+    "transactions": [
+      {
+        "type": "INVESTMENT CYCLE COMPLETED",
+        "amount": 450,
+        "date": "2026-06-20T00:36:52.341Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": 1000,
+        "date": "2026-06-13T09:07:15.266Z"
+      },
+      {
+        "type": "WITHDRAWAL APPROVED",
+        "amount": 450,
+        "date": "2026-06-13T01:41:15.353Z"
+      },
+      {
+        "type": "INVESTMENT CYCLE COMPLETED",
+        "amount": 450,
+        "date": "2026-06-12T14:39:08.282Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "1000",
+        "date": "2026-06-10T10:28:22.441Z"
+      },
+      {
+        "type": "WITHDRAWAL APPROVED",
+        "amount": 999,
+        "date": "2026-06-10T10:27:29.641Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "999",
+        "date": "2026-06-09T09:01:03.277Z"
+      },
+      {
+        "type": "WITHDRAWAL APPROVED",
+        "amount": 2500,
+        "date": "2026-06-09T09:00:11.285Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "2000",
+        "date": "2026-06-06T21:00:42.208Z"
+      }
+    ],
+    "investmentStart": 0,
+    "reinvestmentCount": 0,
+    "investmentAmount": 0,
+    "representative": "Michael Scott",
+    "profitPercent": 0,
+    "investmentDuration": 0,
+    "cycleCompleted": true,
+    "representatives": [
+      {
+        "name": "Amber Agrawal",
+        "votes": 4
+      },
+      {
+        "name": "Michael Scott",
+        "votes": 2
+      }
+    ],
+    "lastCycleProfit": 450
+  },
+  {
+    "id": 1781112710009,
+    "name": "jesse",
+    "email": "jesse97@gmail.com",
+    "password": "12345678",
+    "balance": 4000,
+    "plan": "Starter Plan",
+    "rank": "Gold Investor",
+    "totalVotes": 4,
+    "status": "ACTIVE",
+    "transactions": [
+      {
+        "type": "INVESTMENT CYCLE COMPLETED",
+        "amount": 0,
+        "date": "2026-06-13T08:11:28.811Z"
+      },
+      {
+        "type": "INVESTMENT CYCLE COMPLETED",
+        "amount": 0,
+        "date": "2026-06-13T08:10:01.500Z"
+      },
+      {
+        "type": "INVESTMENT CYCLE COMPLETED",
+        "amount": 1000,
+        "date": "2026-06-13T02:27:26.237Z"
+      },
+      {
+        "type": "REINVESTMENT APPROVED",
+        "amount": 4000,
+        "date": "2026-06-12T02:27:23.108Z"
+      },
+      {
+        "type": "INVESTMENT CYCLE COMPLETED",
+        "amount": 125,
+        "date": "2026-06-12T02:26:19.761Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "500",
+        "date": "2026-06-10T18:54:09.701Z"
+      },
+      {
+        "type": "WITHDRAWAL APPROVED",
+        "amount": 4000,
+        "date": "2026-06-10T18:53:41.180Z"
+      }
+    ],
+    "investmentStart": 0,
+    "reinvestmentCount": 0,
+    "investmentAmount": 0,
+    "representative": "Robert Rachel",
+    "profitPercent": 0,
+    "investmentDuration": 0,
+    "cycleCompleted": true,
+    "lastCycleProfit": 0,
+    "representatives": [
+      {
+        "name": "Robert Rachel",
+        "votes": 4
+      }
+    ]
+  },
+  {
+    "id": 1781117846652,
+    "name": "12345678",
+    "email": "blah97@gmail.com",
+    "password": "12345678",
+    "balance": 2764.0625,
+    "plan": "Standard Plan",
+    "rank": "Standard Investor",
+    "totalVotes": 1,
+    "status": "ACTIVE",
+    "transactions": [
+      {
+        "type": "INVESTMENT CYCLE COMPLETED",
+        "amount": 857.8125,
+        "date": "2026-06-19T00:59:52.770Z"
+      },
+      {
+        "type": "REINVESTMENT APPROVED",
+        "amount": 1906.25,
+        "date": "2026-06-14T05:39:49.525Z"
+      },
+      {
+        "type": "INVESTMENT CYCLE COMPLETED",
+        "amount": 281.25,
+        "date": "2026-06-13T10:04:07.685Z"
+      },
+      {
+        "type": "REINVESTMENT APPROVED",
+        "amount": 1125,
+        "date": "2026-06-12T02:25:21.596Z"
+      },
+      {
+        "type": "INVESTMENT CYCLE COMPLETED",
+        "amount": 125,
+        "date": "2026-06-12T02:20:30.259Z"
+      },
+      {
+        "type": "WITHDRAWAL APPROVED",
+        "amount": 500,
+        "date": "2026-06-10T23:10:35.227Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "500",
+        "date": "2026-06-10T23:10:16.347Z"
+      },
+      {
+        "type": "WITHDRAWAL APPROVED",
+        "amount": 2000,
+        "date": "2026-06-10T23:10:07.899Z"
+      },
+      {
+        "type": "WITHDRAWAL APPROVED",
+        "amount": 2000,
+        "date": "2026-06-10T19:54:11.218Z"
+      },
+      {
+        "type": "WITHDRAWAL APPROVED",
+        "amount": 5000,
+        "date": "2026-06-10T19:02:56.114Z"
+      }
+    ],
+    "investmentAmount": 0,
+    "investmentStart": 0,
+    "profitPercent": 0,
+    "investmentDuration": 0,
+    "reinvestmentCount": 1,
+    "representative": "Robert Rachel",
+    "cycleCompleted": true,
+    "lastCycleProfit": 857.8125,
+    "representatives": [
+      {
+        "name": "Robert Rachel",
+        "votes": 1
+      }
+    ]
+  },
+  {
+    "id": 1781275728258,
+    "name": "lawyer",
+    "email": "lawyer@gmail.com",
+    "password": "12345678",
+    "balance": 30000,
+    "plan": "Premium Plan",
+    "rank": "VIP Investor",
+    "totalVotes": 14,
+    "status": "ACTIVE",
+    "transactions": [
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": "7000",
+        "date": "2026-06-13T01:57:02.746Z"
+      }
+    ],
+    "investmentStart": 1781315822737,
+    "reinvestmentCount": 0,
+    "investmentAmount": 7000,
+    "representative": "Robert Rachel",
+    "representatives": [
+      {
+        "name": "Robert Rachel",
+        "votes": 14
+      }
+    ],
+    "profitPercent": 55,
+    "investmentDuration": 5
+  },
+  {
+    "id": 1781341878140,
+    "name": "Chibuzor Victor",
+    "email": "fedrick440@gmail.com",
+    "password": "12345678",
+    "balance": 39625,
+    "plan": "Capital Boost",
+    "rank": "VIP Investor",
+    "totalVotes": 79,
+    "status": "ACTIVE",
+    "transactions": [
+      {
+        "type": "BLACK CARD ACTIVATED",
+        "amount": 0,
+        "date": "2026-06-17T14:03:01.764Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": 30000,
+        "date": "2026-06-17T14:00:56.517Z"
+      },
+      {
+        "type": "GOLD CARD SHIPPING SUBMITTED",
+        "amount": 0,
+        "date": "2026-06-17T13:57:12.154Z"
+      },
+      {
+        "type": "GOLD CARD ACTIVATED",
+        "amount": 0,
+        "date": "2026-06-17T13:55:42.766Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": 8000,
+        "date": "2026-06-17T13:54:54.606Z"
+      },
+      {
+        "type": "INVESTMENT CYCLE COMPLETED",
+        "amount": 125,
+        "date": "2026-06-17T13:48:13.343Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": 500,
+        "date": "2026-06-13T09:13:30.874Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": 500,
+        "date": "2026-06-13T09:12:19.690Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": 500,
+        "date": "2026-06-13T09:12:18.538Z"
+      }
+    ],
+    "investmentAmount": 38000,
+    "investmentStart": 1781704856509,
+    "cycleCompleted": false,
+    "profitPercent": 95,
+    "investmentDuration": 22,
+    "representatives": [
+      {
+        "name": "Robert Rachel",
+        "votes": 17
+      },
+      {
+        "name": "Lincoln Hayes",
+        "votes": 1
+      },
+      {
+        "name": "Michael Scott",
+        "votes": 61
+      }
+    ],
+    "representative": "Michael Scott",
+    "lastCycleProfit": 125,
+    "balanceBeforeInvestment": 39625,
+    "goldCardStatus": "shipping",
+    "goldCardNumber": "GIAI2264663765674851",
+    "goldCardShipping": {
+      "name": "Chibuzor Victor",
+      "address": "Obosi",
+      "city": "Onitsha",
+      "country": "Nigeria",
+      "postal": "00123"
+    },
+    "blackCardStatus": "active",
+    "blackCardNumber": "GIAI2269737862951085"
+  },
+  {
+    "id": 1781418652981,
+    "name": "plc",
+    "email": "plc@gmail.com",
+    "password": "12345678",
+    "balance": 10000,
+    "plan": "Contact Manager",
+    "rank": "Starter Investor",
+    "totalVotes": 20,
+    "status": "ACTIVE",
+    "transactions": [
+      {
+        "type": "BALANCE INVESTED",
+        "amount": 10000,
+        "date": "2026-06-14T07:24:44.739Z"
+      },
+      {
+        "type": "WITHDRAWAL APPROVED",
+        "amount": 30000,
+        "date": "2026-06-14T07:22:08.931Z"
+      },
+      {
+        "type": "INVESTMENT DEACTIVATED BY ADMIN",
+        "amount": 0,
+        "date": "2026-06-14T06:56:21.390Z"
+      },
+      {
+        "type": "BALANCE INVESTED",
+        "amount": 30000,
+        "date": "2026-06-14T06:54:58.479Z"
+      },
+      {
+        "type": "INVESTMENT DEACTIVATED BY ADMIN",
+        "amount": 0,
+        "date": "2026-06-14T06:48:19.479Z"
+      },
+      {
+        "type": "BALANCE INVESTED",
+        "amount": 10000,
+        "date": "2026-06-14T06:31:45.660Z"
+      }
+    ],
+    "investmentAmount": 10000,
+    "investmentStart": 1781421884739,
+    "cycleCompleted": false,
+    "profitPercent": 85,
+    "investmentDuration": 14,
+    "representative": "Robert Rachel",
+    "representatives": [
+      {
+        "name": "Robert Rachel",
+        "votes": 0
+      }
+    ]
+  },
+  {
+    "id": 1781422806462,
+    "name": "josie",
+    "email": "josie@gmail.com",
+    "password": "123456789",
+    "balance": 3125,
+    "plan": "Standard Plan",
+    "rank": "Standard Investor",
+    "totalVotes": 4,
+    "status": "ACTIVE",
+    "transactions": [
+      {
+        "type": "INVESTMENT CYCLE COMPLETED",
+        "amount": 1125,
+        "date": "2026-06-17T13:45:50.067Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": 1000,
+        "date": "2026-06-14T08:51:12.588Z"
+      },
+      {
+        "type": "DEPOSIT APPROVED",
+        "amount": 1000,
+        "date": "2026-06-14T08:49:57.044Z"
+      },
+      {
+        "type": "BALANCE INVESTED",
+        "amount": 500,
+        "plan": "Starter Plan",
+        "date": "2026-06-14T08:49:02.501Z"
+      },
+      {
+        "type": "INVESTMENT DEACTIVATED BY ADMIN",
+        "amount": 0,
+        "date": "2026-06-14T08:48:00.204Z"
+      },
+      {
+        "type": "BALANCE INVESTED",
+        "amount": 900,
+        "plan": "Starter Plan",
+        "date": "2026-06-14T08:33:20.956Z"
+      },
+      {
+        "type": "WITHDRAWAL APPROVED",
+        "amount": 1000,
+        "date": "2026-06-14T08:32:08.883Z"
+      },
+      {
+        "type": "INVESTMENT DEACTIVATED BY ADMIN",
+        "amount": 0,
+        "date": "2026-06-14T08:31:37.063Z"
+      },
+      {
+        "type": "BALANCE INVESTED",
+        "amount": 1000,
+        "date": "2026-06-14T07:42:48.971Z"
+      }
+    ],
+    "investmentAmount": 0,
+    "investmentStart": 0,
+    "cycleCompleted": true,
+    "profitPercent": 0,
+    "investmentDuration": 0,
+    "representative": "Michael Scott",
+    "reinvestmentCount": 0,
+    "representatives": [
+      {
+        "name": "Robert Rachel",
+        "votes": 2
+      },
+      {
+        "name": "Michael Scott",
+        "votes": 2
+      }
+    ],
+    "lastCycleProfit": 1125
+  },
+  {
+    "id": 1781427566414,
+    "name": "jbenzy",
+    "email": "jbenzy@gmail.com",
+    "password": "123456789",
+    "balance": 1800,
+    "plan": "Standard Plan",
+    "rank": "Standard Investor",
+    "totalVotes": 4,
+    "status": "ACTIVE",
+    "transactions": [
+      {
+        "type": "BALANCE INVESTED",
+        "amount": 1800,
+        "plan": "Standard Plan",
+        "date": "2026-06-14T09:31:56.621Z"
+      },
+      {
+        "type": "INVESTMENT DEACTIVATED BY ADMIN",
+        "amount": 0,
+        "date": "2026-06-14T09:31:06.935Z"
+      },
+      {
+        "type": "BALANCE INVESTED",
+        "amount": 900,
+        "plan": "Starter Plan",
+        "date": "2026-06-14T09:29:56.279Z"
+      },
+      {
+        "type": "INVESTMENT DEACTIVATED BY ADMIN",
+        "amount": 0,
+        "date": "2026-06-14T09:01:03.013Z"
+      },
+      {
+        "type": "BALANCE INVESTED",
+        "amount": 900,
+        "plan": "Starter Plan",
+        "date": "2026-06-14T09:00:27.904Z"
+      }
+    ],
+    "investmentAmount": 1800,
+    "profitPercent": 45,
+    "investmentDuration": 2,
+    "investmentStart": 1781429516613,
+    "representative": "Michael Scott",
+    "reinvestmentCount": 0,
+    "cycleCompleted": false,
+    "representatives": [
+      {
+        "name": "Michael Scott",
+        "votes": 4
+      }
+    ]
+  },
+  {
+    "id": 1781449960909,
+    "username": "joseph@gmail.com",
+    "name": "joseph",
+    "email": "joseph@gmail.com",
+    "password": "123456789",
+    "phone": "09076543456",
+    "country": "Afghanistan",
+    "referrer": "",
+    "wallet": {
+      "btc": "ytrrfghjkl;lkjhgfd",
+      "eth": "",
+      "usdt_trc20": ""
+    },
+    "secretQuestion": "pet",
+    "secretAnswer": "cee cee",
+    "balance": 0,
+    "plan": "None",
+    "rank": "Starter Investor",
+    "totalVotes": 0,
+    "status": "ACTIVE",
+    "transactions": [],
+    "representatives": []
+  },
+  {
+    "id": 1781918834444,
+    "username": "alec@gmail.com",
+    "name": "alec",
+    "email": "alec@gmail.com",
+    "password": "12345678",
+    "phone": "09160625186",
+    "country": "Afghanistan",
+    "referrer": "",
+    "wallet": {
+      "btc": "rewertyuiuytfd",
+      "eth": "",
+      "usdt_trc20": ""
+    },
+    "secretQuestion": "pet",
+    "secretAnswer": "ceecee",
+    "balance": 1000,
+    "plan": "Standard Plan",
+    "rank": "Standard Investor",
+    "totalVotes": 2,
+    "status": "ACTIVE",
+    "transactions": [
+      {
+        "type": "BALANCE INVESTED",
+        "amount": 1000,
+        "plan": "Standard Plan",
+        "date": "2026-06-20T01:49:39.600Z"
+      },
+      {
+        "type": "ADMIN FUND",
+        "amount": "1000",
+        "date": "2026-06-20T01:49:22.902Z"
+      }
+    ],
+    "representatives": [
+      {
+        "name": "Michael Scott",
+        "votes": 2
+      }
+    ],
+    "balanceIsAdminFunded": false,
+    "investmentAmount": 1000,
+    "investmentStart": 1781920179591,
+    "profitPercent": 45,
+    "investmentDuration": 2,
+    "representative": "Michael Scott",
+    "reinvestmentCount": 0,
+    "cycleCompleted": false
+  }
+]

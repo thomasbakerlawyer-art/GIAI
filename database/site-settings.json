@@ -1,0 +1,151 @@
+{
+  "announcement": {
+    "enabled": true,
+    "message": "kelly rachel is leading",
+    "type": "urgent"
+  },
+  "representatives": {
+    "Robert Rachel": {
+      "Tunisia": 50,
+      "Algeria": 0,
+      "Norway": 0,
+      "Germany": 0,
+      "France": 0
+    },
+    "Michael Scott": {
+      "Tunisia": 0,
+      "UK": 0,
+      "Italy": 0,
+      "Spain": 0,
+      "Belgium": 0
+    },
+    "Lincoln Hayes": {
+      "Tunisia": 40,
+      "Brazil": 0,
+      "Japan": 0,
+      "Singapore": 0,
+      "Dubai": 0
+    },
+    "Amber Agrawal": {
+      "Tunisia": 56,
+      "Australia": 1420,
+      "Malaysia": 1880,
+      "Thailand": 1032,
+      "Indonesia": 2540
+    }
+  },
+  "counters": {
+    "Robert Rachel": {
+      "paused": false,
+      "Tunisia": {
+        "current": 12910,
+        "speed": 8,
+        "paused": false
+      },
+      "Algeria": {
+        "current": 5362,
+        "speed": 5,
+        "paused": false
+      },
+      "Norway": {
+        "current": 6653,
+        "speed": 6,
+        "paused": false
+      },
+      "Germany": {
+        "current": 4530,
+        "speed": 4,
+        "paused": false
+      },
+      "France": {
+        "current": 3898,
+        "speed": 3,
+        "paused": false
+      }
+    },
+    "Michael Scott": {
+      "paused": false,
+      "Tunisia": {
+        "current": 6709,
+        "speed": 6,
+        "paused": false
+      },
+      "UK": {
+        "current": 8832,
+        "speed": 7,
+        "paused": false
+      },
+      "Italy": {
+        "current": 4530,
+        "speed": 4,
+        "paused": false
+      },
+      "Spain": {
+        "current": 3898,
+        "speed": 3,
+        "paused": false
+      },
+      "Belgium": {
+        "current": 3419,
+        "speed": 2,
+        "paused": false
+      }
+    },
+    "Lincoln Hayes": {
+      "paused": false,
+      "Tunisia": {
+        "current": 5407,
+        "speed": 5,
+        "paused": false
+      },
+      "Brazil": {
+        "current": 6709,
+        "speed": 6,
+        "paused": false
+      },
+      "Japan": {
+        "current": 8832,
+        "speed": 7,
+        "paused": false
+      },
+      "Singapore": {
+        "current": 4530,
+        "speed": 4,
+        "paused": false
+      },
+      "Dubai": {
+        "current": 3898,
+        "speed": 3,
+        "paused": false
+      }
+    },
+    "Amber Agrawal": {
+      "paused": false,
+      "Tunisia": {
+        "current": 4530,
+        "speed": 4,
+        "paused": false
+      },
+      "Australia": {
+        "current": 5407,
+        "speed": 5,
+        "paused": false
+      },
+      "Malaysia": {
+        "current": 3898,
+        "speed": 3,
+        "paused": false
+      },
+      "Thailand": {
+        "current": 3419,
+        "speed": 2,
+        "paused": false
+      },
+      "Indonesia": {
+        "current": 6709,
+        "speed": 6,
+        "paused": false
+      }
+    }
+  }
+}

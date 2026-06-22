@@ -1,0 +1,533 @@
+[
+  {
+    "id": 1779141718268,
+    "email": "chikwadojesse97@gmail.com",
+    "amount": "5000",
+    "status": "APPROVED",
+    "date": "2026-05-18T22:01:58.268Z"
+  },
+  {
+    "id": 1779141739281,
+    "email": "chikwadojesse97@gmail.com",
+    "amount": "5000",
+    "status": "APPROVED",
+    "date": "2026-05-18T22:02:19.281Z"
+  },
+  {
+    "id": 1779196033091,
+    "email": "chikwadojesse97@gmail.com",
+    "amount": "6000",
+    "status": "APPROVED",
+    "date": "2026-05-19T13:07:13.091Z"
+  },
+  {
+    "id": 1779196068275,
+    "email": "chikwadojesse97@gmail.com",
+    "amount": "5000",
+    "status": "APPROVED",
+    "date": "2026-05-19T13:07:48.275Z"
+  },
+  {
+    "id": 1779199906868,
+    "email": "chikwadojesse97@gmail.com",
+    "amount": "5000",
+    "status": "APPROVED",
+    "date": "2026-05-19T14:11:46.868Z"
+  },
+  {
+    "id": 1779199987311,
+    "email": "chikwadojesse97@gmail.com",
+    "amount": "1000",
+    "status": "APPROVED",
+    "date": "2026-05-19T14:13:07.311Z"
+  },
+  {
+    "id": 1779234657792,
+    "email": "chikwadojesse97@gmail.com",
+    "amount": "500",
+    "status": "APPROVED",
+    "date": "2026-05-19T23:50:57.792Z"
+  },
+  {
+    "id": 1779239189960,
+    "email": "chikwadojesse97@gmail.com",
+    "amount": "5000",
+    "status": "APPROVED",
+    "date": "2026-05-20T01:06:29.960Z"
+  },
+  {
+    "id": 1779239233099,
+    "email": "chikwadojesse97@gmail.com",
+    "amount": "566",
+    "status": "APPROVED",
+    "date": "2026-05-20T01:07:13.099Z"
+  },
+  {
+    "id": 1779239460028,
+    "email": "chikwadojesse97@gmail.com",
+    "amount": "566",
+    "status": "APPROVED",
+    "date": "2026-05-20T01:11:00.028Z"
+  },
+  {
+    "id": 1779269713299,
+    "email": "chikwadojesse97@gmail.com",
+    "amount": "4987",
+    "status": "APPROVED",
+    "date": "2026-05-20T09:35:13.299Z"
+  },
+  {
+    "id": 1779269807643,
+    "email": "chikwadojesse97@gmail.com",
+    "amount": "3000",
+    "status": "APPROVED",
+    "date": "2026-05-20T09:36:47.643Z"
+  },
+  {
+    "id": 1779273432940,
+    "email": "chikwadojesse97@gmail.com",
+    "amount": "500",
+    "status": "APPROVED",
+    "date": "2026-05-20T10:37:12.940Z"
+  },
+  {
+    "id": 1779299540314,
+    "email": "chikwadojesse97@gmail.com",
+    "amount": "2000",
+    "status": "APPROVED",
+    "date": "2026-05-20T17:52:20.314Z"
+  },
+  {
+    "id": 1780677311329,
+    "email": "thomasbakerlawyer@gmail.com",
+    "amount": "500",
+    "status": "REJECTED",
+    "date": "2026-06-05T16:35:11.329Z"
+  },
+  {
+    "id": 1780685198046,
+    "email": "thomasbakerlawyer@gmail.com",
+    "amount": "45000",
+    "status": "REJECTED",
+    "date": "2026-06-05T18:46:38.046Z"
+  },
+  {
+    "id": 1780685864661,
+    "email": "thomasbakerlawyer@gmail.com",
+    "amount": "2000",
+    "status": "APPROVED",
+    "date": "2026-06-05T18:57:44.661Z"
+  },
+  {
+    "id": 1780689940334,
+    "email": "thomasbakerlawyer@gmail.com",
+    "amount": "8000",
+    "status": "APPROVED",
+    "date": "2026-06-05T20:05:40.334Z"
+  },
+  {
+    "id": 1780690629038,
+    "email": "thomasbakerlawyer@gmail.com",
+    "amount": "50000",
+    "plan": "Rapid Return",
+    "representative": "Michael Scott",
+    "status": "APPROVED",
+    "date": "2026-06-05T20:17:09.039Z"
+  },
+  {
+    "id": 1780690927902,
+    "email": "alexpetersonplc@gmail.com",
+    "amount": "5000",
+    "plan": "Premium Plan",
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-05T20:22:07.902Z"
+  },
+  {
+    "id": 1780699568462,
+    "email": "alexpetersonplc@gmail.com",
+    "amount": "50000",
+    "plan": "Rapid Return",
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-05T22:46:08.462Z"
+  },
+  {
+    "id": 1780700246662,
+    "email": "alexpetersonplc@gmail.com",
+    "amount": "7000",
+    "plan": "Premium Plan",
+    "representative": "Michael Scott",
+    "status": "APPROVED",
+    "date": "2026-06-05T22:57:26.662Z"
+  },
+  {
+    "id": 1780701130878,
+    "email": "chikwadojesse97@gmail.com",
+    "amount": "45000",
+    "plan": "Rapid Return",
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-05T23:12:10.878Z"
+  },
+  {
+    "id": 1780706524550,
+    "email": "soboroto97@gmail.com",
+    "amount": "500",
+    "plan": "Starter Plan",
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-06T00:42:04.550Z"
+  },
+  {
+    "id": 1780707272271,
+    "email": "soboroto97@gmail.com",
+    "amount": "2000",
+    "plan": "Standard Plan",
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-06T00:54:32.271Z"
+  },
+  {
+    "id": 1780713714167,
+    "email": "soboroto97@gmail.com",
+    "amount": "2000",
+    "plan": "Standard Plan",
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-06T02:41:54.167Z"
+  },
+  {
+    "id": 1780715375766,
+    "email": "soboroto97@gmail.com",
+    "amount": "5000",
+    "plan": "Premium Plan",
+    "representative": "Robert Rachel",
+    "status": "REJECTED",
+    "date": "2026-06-06T03:09:35.766Z"
+  },
+  {
+    "id": 1780747208670,
+    "email": "emmanuel@gmail.com",
+    "amount": "5000",
+    "plan": "Premium Plan",
+    "representative": "Robert Rachel",
+    "status": "REJECTED",
+    "date": "2026-06-06T12:00:08.670Z"
+  },
+  {
+    "id": 1780747337329,
+    "email": "emmanuel@gmail.com",
+    "amount": "8000",
+    "plan": "Contact Manager",
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-06T12:02:17.329Z"
+  },
+  {
+    "id": 1780747460567,
+    "email": "soboroto97@gmail.com",
+    "amount": "5000",
+    "plan": "Premium Plan",
+    "representative": "Robert Rachel",
+    "status": "REJECTED",
+    "date": "2026-06-06T12:04:20.567Z"
+  },
+  {
+    "id": 1780747506142,
+    "email": "soboroto97@gmail.com",
+    "amount": "5000",
+    "plan": "Premium Plan",
+    "representative": "Robert Rachel",
+    "status": "REJECTED",
+    "date": "2026-06-06T12:05:06.142Z"
+  },
+  {
+    "id": 1780748114631,
+    "email": "soboroto97@gmail.com",
+    "amount": "5000",
+    "plan": "Premium Plan",
+    "representative": "Robert Rachel",
+    "status": "REJECTED",
+    "date": "2026-06-06T12:15:14.631Z"
+  },
+  {
+    "id": 1780749968958,
+    "email": "soboroto97@gmail.com",
+    "amount": "5000",
+    "plan": "Premium Plan",
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-06T12:46:08.958Z"
+  },
+  {
+    "id": 1780752249776,
+    "email": "soboroto97@gmail.com",
+    "amount": "1000",
+    "plan": "Standard Plan",
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-06T13:24:09.776Z"
+  },
+  {
+    "id": 1780779614815,
+    "email": "soniafedrick440@gmail.com",
+    "amount": "2000",
+    "plan": "Standard Plan",
+    "representative": "Amber Agrawal",
+    "status": "APPROVED",
+    "date": "2026-06-06T21:00:14.815Z"
+  },
+  {
+    "id": 1780995645909,
+    "email": "soniafedrick440@gmail.com",
+    "amount": "999",
+    "plan": "Starter Plan",
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-09T09:00:45.909Z"
+  },
+  {
+    "id": 1781087280273,
+    "email": "soniafedrick440@gmail.com",
+    "amount": "1000",
+    "plan": "Standard Plan",
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-10T10:28:00.273Z"
+  },
+  {
+    "id": 1781094862786,
+    "email": "emmanuel@gmail.com",
+    "amount": "5000",
+    "plan": "Premium Plan",
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-10T12:34:22.786Z"
+  },
+  {
+    "id": 1781114993002,
+    "email": "jesse97@gmail.com",
+    "amount": "500",
+    "plan": "Starter Plan",
+    "representative": "Michael Scott",
+    "status": "REJECTED",
+    "date": "2026-06-10T18:09:53.002Z"
+  },
+  {
+    "id": 1781115412554,
+    "email": "jesse97@gmail.com",
+    "amount": "500",
+    "plan": "Starter Plan",
+    "representative": "Michael Scott",
+    "status": "APPROVED",
+    "date": "2026-06-10T18:16:52.554Z"
+  },
+  {
+    "id": 1781117215322,
+    "email": "jesse97@gmail.com",
+    "amount": "590",
+    "plan": "Starter Plan",
+    "representative": "Michael Scott",
+    "status": "PENDING",
+    "date": "2026-06-10T18:46:55.322Z"
+  },
+  {
+    "id": 1781120028689,
+    "email": "blah97@gmail.com",
+    "amount": "500",
+    "plan": "Starter Plan",
+    "representative": "Robert Rachel",
+    "status": "REJECTED",
+    "date": "2026-06-10T19:33:48.689Z"
+  },
+  {
+    "id": 1781120072667,
+    "email": "blah97@gmail.com",
+    "amount": "2000",
+    "plan": "Standard Plan",
+    "representative": "Michael Scott",
+    "status": "REJECTED",
+    "date": "2026-06-10T19:34:32.667Z"
+  },
+  {
+    "id": 1781120224105,
+    "email": "thomasbakerlawyer@gmail.com",
+    "amount": "2000",
+    "plan": "Standard Plan",
+    "representative": "Michael Scott",
+    "status": "REJECTED",
+    "date": "2026-06-10T19:37:04.105Z"
+  },
+  {
+    "id": 1781122429650,
+    "email": "blah97@gmail.com",
+    "amount": "500",
+    "plan": "Starter Plan",
+    "representative": "Michael Scott",
+    "status": "APPROVED",
+    "date": "2026-06-10T20:13:49.650Z"
+  },
+  {
+    "id": 1781264407194,
+    "email": "alexpetersonplc@gmail.com",
+    "amount": "3000",
+    "plan": "Premium Plan",
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-12T11:40:07.194Z"
+  },
+  {
+    "id": 1781276226802,
+    "email": "emmanuel@gmail.com",
+    "amount": "20000",
+    "plan": "Capital Boost",
+    "representative": "Robert Rachel",
+    "status": "REJECTED",
+    "date": "2026-06-12T14:57:06.802Z"
+  },
+  {
+    "id": 1781276241161,
+    "email": "emmanuel@gmail.com",
+    "amount": "20000",
+    "plan": "Capital Boost",
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-12T14:57:21.161Z"
+  },
+  {
+    "id": 1781290905148,
+    "email": "emmanuel@gmail.com",
+    "amount": "3000",
+    "plan": "Premium Plan",
+    "representative": "Michael Scott",
+    "status": "APPROVED",
+    "date": "2026-06-12T19:01:45.148Z"
+  },
+  {
+    "id": 1781315417417,
+    "email": "lawyer@gmail.com",
+    "amount": "7000",
+    "plan": "Premium Plan",
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-13T01:50:17.417Z"
+  },
+  {
+    "id": 1781341268123,
+    "email": "alexpetersonplc@gmail.com",
+    "amount": "7000",
+    "plan": "Premium Plan",
+    "representative": "Michael Scott",
+    "status": "APPROVED",
+    "date": "2026-06-13T09:01:08.123Z"
+  },
+  {
+    "id": 1781341621810,
+    "email": "soniafedrick440@gmail.com",
+    "amount": "1000",
+    "plan": "Standard Plan",
+    "representative": "Michael Scott",
+    "status": "APPROVED",
+    "date": "2026-06-13T09:07:01.810Z"
+  },
+  {
+    "id": 1781341910066,
+    "email": "fedrick440@gmail.com",
+    "amount": "500",
+    "plan": "Starter Plan",
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-13T09:11:50.066Z"
+  },
+  {
+    "id": 1781341924090,
+    "email": "fedrick440@gmail.com",
+    "amount": "500",
+    "plan": "Starter Plan",
+    "representative": "Lincoln Hayes",
+    "status": "APPROVED",
+    "date": "2026-06-13T09:12:04.090Z"
+  },
+  {
+    "id": 1781341991050,
+    "email": "fedrick440@gmail.com",
+    "amount": "500",
+    "plan": "Starter Plan",
+    "representative": "Michael Scott",
+    "status": "APPROVED",
+    "date": "2026-06-13T09:13:11.050Z"
+  },
+  {
+    "id": 1781345655211,
+    "email": "soboroto97@gmail.com",
+    "amount": "30000",
+    "plan": "Capital Boost",
+    "representative": "Lincoln Hayes",
+    "status": "APPROVED",
+    "date": "2026-06-13T10:14:15.211Z"
+  },
+  {
+    "id": 1781348364234,
+    "email": "soboroto97@gmail.com",
+    "amount": "1000",
+    "plan": "Standard Plan",
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-13T10:59:24.234Z"
+  },
+  {
+    "id": 1781420492092,
+    "email": "thomasbakerlawyer@gmail.com",
+    "amount": "8000",
+    "plan": "Contact Manager",
+    "representative": "Robert Rachel",
+    "status": "PENDING",
+    "date": "2026-06-14T07:01:32.092Z"
+  },
+  {
+    "id": 1781426979187,
+    "email": "josie@gmail.com",
+    "amount": "1000",
+    "plan": "Standard Plan",
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-14T08:49:39.187Z"
+  },
+  {
+    "id": 1781427056451,
+    "email": "josie@gmail.com",
+    "amount": "1000",
+    "plan": "Standard Plan",
+    "representative": "Michael Scott",
+    "status": "APPROVED",
+    "date": "2026-06-14T08:50:56.451Z"
+  },
+  {
+    "id": 1781704163917,
+    "email": "fedrick440@gmail.com",
+    "amount": "8000",
+    "plan": "Contact Manager",
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-17T13:49:23.917Z"
+  },
+  {
+    "id": 1781704834469,
+    "email": "fedrick440@gmail.com",
+    "amount": "30000",
+    "plan": "Capital Boost",
+    "representative": "Michael Scott",
+    "status": "APPROVED",
+    "date": "2026-06-17T14:00:34.469Z"
+  },
+  {
+    "id": 1781920106567,
+    "email": "alec@gmail.com",
+    "amount": "14000",
+    "plan": "Contact Manager",
+    "representative": "Michael Scott",
+    "status": "PENDING",
+    "date": "2026-06-20T01:48:26.567Z"
+  }
+]

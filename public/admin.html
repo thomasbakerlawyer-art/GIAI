@@ -1,0 +1,237 @@
+Admin.html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GIAI ADMIN PANEL</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<div class="admin-container">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <h2>GIAI ADMIN</h2>
+  <button onclick="showSection('overview')">Overview</button>
+  <button onclick="showSection('users')">Users</button>
+  <button onclick="showSection('deposits')">Deposits</button>
+  <button onclick="showSection('withdrawals')">Withdrawals</button>
+  <button onclick="showSection('representatives')">Representatives</button>
+  <button onclick="showSection('reinvestments')">Reinvestments</button>
+  <button onclick="showSection('cards')">Card Applications</button>
+<button onclick="showSection('shipments')">Shipments</button>
+  <button onclick="showSection('statistics')">Statistics</button>
+  <button onclick="showSection('chat')">Chat Support</button>
+  <button onclick="showSection('siteControls'); loadSiteControls();">Site Controls</button>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+  <!-- OVERVIEW -->
+  <div id="overviewSection">
+    <h1>Dashboard Overview</h1>
+    <p class="section-desc">Welcome to the GIAI Admin Panel.</p>
+    <div class="stats-grid">
+      <div class="stat-box"><h3>Total Users</h3><p id="totalUsers">0</p></div>
+      <div class="stat-box"><h3>Total Deposits</h3><p id="totalDeposits">0</p></div>
+      <div class="stat-box"><h3>Total Withdrawals</h3><p id="totalWithdrawals">0</p></div>
+    </div>
+  </div>
+
+  <!-- USERS -->
+  <div id="usersSection" style="display:none;">
+    <h1>Users</h1>
+    <p class="section-desc">Manage all registered investor accounts.</p>
+    <input type="text" id="searchUser" placeholder="Search by name or email..." onkeyup="filterUsers()">
+    <div id="userList">Loading Users...</div>
+  </div>
+
+  <!-- DEPOSITS -->
+  <div id="depositsSection" style="display:none;">
+    <h1>Deposits</h1>
+    <p class="section-desc">Review and approve incoming deposit requests.</p>
+    <div id="depositList">Loading Deposits...</div>
+  </div>
+
+  <!-- WITHDRAWALS -->
+  <div id="withdrawalsSection" style="display:none;">
+    <h1>Withdrawals</h1>
+    <p class="section-desc">Review and process withdrawal requests.</p>
+    <div id="withdrawalList">Loading Withdrawals...</div>
+  </div>
+
+  <!-- REPRESENTATIVES -->
+  <div id="representativesSection" style="display:none;">
+    <h1>Representatives</h1>
+    <p class="section-desc">Current vote standings for all representatives.</p>
+    <div id="repList">Loading Representatives...</div>
+  </div>
+
+  <!-- REINVESTMENTS -->
+  <div id="reinvestmentsSection" style="display:none;">
+    <h1>Reinvestment Requests</h1>
+    <p class="section-desc">Approve or reject pending reinvestment requests.</p>
+    <div id="reinvestmentList">Loading Reinvestment Requests...</div>
+  </div>
+
+  <!-- CARD APPLICATIONS -->
+  <div id="cardsSection" style="display:none;">
+    <h1>Card Applications</h1>
+    <p class="section-desc">Review Binance card applications from investors.</p>
+    <div id="cardAppList">Loading Card Applications...</div>
+  </div>
+
+<!-- SHIPMENTS -->
+  <div id="shipmentsSection" style="display:none;">
+    <h1>Shipments</h1>
+    <p class="section-desc">Build delivery routes for approved cards and track their live progress.</p>
+    <div id="shipmentList">Loading Shipments...</div>
+ </div>
+
+  <!-- STATISTICS -->
+  <div id="statisticsSection" style="display:none;">
+    <h1>Statistics</h1>
+    <p class="section-desc">Platform-wide activity summary.</p>
+    <div class="stats-grid" style="margin-top:24px;">
+      <div class="stat-box"><h3>Total Users</h3><p id="statsUsers">0</p></div>
+      <div class="stat-box"><h3>Total Deposits</h3><p id="statsDeposits">0</p></div>
+      <div class="stat-box"><h3>Total Withdrawals</h3><p id="statsWithdrawals">0</p></div>
+    </div>
+  </div>
+
+  <!-- CHAT SUPPORT -->
+  <div id="chatSection" style="display:none;">
+    <h1>Chat Support</h1>
+    <p class="section-desc">Real-time conversations with your users.</p>
+    <div class="chat-layout">
+      <div class="chat-sidebar">
+        <div class="chat-sidebar-header">💬 Conversations</div>
+        <div class="chat-user-list" id="chatUserList"></div>
+      </div>
+      <div class="chat-conversation" id="chatConversation">
+        <div class="chat-empty">
+          <div class="chat-empty-icon">💬</div>
+          Select a conversation to start replying
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SITE CONTROLS -->
+  <div id="siteControlsSection" style="display:none;">
+    <h1>Site Controls</h1>
+    <p class="section-desc">These changes appear live on index.html for all visitors.</p>
+
+    <div class="admin-card">
+      <h2>📢 Announcement Banner</h2>
+      <p class="card-desc">Shows a banner at the top of index.html when enabled.</p>
+
+      <div class="control-row">
+        <label>Enable Banner</label>
+        <label class="toggle">
+          <input type="checkbox" id="announcementEnabled">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="control-row">
+        <label>Banner Type</label>
+        <select id="announcementType" class="admin-select">
+          <option value="info">ℹ️ Info (Blue)</option>
+          <option value="success">✅ Success (Green)</option>
+          <option value="warning">⚠️ Warning (Yellow)</option>
+          <option value="urgent">🔴 Urgent (Red)</option>
+        </select>
+      </div>
+
+<div class="admin-card" style="margin-top:24px;">
+  <h2>🔢 Live Counter Controls</h2>
+  <p class="card-desc">
+    Speed 1 = very slow (1 vote per ~60s). Speed 10 = fast (1 vote per ~6s).
+    Pause freezes a country. Reset sends everything back to zero.
+  </p>
+
+  <div style="display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;">
+    <button onclick="resetAllCounters()"
+      style="background:#ff4444;color:#fff;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-weight:700;">
+      🔄 Reset All to Zero
+    </button>
+    <button onclick="saveCounterControls()"
+      style="background:#F0B90B;color:#000;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-weight:700;">
+      💾 Save Speed Settings
+    </button>
+  </div>
+
+  <!-- ROBERT RACHEL -->
+  <div class="rep-edit-block">
+    <h3>Robert Rachel &nbsp;
+      <label style="font-size:0.8rem;font-weight:normal;">
+        Pause all: <input type="checkbox" id="pause-Robert-Rachel">
+      </label>
+    </h3>
+    <div class="rep-edit-grid">
+      <div class="rep-edit-row"><label>Tunisia</label> Speed(1-10):<input type="number" id="cspeed-Robert-Rachel-Tunisia" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Robert-Rachel-Tunisia"> <span id="clive-Robert-Rachel-Tunisia" style="color:#f0b90b;margin-left:8px;">…</span></div>
+      <div class="rep-edit-row"><label>Algeria</label> Speed(1-10):<input type="number" id="cspeed-Robert-Rachel-Algeria" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Robert-Rachel-Canada"> <span id="clive-Robert-Rachel-Algeria" style="color:#f0b90b;margin-left:8px;">…</span></div>
+      <div class="rep-edit-row"><label>Norway</label> Speed(1-10):<input type="number" id="cspeed-Robert-Rachel-Norway" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Robert-Rachel-USA"> <span id="clive-Robert-Rachel-Norway" style="color:#f0b90b;margin-left:8px;">…</span></div>
+      <div class="rep-edit-row"><label>Germany</label> Speed(1-10):<input type="number" id="cspeed-Robert-Rachel-Germany" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Robert-Rachel-Germany"> <span id="clive-Robert-Rachel-Germany" style="color:#f0b90b;margin-left:8px;">…</span></div>
+      <div class="rep-edit-row"><label>France</label> Speed(1-10):<input type="number" id="cspeed-Robert-Rachel-France" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Robert-Rachel-France"> <span id="clive-Robert-Rachel-France" style="color:#f0b90b;margin-left:8px;">…</span></div>
+    </div>
+  </div>
+
+  <!-- MICHAEL SCOTT -->
+  <div class="rep-edit-block" style="margin-top:20px;">
+    <h3>Michael Scott &nbsp;
+      <label style="font-size:0.8rem;font-weight:normal;">
+        Pause all: <input type="checkbox" id="pause-Michael-Scott">
+      </label>
+    </h3>
+    <div class="rep-edit-grid">
+      <div class="rep-edit-row"><label>Tunisia</label> Speed(1-10):<input type="number" id="cspeed-Michael-Scott-Tunisia" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Michael-Scott-Tunisia"> <span id="clive-Michael-Scott-Tunisia" style="color:#f0b90b;margin-left:8px;">…</span></div>
+      <div class="rep-edit-row"><label>UK</label> Speed(1-10):<input type="number" id="cspeed-Michael-Scott-UK" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Michael-Scott-UK"> <span id="clive-Michael-Scott-UK" style="color:#f0b90b;margin-left:8px;">…</span></div>
+      <div class="rep-edit-row"><label>Italy</label> Speed(1-10):<input type="number" id="cspeed-Michael-Scott-Italy" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Michael-Scott-Italy"> <span id="clive-Michael-Scott-Italy" style="color:#f0b90b;margin-left:8px;">…</span></div>
+      <div class="rep-edit-row"><label>Spain</label> Speed(1-10):<input type="number" id="cspeed-Michael-Scott-Spain" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Michael-Scott-Spain"> <span id="clive-Michael-Scott-Spain" style="color:#f0b90b;margin-left:8px;">…</span></div>
+      <div class="rep-edit-row"><label>Belgium</label> Speed(1-10):<input type="number" id="cspeed-Michael-Scott-Belgium" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Michael-Scott-Belgium"> <span id="clive-Michael-Scott-Belgium" style="color:#f0b90b;margin-left:8px;">…</span></div>
+    </div>
+  </div>
+
+  <!-- LINCOLN HAYES -->
+  <div class="rep-edit-block" style="margin-top:20px;">
+    <h3>Lincoln Hayes &nbsp;
+      <label style="font-size:0.8rem;font-weight:normal;">
+        Pause all: <input type="checkbox" id="pause-Lincoln-Hayes">
+      </label>
+    </h3>
+    <div class="rep-edit-grid">
+      <div class="rep-edit-row"><label>Tunisia</label> Speed(1-10):<input type="number" id="cspeed-Lincoln-Hayes-Tunisia" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Lincoln-Hayes-Tunisia"> <span id="clive-Lincoln-Hayes-Tunisia" style="color:#f0b90b;margin-left:8px;">…</span></div>
+      <div class="rep-edit-row"><label>Brazil</label> Speed(1-10):<input type="number" id="cspeed-Lincoln-Hayes-Brazil" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Lincoln-Hayes-Brazil"> <span id="clive-Lincoln-Hayes-Brazil" style="color:#f0b90b;margin-left:8px;">…</span></div>
+      <div class="rep-edit-row"><label>Japan</label> Speed(1-10):<input type="number" id="cspeed-Lincoln-Hayes-Japan" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Lincoln-Hayes-Japan"> <span id="clive-Lincoln-Hayes-Japan" style="color:#f0b90b;margin-left:8px;">…</span></div>
+      <div class="rep-edit-row"><label>Singapore</label> Speed(1-10):<input type="number" id="cspeed-Lincoln-Hayes-Singapore" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Lincoln-Hayes-Singapore"> <span id="clive-Lincoln-Hayes-Singapore" style="color:#f0b90b;margin-left:8px;">…</span></div>
+      <div class="rep-edit-row"><label>Dubai</label> Speed(1-10):<input type="number" id="cspeed-Lincoln-Hayes-Dubai" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Lincoln-Hayes-Dubai"> <span id="clive-Lincoln-Hayes-Dubai" style="color:#f0b90b;margin-left:8px;">…</span></div>
+    </div>
+  </div>
+
+  <!-- AMBER AGRAWAL -->
+  <div class="rep-edit-block" style="margin-top:20px;">
+    <h3>Amber Agrawal &nbsp;
+      <label style="font-size:0.8rem;font-weight:normal;">
+        Pause all: <input type="checkbox" id="pause-Amber-Agrawal">
+      </label>
+    </h3>
+    <div class="rep-edit-grid">
+      <div class="rep-edit-row"><label>Tunisia</label> Speed(1-10):<input type="number" id="cspeed-Amber-Agrawal-Tunisia" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Amber-Agrawal-Tunisia"> <span id="clive-Amber-Agrawal-Tunisia" style="color:#f0b90b;margin-left:8px;">…</span></div>
+      <div class="rep-edit-row"><label>Australia</label> Speed(1-10):<input type="number" id="cspeed-Amber-Agrawal-Australia" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Amber-Agrawal-Australia"> <span id="clive-Amber-Agrawal-Australia" style="color:#f0b90b;margin-left:8px;">…</span></div>
+      <div class="rep-edit-row"><label>Malaysia</label> Speed(1-10):<input type="number" id="cspeed-Amber-Agrawal-Malaysia" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Amber-Agrawal-Malaysia"> <span id="clive-Amber-Agrawal-Malaysia" style="color:#f0b90b;margin-left:8px;">…</span></div>
+      <div class="rep-edit-row"><label>Thailand</label> Speed(1-10):<input type="number" id="cspeed-Amber-Agrawal-Thailand" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Amber-Agrawal-Thailand"> <span id="clive-Amber-Agrawal-Thailand" style="color:#f0b90b;margin-left:8px;">…</span></div>
+      <div class="rep-edit-row"><label>Indonesia</label> Speed(1-10):<input type="number" id="cspeed-Amber-Agrawal-Indonesia" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Amber-Agrawal-Indonesia"> <span id="clive-Amber-Agrawal-Indonesia" style="color:#f0b90b;margin-left:8px;">…</span></div>
+    </div>
+  </div>
+</div>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script src="admin.js"></script>
+
+</body>
+</html>

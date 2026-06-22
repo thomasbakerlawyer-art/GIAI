@@ -1,0 +1,153 @@
+[
+  {
+    "id": 1781140266579,
+    "email": "alexpetersonplc@gmail.com",
+    "topup": 1000,
+    "status": "PENDING",
+    "date": "2026-06-11T01:11:06.579Z"
+  },
+  {
+    "id": 1781140287209,
+    "email": "alexpetersonplc@gmail.com",
+    "topup": 500,
+    "status": "PENDING",
+    "date": "2026-06-11T01:11:27.209Z"
+  },
+  {
+    "id": 1781140303167,
+    "email": "alexpetersonplc@gmail.com",
+    "topup": 200,
+    "status": "PENDING",
+    "date": "2026-06-11T01:11:43.167Z"
+  },
+  {
+    "id": 1781140405239,
+    "email": "alexpetersonplc@gmail.com",
+    "topup": 200,
+    "status": "PENDING",
+    "date": "2026-06-11T01:13:25.239Z"
+  },
+  {
+    "id": 1781140927160,
+    "email": "alexpetersonplc@gmail.com",
+    "topup": 200,
+    "status": "PENDING",
+    "date": "2026-06-11T01:22:07.160Z"
+  },
+  {
+    "id": 1781151908091,
+    "email": "alexpetersonplc@gmail.com",
+    "topup": 147,
+    "status": "APPROVED",
+    "date": "2026-06-11T04:25:08.091Z"
+  },
+  {
+    "id": 1781154676156,
+    "email": "alexpetersonplc@gmail.com",
+    "topup": 15000,
+    "status": "APPROVED",
+    "date": "2026-06-11T05:11:16.156Z"
+  },
+  {
+    "id": 1781230871614,
+    "email": "blah97@gmail.com",
+    "topup": 1125,
+    "status": "APPROVED",
+    "date": "2026-06-12T02:21:11.614Z"
+  },
+  {
+    "id": 1781231226860,
+    "email": "jesse97@gmail.com",
+    "topup": 4000,
+    "status": "APPROVED",
+    "date": "2026-06-12T02:27:06.860Z"
+  },
+  {
+    "id": 1781275284739,
+    "email": "soniafedrick440@gmail.com",
+    "topup": 1000,
+    "status": "PENDING",
+    "date": "2026-06-12T14:41:24.739Z"
+  },
+  {
+    "id": 1781312971994,
+    "email": "soniafedrick440@gmail.com",
+    "profit": 0,
+    "topup": 2000,
+    "representative": "Amber Agrawal",
+    "status": "APPROVED",
+    "date": "2026-06-13T01:09:31.994Z"
+  },
+  {
+    "id": 1781338163332,
+    "email": "jesse97@gmail.com",
+    "profit": 1000,
+    "topup": 1000,
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-13T08:09:23.332Z"
+  },
+  {
+    "id": 1781338249027,
+    "email": "jesse97@gmail.com",
+    "profit": 0,
+    "topup": 1000,
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-13T08:10:49.027Z"
+  },
+  {
+    "id": 1781345077339,
+    "email": "blah97@gmail.com",
+    "profit": 281.25,
+    "topup": 500,
+    "representative": "Amber Agrawal",
+    "status": "PENDING",
+    "date": "2026-06-13T10:04:37.339Z"
+  },
+  {
+    "id": 1781415503358,
+    "email": "blah97@gmail.com",
+    "profit": 281.25,
+    "topup": 500,
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-14T05:38:23.358Z"
+  },
+  {
+    "id": 1781578353733,
+    "email": "alexpetersonplc@gmail.com",
+    "profit": 3850.0000000000005,
+    "topup": 2000,
+    "representative": "Robert Rachel",
+    "status": "PENDING",
+    "date": "2026-06-16T02:52:33.733Z"
+  },
+  {
+    "id": 1781830853767,
+    "email": "blah97@gmail.com",
+    "profit": 857.8125,
+    "topup": 1000,
+    "representative": "Robert Rachel",
+    "status": "PENDING",
+    "date": "2026-06-19T01:00:53.767Z"
+  },
+  {
+    "id": 1781918635843,
+    "email": "alexpetersonplc@gmail.com",
+    "profit": 0,
+    "topup": 1000,
+    "representative": "Lincoln Hayes",
+    "status": "APPROVED",
+    "date": "2026-06-20T01:23:55.843Z"
+  },
+  {
+    "id": 1782100096211,
+    "email": "thomasbakerlawyer@gmail.com",
+    "profit": 0,
+    "topup": 500,
+    "representative": "Robert Rachel",
+    "status": "APPROVED",
+    "date": "2026-06-22T03:48:16.211Z"
+  }
+]
