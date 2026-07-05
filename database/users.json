@@ -409,7 +409,609 @@
         "votes": 1
       }
     ],
-    "representative": "Robert Rachel"
+    "representative": "Robert Rachel",
+    "portfolioHistory": [
+      {
+        "time": 1783039257917,
+        "claimableProfit": 11969.023015112058,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.93734515730219
+      },
+      {
+        "time": 1783039287916,
+        "claimableProfit": 11969.405341382575,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.9388444760101
+      },
+      {
+        "time": 1783039317915,
+        "claimableProfit": 11969.787667653094,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.94034379471801
+      },
+      {
+        "time": 1783039372919,
+        "claimableProfit": 11970.488673492739,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.94309283722643
+      },
+      {
+        "time": 1783039432917,
+        "claimableProfit": 11971.253326033775,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.94609147464226
+      },
+      {
+        "time": 1783039492917,
+        "claimableProfit": 11972.018004064079,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.949090212015996
+      },
+      {
+        "time": 1783039552916,
+        "claimableProfit": 11972.782669349748,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.952088899410775
+      },
+      {
+        "time": 1783039612917,
+        "claimableProfit": 11973.547360124685,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.95508768676347
+      },
+      {
+        "time": 1783039672917,
+        "claimableProfit": 11974.312038154987,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.95808642413721
+      },
+      {
+        "time": 1783039732927,
+        "claimableProfit": 11975.076843631628,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.96108566130051
+      },
+      {
+        "time": 1783039792916,
+        "claimableProfit": 11975.84138147096,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.96408384890572
+      },
+      {
+        "time": 1783039802544,
+        "claimableProfit": 11975.964086805556,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.96456504629629
+      },
+      {
+        "time": 1783039806613,
+        "claimableProfit": 11976.015944720644,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.964768410669194
+      },
+      {
+        "time": 1783039830322,
+        "claimableProfit": 11976.318107244319,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.96595336174242
+      },
+      {
+        "time": 1783039860959,
+        "claimableProfit": 11976.708564591225,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.96748456702441
+      },
+      {
+        "time": 1783039890916,
+        "claimableProfit": 11977.090355587121,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.96898178661616
+      },
+      {
+        "time": 1783039920957,
+        "claimableProfit": 11977.473217132261,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.970483204440235
+      },
+      {
+        "time": 1783039950919,
+        "claimableProfit": 11977.855071851327,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.97198067392677
+      },
+      {
+        "time": 1783039980916,
+        "claimableProfit": 11978.237372632575,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.973479892676764
+      },
+      {
+        "time": 1783040032458,
+        "claimableProfit": 11978.894256549875,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.976055908038724
+      },
+      {
+        "time": 1783040036233,
+        "claimableProfit": 11978.942367542613,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.97624457859848
+      },
+      {
+        "time": 1783040066925,
+        "claimableProfit": 11979.33352584438,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.977778532723065
+      },
+      {
+        "time": 1783040096917,
+        "claimableProfit": 11979.715762902462,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.97927750157828
+      },
+      {
+        "time": 1783040126916,
+        "claimableProfit": 11980.09808917298,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.980776820286195
+      },
+      {
+        "time": 1783040156917,
+        "claimableProfit": 11980.480440932764,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.98227623895202
+      },
+      {
+        "time": 1783040186917,
+        "claimableProfit": 11980.862779947916,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.98377560763889
+      },
+      {
+        "time": 1783040247916,
+        "claimableProfit": 11981.640189867423,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.986824273989896
+      },
+      {
+        "time": 1783040277884,
+        "claimableProfit": 11982.022121054293,
+        "todayProfit": 1101.1363636363637,
+        "roi": 46.98832204335017
+      },
+      {
+        "time": 1783040516137,
+        "claimableProfit": 11985.05856830019,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.00022967960859
+      },
+      {
+        "time": 1783040524672,
+        "claimableProfit": 11985.16734375,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.00065625
+      },
+      {
+        "time": 1783040554919,
+        "claimableProfit": 11985.55283068971,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.00216796348906
+      },
+      {
+        "time": 1783040584917,
+        "claimableProfit": 11985.935144215595,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.003667232218014
+      },
+      {
+        "time": 1783040614917,
+        "claimableProfit": 11986.317483230745,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.00516660090488
+      },
+      {
+        "time": 1783040644916,
+        "claimableProfit": 11986.699809501262,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.00666591961279
+      },
+      {
+        "time": 1783040670874,
+        "claimableProfit": 11987.03063470644,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.007963273358584
+      },
+      {
+        "time": 1783040701919,
+        "claimableProfit": 11987.42629186395,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.00951487005471
+      },
+      {
+        "time": 1783040731917,
+        "claimableProfit": 11987.808605389835,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.01101413878367
+      },
+      {
+        "time": 1783040761917,
+        "claimableProfit": 11988.190944404987,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.01251350747054
+      },
+      {
+        "time": 1783040791916,
+        "claimableProfit": 11988.573270675504,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.01401282617845
+      },
+      {
+        "time": 1783040821917,
+        "claimableProfit": 11988.955622435291,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.015512244844274
+      },
+      {
+        "time": 1783040872916,
+        "claimableProfit": 11989.605586016414,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.018061121632996
+      },
+      {
+        "time": 1783040932916,
+        "claimableProfit": 11990.370264046716,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.02105985900673
+      },
+      {
+        "time": 1783040992917,
+        "claimableProfit": 11991.134954821653,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.02405864635943
+      },
+      {
+        "time": 1783041052916,
+        "claimableProfit": 11991.899620107324,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.02705733375421
+      },
+      {
+        "time": 1783041112918,
+        "claimableProfit": 11992.664323626894,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.03005617108586
+      },
+      {
+        "time": 1783041172917,
+        "claimableProfit": 11993.428988912563,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.03305485848064
+      },
+      {
+        "time": 1783041232919,
+        "claimableProfit": 11994.193692432134,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.03605369581229
+      },
+      {
+        "time": 1783041292917,
+        "claimableProfit": 11994.958344973169,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.03905233322811
+      },
+      {
+        "time": 1783041352916,
+        "claimableProfit": 11995.723010258838,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.0420510206229
+      },
+      {
+        "time": 1783041379123,
+        "claimableProfit": 11996.05700887784,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.043360819128786
+      },
+      {
+        "time": 1783041382976,
+        "claimableProfit": 11996.10611395202,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.04355338804714
+      },
+      {
+        "time": 1783041413917,
+        "claimableProfit": 11996.500445667614,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.04509978693182
+      },
+      {
+        "time": 1783041443916,
+        "claimableProfit": 11996.882771938132,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.04659910563973
+      },
+      {
+        "time": 1783041473916,
+        "claimableProfit": 11997.265110953284,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.0480984743266
+      },
+      {
+        "time": 1783041503918,
+        "claimableProfit": 11997.647475457703,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.04959794297138
+      },
+      {
+        "time": 1783041533916,
+        "claimableProfit": 11998.029788983586,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.05109721170034
+      },
+      {
+        "time": 1783041592917,
+        "claimableProfit": 11998.781735124683,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.0540460200968
+      },
+      {
+        "time": 1783041652917,
+        "claimableProfit": 11999.546413154987,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.057044757470536
+      },
+      {
+        "time": 1783041694119,
+        "claimableProfit": 12000.071517558397,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.059103990425086
+      },
+      {
+        "time": 1783041696562,
+        "claimableProfit": 12000.102652698864,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.059226089015155
+      },
+      {
+        "time": 1783041726764,
+        "claimableProfit": 12000.48756613005,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.06073555345118
+      },
+      {
+        "time": 1783041756926,
+        "claimableProfit": 12000.871969775882,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.06224301872896
+      },
+      {
+        "time": 1783041786919,
+        "claimableProfit": 12001.254219578597,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.06374203756313
+      },
+      {
+        "time": 1783041816919,
+        "claimableProfit": 12001.63655859375,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.06524140625
+      },
+      {
+        "time": 1783041846917,
+        "claimableProfit": 12002.018872119634,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.06674067497896
+      },
+      {
+        "time": 1783041892918,
+        "claimableProfit": 12002.605138020834,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.06903975694444
+      },
+      {
+        "time": 1783041952917,
+        "claimableProfit": 12003.369803306503,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.07203844433922
+      },
+      {
+        "time": 1783042012917,
+        "claimableProfit": 12004.134481336807,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.075037181712965
+      },
+      {
+        "time": 1783042072917,
+        "claimableProfit": 12004.899159367109,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.0780359190867
+      },
+      {
+        "time": 1783042133009,
+        "claimableProfit": 12005.665009903725,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.08103925452441
+      },
+      {
+        "time": 1783042142467,
+        "claimableProfit": 12005.785548650569,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.081511955492424
+      },
+      {
+        "time": 1783042172916,
+        "claimableProfit": 12006.173610006314,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.083033764730644
+      },
+      {
+        "time": 1783042202916,
+        "claimableProfit": 12006.555949021464,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.08453313341751
+      },
+      {
+        "time": 1783042232916,
+        "claimableProfit": 12006.938288036616,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.08603250210438
+      },
+      {
+        "time": 1783042262917,
+        "claimableProfit": 12007.3206397964,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.087531920770196
+      },
+      {
+        "time": 1783042292917,
+        "claimableProfit": 12007.702978811552,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.08903128945707
+      },
+      {
+        "time": 1783042353916,
+        "claimableProfit": 12008.48038873106,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.09207995580808
+      },
+      {
+        "time": 1783042370180,
+        "claimableProfit": 12008.687667455808,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.09289281355219
+      },
+      {
+        "time": 1783042400917,
+        "claimableProfit": 12009.079399266098,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.0944290167298
+      },
+      {
+        "time": 1783042430916,
+        "claimableProfit": 12009.461725536617,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.09592833543771
+      },
+      {
+        "time": 1783042460917,
+        "claimableProfit": 12009.8440772964,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.097427754103535
+      },
+      {
+        "time": 1783042490917,
+        "claimableProfit": 12010.226416311554,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.09892712279041
+      },
+      {
+        "time": 1783042520915,
+        "claimableProfit": 12010.608729837437,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.100426391519356
+      },
+      {
+        "time": 1783042552916,
+        "claimableProfit": 12011.016570864898,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.10202576809764
+      },
+      {
+        "time": 1783042612917,
+        "claimableProfit": 12011.781261639835,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.105024555450335
+      },
+      {
+        "time": 1783042634797,
+        "claimableProfit": 12012.06011422822,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.106118095012626
+      },
+      {
+        "time": 1783042664916,
+        "claimableProfit": 12012.443969854798,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.10762341119529
+      },
+      {
+        "time": 1783042694925,
+        "claimableProfit": 12012.826423571654,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.10912322969276
+      },
+      {
+        "time": 1783042724917,
+        "claimableProfit": 12013.208660629734,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.11062219854798
+      },
+      {
+        "time": 1783042754917,
+        "claimableProfit": 12013.590999644886,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.112121567234844
+      },
+      {
+        "time": 1783042784918,
+        "claimableProfit": 12013.973351404671,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.113620985900674
+      },
+      {
+        "time": 1783042845918,
+        "claimableProfit": 12014.750774068812,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.11666970223064
+      },
+      {
+        "time": 1783042906917,
+        "claimableProfit": 12015.528183988321,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.11971836858165
+      },
+      {
+        "time": 1783042967917,
+        "claimableProfit": 12016.305606652462,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.122767084911615
+      },
+      {
+        "time": 1783043028916,
+        "claimableProfit": 12017.083016571969,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.12581575126263
+      },
+      {
+        "time": 1783043089916,
+        "claimableProfit": 12017.860439236112,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.12886446759259
+      },
+      {
+        "time": 1783043150917,
+        "claimableProfit": 12018.637874644886,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.131913233901514
+      },
+      {
+        "time": 1783043206266,
+        "claimableProfit": 12019.343277383208,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.134679519149834
+      },
+      {
+        "time": 1783043234885,
+        "claimableProfit": 12019.708016059029,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.13610986689815
+      },
+      {
+        "time": 1783043264885,
+        "claimableProfit": 12020.090355074179,
+        "todayProfit": 1101.1363636363637,
+        "roi": 47.13760923558502
+      }
+    ]
   },
   {
     "id": 1780588437002,
@@ -771,12 +1373,22 @@
     "name": "jesse",
     "email": "jesse97@gmail.com",
     "password": "12345678",
-    "balance": 4000,
-    "plan": "Starter Plan",
+    "balance": 7750,
+    "plan": "Premium Plan",
     "rank": "Gold Investor",
-    "totalVotes": 4,
+    "totalVotes": 6,
     "status": "ACTIVE",
     "transactions": [
+      {
+        "type": "INVESTMENT CYCLE COMPLETED",
+        "amount": 2750,
+        "date": "2026-06-29T22:46:03.804Z"
+      },
+      {
+        "type": "REINVESTMENT APPROVED",
+        "amount": 5000,
+        "date": "2026-06-24T22:45:35.630Z"
+      },
       {
         "type": "INVESTMENT CYCLE COMPLETED",
         "amount": 0,
@@ -814,19 +1426,24 @@
       }
     ],
     "investmentStart": 0,
-    "reinvestmentCount": 0,
+    "reinvestmentCount": 1,
     "investmentAmount": 0,
-    "representative": "Robert Rachel",
+    "representative": "Michael Scott",
     "profitPercent": 0,
     "investmentDuration": 0,
     "cycleCompleted": true,
-    "lastCycleProfit": 0,
+    "lastCycleProfit": 2750,
     "representatives": [
       {
         "name": "Robert Rachel",
         "votes": 4
+      },
+      {
+        "name": "Michael Scott",
+        "votes": 2
       }
-    ]
+    ],
+    "balanceIsAdminFunded": false
   },
   {
     "id": 1781117846652,
@@ -1253,12 +1870,17 @@
     },
     "secretQuestion": "pet",
     "secretAnswer": "ceecee",
-    "balance": 1000,
+    "balance": 1450,
     "plan": "Standard Plan",
     "rank": "Standard Investor",
     "totalVotes": 2,
     "status": "ACTIVE",
     "transactions": [
+      {
+        "type": "INVESTMENT CYCLE COMPLETED",
+        "amount": 450,
+        "date": "2026-07-03T01:48:15.285Z"
+      },
       {
         "type": "BALANCE INVESTED",
         "amount": 1000,
@@ -1278,12 +1900,21 @@
       }
     ],
     "balanceIsAdminFunded": false,
-    "investmentAmount": 1000,
-    "investmentStart": 1781920179591,
-    "profitPercent": 45,
-    "investmentDuration": 2,
+    "investmentAmount": 0,
+    "investmentStart": 0,
+    "profitPercent": 0,
+    "investmentDuration": 0,
     "representative": "Michael Scott",
     "reinvestmentCount": 0,
-    "cycleCompleted": false
+    "cycleCompleted": true,
+    "portfolioHistory": [
+      {
+        "time": 1783043295285,
+        "claimableProfit": 450,
+        "todayProfit": 225,
+        "roi": 45
+      }
+    ],
+    "lastCycleProfit": 450
   }
 ]

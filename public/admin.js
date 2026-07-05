@@ -2,14 +2,15 @@ let allUsers = [];
 let allDeposits = [];
 let allWithdrawals = [];
 let allRepresentatives = [];
+let allChats = [];
 let activeChatEmail = null;
 let chatRefreshInterval = null;
 
 /* ========================= */
 /* SHOW SECTIONS             */
 /* ========================= */
-function showSection(section) {          // <-- ADD THIS LINE
-const allSections = [
+function showSection(section) {
+  const allSections = [
     "overview","users","deposits","withdrawals",
     "representatives","statistics","chat","siteControls",
     "reinvestments","cards","shipments"
@@ -28,10 +29,10 @@ const allSections = [
     clearInterval(chatRefreshInterval);
     chatRefreshInterval = null;
   }
-if (section === "cards") loadCardApplications();
+  if (section === "cards") loadCardApplications();
   if (section === "reinvestments") loadReinvestments();
   if (section === "shipments") loadShipments();
- if (section === "siteControls") {
+  if (section === "siteControls") {
     loadSiteControls();
     loadCounterControls();
   }
@@ -40,7 +41,6 @@ if (section === "cards") loadCardApplications();
 /* ========================= */
 /* LOAD EVERYTHING ON START  */
 /* ========================= */
-
 window.onload = async () => {
   await loadUsers();
   await loadDeposits();
@@ -53,13 +53,11 @@ window.onload = async () => {
 /* ========================= */
 /* OVERVIEW                  */
 /* ========================= */
-
 function updateOverview() {
   setTimeout(() => {
     document.getElementById("totalUsers").innerText = allUsers.length;
     document.getElementById("totalDeposits").innerText = allDeposits.length;
     document.getElementById("totalWithdrawals").innerText = allWithdrawals.length;
-
     const statsUsers = document.getElementById("statsUsers");
     const statsDeposits = document.getElementById("statsDeposits");
     const statsWithdrawals = document.getElementById("statsWithdrawals");
@@ -72,7 +70,6 @@ function updateOverview() {
 /* ========================= */
 /* USERS                     */
 /* ========================= */
-
 async function loadUsers() {
   const response = await fetch("/admin-users");
   const data = await response.json();
@@ -97,7 +94,6 @@ function renderUsers() {
         ${isBanned ? `<span style="color:#ff4444;font-size:12px;margin-left:8px;">BANNED</span>` : ""}
       </div>
       <div class="user-body" id="user-${user.email}" style="display:none;">
-
         <p>Balance: <b style="color:#f0b90b">$${Number(user.balance||0).toLocaleString()}</b></p>
         <p>Investment Amount: <b style="color:#f0b90b">$${Number(user.investmentAmount||0).toLocaleString()}</b></p>
         <p>Plan: ${user.plan||"None"} &nbsp;|&nbsp; Rank: ${user.rank||"None"} &nbsp;|&nbsp; Votes: ${user.totalVotes||0}</p>
@@ -138,14 +134,12 @@ function renderUsers() {
             ${hasActiveInvestment ? '' : 'disabled'}>
             Deactivate Investment
           </button>
-
           <button
             onclick="toggleBan('${user.email}')"
             style="background:${isBanned ? '#00d26a' : '#ff4444'};color:#fff;">
             ${isBanned ? 'Unban User' : 'Ban User'}
           </button>
         </div>
-
       </div>
     </div>`;
   });
@@ -166,12 +160,10 @@ function filterUsers() {
 /* ========================= */
 /* BALANCE / VOTES / REP     */
 /* ========================= */
-
 async function addBalance(email) {
   const amount = document.getElementById("balance-" + email).value;
   const plan = document.getElementById("planSelect-" + email).value;
   if (!amount) return;
-
   const res = await fetch("/admin-add-balance", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -185,7 +177,6 @@ async function addBalance(email) {
 async function addVotes(email) {
   const votes = document.getElementById("votes-" + email).value;
   if (!votes) return;
-
   await fetch("/admin-add-votes", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -196,7 +187,6 @@ async function addVotes(email) {
 
 async function assignRep(email) {
   const representative = document.getElementById("rep-" + email).value;
-
   const res = await fetch("/admin-assign-rep", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -210,7 +200,6 @@ async function assignRep(email) {
 /* ========================= */
 /* BAN / UNBAN               */
 /* ========================= */
-
 async function toggleBan(email) {
   const res = await fetch("/admin-ban-user", {
     method: "POST",
@@ -229,10 +218,8 @@ async function toggleBan(email) {
 /* ========================= */
 /* DEACTIVATE INVESTMENT      */
 /* ========================= */
-
 async function deactivateInvestment(email) {
-  if (!confirm("Deactivate this user's investment? Profit will be credited to their balance and they will be able to withdraw.")) return;
-
+  if (!confirm("Deactivate this user's investment?")) return;
   const res = await fetch("/admin-deactivate-investment", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -246,7 +233,6 @@ async function deactivateInvestment(email) {
 /* ========================= */
 /* DEPOSITS                  */
 /* ========================= */
-
 async function loadDeposits() {
   const response = await fetch("/admin-deposits");
   const data = await response.json();
@@ -278,19 +264,21 @@ async function loadDeposits() {
         <p style="color:#666;font-size:12px;">${new Date(dep.date).toLocaleString()}</p>
       </div>
       <div class="card-actions">
-        <button class="approve-btn" onclick="approveDeposit(${dep.id})">✓ Approve</button>
-        <button class="deny-btn" onclick="rejectDeposit(${dep.id})">✕ Deny</button>
+        <button class="approve-btn" onclick="approveDeposit('${dep._id}')">✓ Approve</button>
+        <button class="deny-btn" onclick="rejectDeposit('${dep._id}')">✕ Deny</button>
       </div>
     </div>`;
   });
 }
 
 async function approveDeposit(id) {
-  await fetch("/approve-deposit", {
+  const res = await fetch("/approve-deposit", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id })
   });
+  const data = await res.json();
+  alert(data.message || (data.success ? "Approved" : "Failed"));
   loadDeposits();
   loadUsers();
 }
@@ -307,7 +295,6 @@ async function rejectDeposit(id) {
 /* ========================= */
 /* WITHDRAWALS               */
 /* ========================= */
-
 async function loadWithdrawals() {
   const response = await fetch("/admin-withdrawals");
   const data = await response.json();
@@ -338,19 +325,21 @@ async function loadWithdrawals() {
         <p style="color:#666;font-size:12px;">${new Date(item.date).toLocaleString()}</p>
       </div>
       <div class="card-actions">
-        <button class="approve-btn" onclick="approveWithdrawal(${item.id})">✓ Approve</button>
-        <button class="deny-btn" onclick="rejectWithdrawal(${item.id})">✕ Deny</button>
+        <button class="approve-btn" onclick="approveWithdrawal('${item._id}')">✓ Approve</button>
+        <button class="deny-btn" onclick="rejectWithdrawal('${item._id}')">✕ Deny</button>
       </div>
     </div>`;
   });
 }
 
 async function approveWithdrawal(id) {
-  await fetch("/approve-withdrawal", {
+  const res = await fetch("/approve-withdrawal", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id })
   });
+  const data = await res.json();
+  alert(data.message || (data.success ? "Approved" : "Failed"));
   loadWithdrawals();
   loadUsers();
 }
@@ -367,7 +356,6 @@ async function rejectWithdrawal(id) {
 /* ========================= */
 /* REPRESENTATIVES           */
 /* ========================= */
-
 async function loadRepresentatives() {
   const response = await fetch("/admin-representatives");
   allRepresentatives = await response.json();
@@ -388,7 +376,6 @@ async function loadRepresentatives() {
 /* ========================= */
 /* REINVESTMENTS             */
 /* ========================= */
-
 async function loadReinvestments() {
   const res = await fetch("/admin-reinvestments");
   const data = await res.json();
@@ -415,8 +402,8 @@ async function loadReinvestments() {
         <p style="color:#666;font-size:12px;">${new Date(r.date).toLocaleString()}</p>
       </div>
       <div class="card-actions">
-        <button class="approve-btn" onclick="approveReinvestment(${r.id})">✓ Approve</button>
-        <button class="deny-btn" onclick="rejectReinvestment(${r.id})">✕ Deny</button>
+        <button class="approve-btn" onclick="approveReinvestment('${r._id}')">✓ Approve</button>
+        <button class="deny-btn" onclick="rejectReinvestment('${r._id}')">✕ Deny</button>
       </div>
     </div>`;
   });
@@ -429,13 +416,9 @@ async function approveReinvestment(id) {
     body: JSON.stringify({ id })
   });
   const data = await res.json();
-  if (data.success) {
-    alert("Reinvestment approved");
-    loadReinvestments();
-    loadUsers();
-  } else {
-    alert("Approval failed");
-  }
+  alert(data.success ? "Reinvestment approved" : "Approval failed");
+  loadReinvestments();
+  loadUsers();
 }
 
 async function rejectReinvestment(id) {
@@ -454,7 +437,6 @@ async function rejectReinvestment(id) {
 /* ========================= */
 /* CARD APPLICATIONS         */
 /* ========================= */
-
 async function loadCardApplications() {
   const res = await fetch("/admin-cards");
   const data = await res.json();
@@ -486,7 +468,7 @@ async function loadCardApplications() {
         </p>
       </div>
       <div class="card-actions">
-        <button class="approve-btn" onclick="approveCard(${a.id})">✓ Approve</button>
+        <button class="approve-btn" onclick="approveCard('${a._id}')">✓ Approve</button>
       </div>
     </div>`;
   });
@@ -499,18 +481,13 @@ async function approveCard(id) {
     body: JSON.stringify({ id })
   });
   const data = await res.json();
-  if (data.success) {
-    alert("Card approved. User will be prompted for shipping details.");
-    loadCardApplications();
-  } else {
-    alert("Approval failed.");
-  }
+  alert(data.success ? "Card approved." : "Approval failed.");
+  loadCardApplications();
 }
 
 /* ========================= */
 /* SHIPMENTS                 */
 /* ========================= */
-
 let allShipments = [];
 
 async function loadShipments() {
@@ -538,7 +515,7 @@ async function loadShipments() {
   });
 
   if (candidates.length === 0) {
-    container.innerHTML = `<p style="color:#444;padding:20px;">No shipments waiting for a route yet.</p>`;
+    container.innerHTML = `<p style="color:#444;padding:20px;">No shipments yet.</p>`;
     return;
   }
 
@@ -562,7 +539,7 @@ async function loadShipments() {
         statusLine = `<span style="color:#f0b90b;">Paused — currently near ${currentStop.city}</span>`;
       } else {
         const pct = Math.round((progress.progressIntoLeg || 0) * 100);
-        statusLine = `<span style="color:#f0b90b;">In transit toward ${currentStop.city} (${pct}% of this leg)</span>`;
+        statusLine = `<span style="color:#f0b90b;">In transit toward ${currentStop.city} (${pct}%)</span>`;
       }
 
       stopsHtml = shipment.stops.map((s, i) => `
@@ -589,18 +566,12 @@ async function loadShipments() {
         <p style="margin-top:6px;">${statusLine}</p>
         ${addressHtml}
       </div>
-
-      ${hasRoute ? `
-        <div style="margin-top:14px;">
-          ${stopsHtml}
-        </div>
-      ` : ``}
-
+      ${hasRoute ? `<div style="margin-top:14px;">${stopsHtml}</div>` : ``}
       <div style="margin-top:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
         <label style="color:#999;font-size:0.85rem;">Total Delivery Days:</label>
         <input type="number" id="days-${safeId}" value="${currentDays}" min="1" style="width:80px;">
         <button class="approve-btn" onclick="setShipmentDays('${safeId}','${user.email}','${cardType}')">
-          ${hasRoute ? "🔄 Update Days & Restart Route" : "🚚 Generate Route"}
+          ${hasRoute ? "🔄 Update Route" : "🚚 Generate Route"}
         </button>
         ${hasRoute ? (shipment.paused
           ? `<button class="approve-btn" onclick="resumeShipment('${user.email}','${cardType}')">▶ Resume</button>`
@@ -614,21 +585,14 @@ async function loadShipments() {
 async function setShipmentDays(safeId, email, cardType) {
   const input = document.getElementById("days-" + safeId);
   const totalDays = parseInt(input?.value, 10);
-
-  if (!totalDays || totalDays < 1) {
-    alert("Enter a valid number of days.");
-    return;
-  }
-
+  if (!totalDays || totalDays < 1) { alert("Enter a valid number of days."); return; }
   const res = await fetch("/admin-set-shipment-days", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, cardType, totalDays })
   });
-
   const data = await res.json();
-  alert(data.message || (data.success ? "Route generated." : "Failed to generate route."));
-
+  alert(data.message || (data.success ? "Route generated." : "Failed."));
   if (data.success) loadShipments();
 }
 
@@ -657,13 +621,11 @@ async function resumeShipment(email, cardType) {
 /* ========================= */
 /* CHAT                      */
 /* ========================= */
-
 async function loadChats() {
   const response = await fetch("/chat/list");
   const data = await response.json();
   allChats = data.chats || [];
   renderChatList();
-
   if (activeChatEmail) {
     const chat = allChats.find(c => c.email === activeChatEmail);
     if (chat) renderConversation(chat);
@@ -674,22 +636,16 @@ function renderChatList() {
   const container = document.getElementById("chatUserList");
   if (!container) return;
   container.innerHTML = "";
-
   if (allChats.length === 0) {
     container.innerHTML = `<div style="padding:20px;color:#444;font-size:14px;">No conversations yet.</div>`;
     return;
   }
-
   allChats.forEach(chat => {
     const lastMsg = chat.messages[chat.messages.length - 1];
-    const preview = lastMsg
-      ? lastMsg.text.substring(0, 38) + (lastMsg.text.length > 38 ? "…" : "")
-      : "No messages";
-
+    const preview = lastMsg ? lastMsg.text.substring(0, 38) + (lastMsg.text.length > 38 ? "…" : "") : "No messages";
     const initials = (chat.name || "?").charAt(0).toUpperCase();
     const isActive = chat.email === activeChatEmail;
     const hasUnread = chat.unread;
-
     container.innerHTML += `
     <div class="chat-user-item ${isActive ? "active" : ""}" onclick="openChat('${chat.email}')">
       <div class="chat-avatar">${initials}</div>
@@ -706,10 +662,8 @@ function openChat(email) {
   activeChatEmail = email;
   const chat = allChats.find(c => c.email === email);
   if (!chat) return;
-
   renderChatList();
   renderConversation(chat);
-
   if (chatRefreshInterval) clearInterval(chatRefreshInterval);
   chatRefreshInterval = setInterval(loadChats, 3000);
 }
@@ -717,9 +671,7 @@ function openChat(email) {
 function renderConversation(chat) {
   const conv = document.getElementById("chatConversation");
   if (!conv) return;
-
   const initials = (chat.name || "?").charAt(0).toUpperCase();
-
   const messagesHtml = chat.messages.map(m => {
     const fromClass = m.sender === "user" ? "from-user" : m.sender === "admin" ? "from-admin" : "from-bot";
     const time = new Date(m.date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -729,7 +681,6 @@ function renderConversation(chat) {
       <div class="msg-time">${m.sender === "admin" ? "You" : chat.name} · ${time}</div>
     </div>`;
   }).join("");
-
   conv.innerHTML = `
   <div class="chat-conv-header">
     <div class="chat-avatar">${initials}</div>
@@ -744,7 +695,6 @@ function renderConversation(chat) {
       onkeydown="if(event.key==='Enter') sendReply('${chat.email}')">
     <button class="chat-send-btn" onclick="sendReply('${chat.email}')">➤</button>
   </div>`;
-
   const msgs = document.getElementById("chatMessages");
   if (msgs) msgs.scrollTop = msgs.scrollHeight;
 }
@@ -755,36 +705,31 @@ async function sendReply(email) {
   const message = input.value.trim();
   if (!message) return;
   input.value = "";
-
   await fetch("/chat/reply", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, message })
   });
-
   await loadChats();
 }
 
 /* ========================= */
 /* SITE CONTROLS             */
 /* ========================= */
-
 async function loadSiteControls() {
   const res = await fetch("/site-settings");
   const data = await res.json();
-
   document.getElementById("announcementEnabled").checked = data.announcement.enabled;
   document.getElementById("announcementMessage").value = data.announcement.message;
   document.getElementById("announcementType").value = data.announcement.type || "info";
 
   const reps = data.representatives;
-const repConfig = {
-  "Robert Rachel":  ["Tunisia","Algeria","Norway","Germany","France"],
-  "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
-  "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
-  "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"]
-};
-
+  const repConfig = {
+    "Robert Rachel":  ["Tunisia","Algeria","Norway","Germany","France"],
+    "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
+    "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
+    "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"]
+  };
   Object.entries(repConfig).forEach(([name, countries]) => {
     countries.forEach(country => {
       const id = "rep-" + name.replace(/\s+/g,"-") + "-" + country.replace(/\s+/g,"-");
@@ -800,14 +745,12 @@ async function saveSiteControls() {
     message: document.getElementById("announcementMessage").value.trim(),
     type:    document.getElementById("announcementType").value
   };
-
-const repConfig = {
-  "Robert Rachel":  ["Tunisia","Algeria","Norway","Germany","France"],
-  "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
-  "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
-  "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"]
-};
-
+  const repConfig = {
+    "Robert Rachel":  ["Tunisia","Algeria","Norway","Germany","France"],
+    "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
+    "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
+    "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"]
+  };
   const representatives = {};
   Object.entries(repConfig).forEach(([name, countries]) => {
     representatives[name] = {};
@@ -817,21 +760,18 @@ const repConfig = {
       representatives[name][country] = isNaN(val) ? 0 : val;
     });
   });
-
   const response = await fetch("/admin-save-site-settings", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ announcement, representatives })
   });
-
   const data = await response.json();
-  alert(data.success ? "✅ Changes saved and live on index.html!" : "❌ Failed to save.");
+  alert(data.success ? "✅ Changes saved!" : "❌ Failed to save.");
 }
 
 /* ========================= */
 /* LIVE COUNTER CONTROLS     */
 /* ========================= */
-
 const repCountryConfig = {
   "Robert Rachel":  ["Tunisia","Algeria","Norway","Germany","France"],
   "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
@@ -842,9 +782,7 @@ const repCountryConfig = {
 let counterPollInterval = null;
 
 async function loadCounterControls() {
-  // Init counters on server if they don't exist yet
   await fetch("/admin-init-counters", { method: "POST" });
-
   const res = await fetch("/admin-get-counters");
   const data = await res.json();
   const counters = data.counters || {};
@@ -852,31 +790,25 @@ async function loadCounterControls() {
   Object.entries(repCountryConfig).forEach(([name, countries]) => {
     const repKey = name.replace(/\s+/g, "-");
     const repData = counters[name] || {};
-
     const pauseEl = document.getElementById("pause-" + repKey);
     if (pauseEl) pauseEl.checked = !!repData.paused;
-
     countries.forEach(country => {
       const countryKey = country.replace(/\s+/g, "-");
       const c = repData[country] || {};
-
       const speedEl  = document.getElementById("cspeed-" + repKey + "-" + countryKey);
       const pauseEl2 = document.getElementById("cpause-" + repKey + "-" + countryKey);
       const liveEl   = document.getElementById("clive-"  + repKey + "-" + countryKey);
-
       if (speedEl)  speedEl.value    = c.speed   ?? 1;
       if (pauseEl2) pauseEl2.checked = !!c.paused;
       if (liveEl)   liveEl.innerText = (c.current ?? 0).toLocaleString();
     });
   });
 
-  // Poll live counts every 5 seconds so admin can see them climbing
   if (counterPollInterval) clearInterval(counterPollInterval);
   counterPollInterval = setInterval(async () => {
     const r = await fetch("/admin-get-counters");
     const d = await r.json();
     const ctrs = d.counters || {};
-
     Object.entries(repCountryConfig).forEach(([name, countries]) => {
       const repKey = name.replace(/\s+/g, "-");
       const repData = ctrs[name] || {};
@@ -891,45 +823,35 @@ async function loadCounterControls() {
 
 async function saveCounterControls() {
   const settings = {};
-
   Object.entries(repCountryConfig).forEach(([name, countries]) => {
     const repKey = name.replace(/\s+/g, "-");
-    settings[name] = {
-      paused: !!document.getElementById("pause-" + repKey)?.checked
-    };
-
+    settings[name] = { paused: !!document.getElementById("pause-" + repKey)?.checked };
     countries.forEach(country => {
       const countryKey = country.replace(/\s+/g, "-");
       const speed  = parseInt(document.getElementById("cspeed-" + repKey + "-" + countryKey)?.value, 10);
       const paused = !!document.getElementById("cpause-" + repKey + "-" + countryKey)?.checked;
-
-      settings[name][country] = {
-        speed:  isNaN(speed) ? 1 : Math.min(10, Math.max(1, speed)),
-        paused: paused
-      };
+      settings[name][country] = { speed: isNaN(speed) ? 1 : Math.min(10, Math.max(1, speed)), paused };
     });
   });
-
   const res = await fetch("/admin-save-counters", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ settings })
   });
-
   const data = await res.json();
   alert(data.success ? "✅ Speed settings saved!" : "❌ Failed to save.");
 }
 
-async function resetAllCounters() { 
-  if (!confirm("Reset ALL counters to zero? Visitors will see 0 until they climb back up.")) return;
-
+async function resetAllCounters() {
+  if (!confirm("Reset ALL counters to zero?")) return;
   const res = await fetch("/admin-reset-counters", { method: "POST" });
   const data = await res.json();
+  if (data.success) { alert("✅ All counters reset."); loadCounterControls(); }
+  else alert("❌ Failed to reset.");
+}
 
-  if (data.success) {
-    alert("✅ All counters reset to zero.");
-    loadCounterControls();
-  } else {
-    alert("❌ Failed to reset.");
-  }
+function toggleSidebar() {
+  document.querySelector(".sidebar").classList.toggle("active");
+  document.getElementById("sidebarOverlay").classList.toggle("active");
+  document.body.classList.toggle("sidebar-open");
 }

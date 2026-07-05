@@ -1,4 +1,3 @@
-Index
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -163,11 +162,11 @@ body::before, body::after { display:none !important; }
 
 <!-- NAV -->
 <div class="top-nav">
-  <div class="nav-logo">BINANCE • GIAI</div>
+  <div class="nav-logo">BNCE • GIAI</div>
   <div class="nav-buttons">
     <button class="nav-btn login-nav" onclick="window.location.href='login.html'">Sign in</button>
-    <button class="nav-btn create-nav" onclick="openAuth()">Create Account</button>
-  </div>
+<button class="nav-btn create-nav" onclick="window.location.href='signup.html'">Create Account</button>
+ </div>
 </div>
 
 <!-- TICKER -->
@@ -582,7 +581,7 @@ body::before, body::after { display:none !important; }
 <!-- BINANCE SYSTEM — YOUTUBE STYLE VIDEO -->
 <section class="video-section">
   <div class="video-heading">
-    <h2 class="section-title">Inside The Binance GIAI System</h2>
+    <h2 class="section-title">Inside The BNCE GIAI System</h2>
     <p class="video-sub">
       A complete breakdown of how the Global Investor Acquisition Initiative operates across
       international markets — covering AI-driven investment infrastructure, representative
@@ -660,19 +659,25 @@ body::before, body::after { display:none !important; }
 
   <div class="card-section-inner">
 
-    <!-- LEFT — IMAGE -->
-    <div class="card-image-wrap" onclick="goToCards()" style="cursor:pointer;">
-      <img src="img/binancecarde.png" alt="GIAI Cards">
-    </div>
-
-    <!-- RIGHT — INFO -->
     <div class="card-info-side">
 
       <h1 class="card-section-title">Apply for a GIAI Card</h1>
+
       <p class="card-section-sub">
         Unlock spending power up to $500,000 based on your investment tier.
       </p>
 
+      <!-- CARD IMAGE -->
+      <div class="card-image-wrap" onclick="goToCards()" style="cursor:pointer;">
+        <img src="img/binancecarde.png" alt="GIAI Cards">
+      </div>
+
+      <!-- BUTTON -->
+      <button class="card-section-btn" onclick="goToCards()">
+        View My Cards
+      </button>
+
+      <!-- INFO CARDS -->
       <div class="card-info-grid">
 
         <div class="card-info-box gold-box">
@@ -696,10 +701,6 @@ body::before, body::after { display:none !important; }
         </div>
 
       </div>
-
-      <button class="card-section-btn" onclick="goToCards()">
-        View My Cards
-      </button>
 
     </div>
 
@@ -753,7 +754,7 @@ function goToCards() {
 <footer class="site-footer">
   <div class="footer-grid">
     <div>
-      <h3>BINANCE • GIAI</h3>
+      <h3>BNCE • GIAI</h3>
       <p>Global Investor Acquisition Initiative — connecting verified investors and representatives across 180+ countries through AI-powered portfolio systems.</p>
     </div>
     <div>

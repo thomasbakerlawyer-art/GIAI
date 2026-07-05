@@ -57,6 +57,41 @@ async function updateMarkets() {
 updateMarkets();
 setInterval(updateMarkets, 30000);
 
+async function loadSiteSettings() {
+  try {
+    const res = await fetch("/site-settings");
+    const data = await res.json();
+
+    // Announcement banner
+    const banner = document.getElementById("announcementBanner");
+    if (banner && data.announcement && data.announcement.enabled) {
+      banner.style.display = "block";
+      banner.className = "type-" + (data.announcement.type || "info");
+      const textEl = document.getElementById("announcementText");
+      if (textEl) textEl.textContent = data.announcement.message;
+      updateNavPosition();
+    }
+
+    // Representatives data
+    if (data.representatives) {
+      Object.entries(data.representatives).forEach(([rep, countries]) => {
+        const repKey = rep.replace(/\s+/g, "-");
+        let total = 0;
+        Object.entries(countries).forEach(([country, count]) => {
+          const countryKey = country.replace(/\s+/g, "-");
+          const el = document.getElementById("counter-" + repKey + "-" + countryKey);
+          if (el) el.innerText = Number(count).toLocaleString();
+          total += Number(count);
+        });
+        const totalEl = document.getElementById("total-" + repKey);
+        if (totalEl) totalEl.innerText = total.toLocaleString();
+      });
+    }
+  } catch(e) {
+    console.log("loadSiteSettings error:", e);
+  }
+}
+
 /* ========================= */
 /* LIVE INVESTORS — SMOOTH   */
 /* ========================= */
@@ -115,15 +150,90 @@ const scrollVideos = document.querySelectorAll(".scroll-video");
 const videoObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     const video = entry.target;
+
     if (entry.isIntersecting) {
       video.play().catch(() => {});
     } else {
       video.pause();
+      video.currentTime = 0; // Optional: restart when it comes back
     }
   });
-}, { threshold: 0.4 });
+}, {
+  threshold: 0.1,
+  rootMargin: "150px 0px"
+});
 
-scrollVideos.forEach(v => videoObserver.observe(v));
+scrollVideos.forEach(video => {
+  video.preload = "auto";
+  video.muted = true;
+  videoObserver.observe(video);
+});
+
+// ==========================================
+// VIDEO SOUND BUTTONS
+// ==========================================
+
+document.querySelectorAll(".scroll-video").forEach(video => {
+
+    const wrapper = video.parentElement;
+    wrapper.style.position = "relative";
+
+    const btn = document.createElement("button");
+    btn.className = "video-sound-btn";
+
+    btn.innerHTML = `
+    <svg class="sound-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <line class="mute-line" x1="23" y1="9" x2="17" y2="15"></line>
+        <line class="mute-line" x1="17" y1="9" x2="23" y2="15"></line>
+    </svg>
+    `;
+
+    Object.assign(btn.style, {
+        position: "absolute",
+        bottom: "18px",
+        right: "18px",
+        width: "46px",
+        height: "46px",
+        border: "none",
+        borderRadius: "50%",
+        background: "rgba(0,0,0,.45)",
+        backdropFilter: "blur(8px)",
+        cursor: "pointer",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        zIndex: "20",
+        transition: "all .25s ease"
+    });
+
+    btn.addEventListener("mouseenter", () => {
+        btn.style.background = "rgba(0,0,0,.7)";
+    });
+
+    btn.addEventListener("mouseleave", () => {
+        btn.style.background = "rgba(0,0,0,.45)";
+    });
+
+    video.muted = true;
+
+    btn.onclick = (e) => {
+
+        e.stopPropagation();
+
+        video.muted = !video.muted;
+
+        const lines = btn.querySelectorAll(".mute-line");
+
+        lines.forEach(line => {
+            line.style.display = video.muted ? "block" : "none";
+        });
+
+    };
+
+    wrapper.appendChild(btn);
+
+});
 
 // =========================
 // LANGUAGE MENU
@@ -250,7 +360,7 @@ function goToPlan(plan) {
 }
 
 function openAuth() {
-  document.querySelector(".auth-section").style.display = "flex";
+  window.location.href = "signup.html";
 }
 
 function closeAuth() {
@@ -391,34 +501,50 @@ function updateNavPosition() {
   }
 }
 
-async function loadSiteSettings() {
-  try {
-    const res = await fetch("/site-settings");
-    if (!res.ok) return;
-    const data = await res.json();
-    const ann = data.announcement;
-    if (ann && ann.enabled && ann.message && ann.message.trim() !== "") {
-      const banner = document.getElementById("announcementBanner");
-      document.getElementById("announcementText").textContent = ann.message;
-      banner.className = "type-" + (ann.type || "info");
-      banner.style.display = "block";
-      updateNavPosition();
-    } else {
-      updateNavPosition();
-    }
-  } catch(e) {
-    console.warn("Site settings could not load:", e.message);
-  }
-}
+async function sendMessage() {
+  const currentUser = JSON.parse(localStorage.getItem("user"));
 
-// Close button
-const closeBtn = document.getElementById("announcementClose");
-if (closeBtn) {
-  closeBtn.addEventListener("click", () => {
-    const banner = document.getElementById("announcementBanner");
-    if (banner) banner.style.display = "none";
-    updateNavPosition();
-  });
+  if (!currentUser) {
+    alert("Please login first");
+    return;
+  }
+
+  const input = document.getElementById("userMessage");
+  const message = input.value.trim();
+
+  if (!message) return;
+
+  input.value = "";
+
+  try {
+    const response = await fetch("/chat/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: currentUser.email,
+        name: currentUser.name,
+        message
+      })
+    });
+
+    const data = await response.json();
+
+    console.log("Chat response:", data);
+
+    if (!data.success) {
+      alert("Server response: " + JSON.stringify(data));
+    }
+
+    await loadMessages();
+
+  } catch (err) {
+    console.error("Chat error:", err);
+
+    document.getElementById("chatMessages").innerHTML +=
+      `<div class="bot-message">Message failed to send.</div>`;
+  }
 }
 
 loadSiteSettings();
@@ -490,3 +616,10 @@ const scrollVideoObserver = new IntersectionObserver((entries) => {
     }
   });
 }, { threshold: 0.5 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("video").forEach(video => {
+    video.muted = true;
+    video.play().catch(() => {});
+  });
+});

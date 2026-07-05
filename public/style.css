@@ -35,21 +35,21 @@ overflow-x:hidden;
   font-weight: bold;
 }
 
-#ticker{
-white-space:nowrap;
-display:inline-block;
-padding-left:100%;
-animation:ticker 35s linear infinite;
-font-size:15px;
+#ticker {
+  position: absolute;
+  left: 100%;
+  white-space: nowrap;
+  font-size: 15px;
+  animation: ticker 35s linear infinite;
 }
 
-@keyframes ticker{
-0%{
-transform:translateX(0);
-}
-100%{
-transform:translateX(-100%);
-}
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-200%);
+  }
 }
 
 /* HERO */
@@ -222,6 +222,31 @@ border:1px solid rgba(240,185,11,0.15);
 transition:0.3s;
 position:relative;
 overflow:hidden;
+}
+
+.step-card:hover{
+transform:translateY(-5px);
+border-color:#f0b90b;
+}
+
+.step-number{
+position:absolute;
+top:20px;
+right:25px;
+font-size:55px;
+font-weight:900;
+color:rgba(240,185,11,0.08);
+}
+
+.step-card h3{
+font-size:30px;
+margin-bottom:20px;
+color:#f0b90b;
+}
+
+.step-card p{
+line-height:1.8;
+color:#ccc;
 }
 
 .step-card:hover{
@@ -673,21 +698,6 @@ transition:0.3s;
 transform:scale(1.03);
 }
 
-@media(max-width:1000px){
-
-.plan-grid{
-grid-template-columns:repeat(2,1fr);
-}
-
-}
-
-@media(max-width:768px){
-
-.plan-grid{
-grid-template-columns:1fr;
-}
-
-}
 
 /* ========================= */
 /* TOP NAVIGATION */
@@ -715,8 +725,9 @@ color:#f0b90b;
 }
 
 .nav-buttons{
-display:flex;
-gap:15px;
+    display:flex;
+    gap:6px;
+    margin-left:auto;
 }
 
 .nav-btn{
@@ -1834,20 +1845,21 @@ display:block;
 }
 
 /* MOBILE */
-
 @media(max-width:1000px){
 
-.ronaldo-grid{
+  .ronaldo-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+  }
 
-grid-template-columns:1fr;
+  .ronaldo-card{
+    padding:15px;
+  }
 
-}
-
-.ronaldo-video{
-
-height:700px;
-
-}
+  .ronaldo-video{
+    height:700px;
+  }
 
 }
 
@@ -2918,22 +2930,19 @@ font-size:52px;
 
 @media(max-width:700px){
 
-.users-video-box{
-height:550px;
-}
+  .ronaldo-grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+  }
 
-.ronaldo-grid{
-grid-template-columns:1fr;
-}
+  .video-caption h2{
+    font-size:38px;
+  }
 
-.video-caption h2{
-font-size:38px;
-}
-
-.video-caption{
-left:25px;
-bottom:30px;
-}
+  .video-caption{
+    left:25px;
+    bottom:30px;
+  }
 
 }
 
@@ -3855,31 +3864,39 @@ transform:translateY(-180px);
 
 }
 
-@media (max-width:600px){
+@media (max-width:768px){
 
-.live-profit-popup{
+    .live-profit-popup{
+        width:145px;
+        padding:8px 10px;
+        right:0;
+        top:35%;
+        border-radius:10px;
+    }
 
-width:180px;
+    .profit-header{
+        font-size:10px;
+        margin-bottom:2px;
+        color:#f0b90b;
+        font-weight:700;
+    }
 
-right:10px;
+    .profit-user{
+        font-size:10px;
+        color:#fff;
+        font-weight:600;
+        margin:0;
+    }
 
-top:30%;
+    .profit-amount{
+        font-size:13px;
+        margin:0;
+    }
 
-padding:8px 10px;
-
-}
-
-.profit-user{
-font-size:11px;
-}
-
-.profit-amount{
-font-size:13px;
-}
-
-.profit-plan{
-font-size:10px;
-}
+    .profit-plan{
+        font-size:9px;
+        margin:0;
+    }
 
 }
 
@@ -6671,3 +6688,617 @@ cursor:pointer;
   }
 }
 
+/* ================================================
+   MOBILE GRID FIXES — index.html sections
+   ================================================ */
+
+@media (max-width: 600px) {
+
+  /* Steps grid — How The GIAI System Works */
+  .steps-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    padding: 0 16px 50px !important;
+  }
+
+  .step-card {
+    padding: 24px !important;
+    border-radius: 20px !important;
+  }
+
+  .step-number {
+    font-size: 36px !important;
+  }
+
+  .step-card h3 {
+    font-size: 20px !important;
+    margin-bottom: 12px !important;
+  }
+
+  /* Rules grid — Competition Rules */
+  .rules-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .rule-card {
+    padding: 22px !important;
+    border-radius: 20px !important;
+  }
+
+  .rule-card h3 {
+    font-size: 18px !important;
+  }
+
+  .rule-card p {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Partner boxes — Trust section */
+  .partner-boxes {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+    margin-top: 20px !important;
+  }
+
+  .partner-card {
+    padding: 18px !important;
+    border-radius: 16px !important;
+  }
+
+  .partner-card h3 {
+    font-size: 16px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .partner-card p {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Section titles — smaller on mobile */
+  .section-title {
+    font-size: 28px !important;
+    margin-bottom: 30px !important;
+    padding: 0 16px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .rep-card {
+    flex-direction: column !important;
+  }
+
+  .rep-img {
+    width: 100% !important;
+    height: 380px !important;
+    object-fit: cover !important;
+    object-position: top center !important;
+    border-radius: 20px !important;
+  }
+}
+
+@media (max-width: 768px) {
+
+  /* HOW THE GIAI SYSTEM WORKS */
+  .steps-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+  }
+
+  .step-card{
+    padding:15px;
+  }
+
+  .step-card h3{
+    font-size:18px;
+  }
+
+  .step-card p{
+    font-size:13px;
+    line-height:1.5;
+  }
+
+  /* GLOBAL REPRESENTATION */
+  .ronaldo-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+  }
+
+  .ronaldo-card{
+    padding:15px;
+  }
+
+  /* COMPETITION RULES */
+  .rules-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+  }
+
+  .rule-card{
+    padding:15px;
+  }
+
+  /* GIAI CARD */
+  .card-info-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+  }
+
+  .card-info-box{
+    padding:15px;
+  }
+
+  /* INSIDE BINANCE GIAI */
+  .video-info-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+  }
+
+  .video-info-card{
+    padding:15px;
+  }
+
+}
+
+@media(max-width:768px){
+
+.steps-grid{
+grid-template-columns:repeat(2,1fr) !important;
+gap:12px;
+}
+
+.step-card{
+padding:15px;
+min-width:0;
+}
+
+.step-card h3{
+font-size:18px;
+}
+
+.step-card p{
+font-size:13px;
+line-height:1.5;
+}
+
+.step-number{
+font-size:32px;
+top:10px;
+right:10px;
+}
+
+}
+
+@media(max-width:768px){
+
+.rules-grid{
+grid-template-columns:repeat(2,1fr) !important;
+gap:12px;
+}
+
+.rule-card{
+padding:15px;
+}
+
+.rule-card h3{
+font-size:18px;
+}
+
+.rule-card p{
+font-size:13px;
+line-height:1.5;
+}
+
+}
+
+/* ================================================
+   FINAL FIX — GLOBAL REPRESENTATION SECTION MOBILE
+   ================================================ */
+
+@media (max-width: 768px) {
+
+  .users-video-section {
+    padding: 60px 5% !important;
+  }
+
+  .users-layout {
+    flex-direction: column !important;
+  }
+
+  .users-content,
+  .users-video-box {
+    width: 100% !important;
+  }
+
+  /* VIDEO — locked inside its box, never overlaps */
+  .users-video-box {
+    position: relative !important;
+    height: 260px !important;
+    overflow: hidden !important;
+    border-radius: 24px !important;
+  }
+
+  .users-video-box video {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  .video-overlay {
+    position: absolute !important;
+    inset: 0 !important;
+  }
+
+  .video-caption {
+    position: absolute !important;
+    left: 16px !important;
+    bottom: 16px !important;
+    right: 16px !important;
+    z-index: 5 !important;
+  }
+
+  .video-caption h2 {
+    font-size: 22px !important;
+  }
+
+  .video-caption p {
+    font-size: 13px !important;
+  }
+
+  .users-title {
+    font-size: 30px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .users-desc {
+    font-size: 14px !important;
+    margin-bottom: 20px !important;
+  }
+
+  /* 4 feature cards — clean 2x2 grid, no overlap */
+  .ronaldo-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+  }
+
+  .ronaldo-card {
+    padding: 16px !important;
+    border-radius: 16px !important;
+  }
+
+  .ronaldo-card h3 {
+    font-size: 15px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .ronaldo-card p {
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+  }
+}
+
+.hero {
+    padding: 80px 18px 40px;
+    min-height: auto;
+}
+
+.binance-logo {
+    width: 70px;
+    margin-bottom: 18px;
+}
+
+.hero h1 {
+    font-size: 58px;
+    line-height: 1;
+}
+
+.hero h2 {
+    font-size: 24px;
+    line-height: 1.2;
+    margin-top: 10px;
+}
+
+.hero .sub {
+    font-size: 14px;
+}
+
+.stats {
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.stat-card {
+    min-width: 160px;
+    padding: 18px;
+}
+
+.stat-card h3 {
+    font-size: 28px;
+}
+
+.hero-buttons button {
+    padding: 14px 20px;
+    font-size: 14px;
+}
+
+html,
+body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+@media (max-width: 480px) {
+
+  #chatWindow{
+    width: calc(100vw - 20px);
+    max-width: 340px;
+    right: 10px;
+    left: 10px;
+    height: 70vh;
+    bottom: 80px;
+  }
+
+  #chatButton{
+    right: 10px;
+    bottom: 15px;
+  }
+
+}
+/* ================================================
+   FIX: TICKER OVERFLOW — the root cause
+   ================================================ */
+
+.ticker-wrap {
+  position: fixed !important;
+  overflow: hidden !important;
+  width: 100% !important;
+  max-width: 100vw !important;
+  left: 0 !important;
+  right: 0 !important;
+}
+
+#ticker {
+  position: relative !important;
+  left: 0 !important;
+  display: inline-block !important;
+  white-space: nowrap !important;
+  animation: ticker-scroll 35s linear infinite !important;
+}
+
+@keyframes ticker-scroll {
+  0%   { transform: translateX(100vw); }
+  100% { transform: translateX(-100%); }
+}
+
+/* Body clamp — nothing escapes */
+html, body {
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
+}
+
+/* ================================================
+   FIX: ACTUAL OVERFLOW CULPRITS
+   ================================================ */
+
+/* Glow orbs — clip them, never let them stretch the page */
+.glow, .glow2, .glow3 {
+  overflow: hidden !important;
+  max-width: 100vw !important;
+  pointer-events: none !important;
+}
+
+.hero {
+  overflow: hidden !important;
+}
+
+@media (max-width: 480px) {
+  .top-nav {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    padding: 10px 14px !important;
+    gap: 8px !important;
+    overflow: hidden !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .nav-buttons {
+    display: flex !important;
+    gap: 6px !important;
+    flex-shrink: 1 !important;
+    flex-wrap: nowrap !important;
+    overflow: hidden !important;
+  }
+
+  .nav-btn {
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+    flex-shrink: 1 !important;
+  }
+}
+
+/* ========================= */
+/* MOBILE NAVIGATION */
+/* ========================= */
+
+@media (max-width:768px){
+
+.top-nav{
+    padding:10px 12px;
+    left:0;
+    right:0;
+    width:100%;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.nav-logo{
+    font-size:15px;
+}
+
+.nav-buttons{
+    gap:8px;
+}
+
+.nav-btn{
+    padding:8px 12px;
+    font-size:12px;
+}
+
+}
+
+.card-section-inner{
+    display:flex;
+    flex-direction:column;
+}
+
+.card-info-side{
+    order:1;
+}
+
+.card-image-wrap{
+    order:2;
+    margin:25px 0;
+}
+
+.card-section-btn{
+    order:3;
+    align-self:flex-start;
+    margin-top:20px;
+    margin-bottom:35px;
+}
+
+.card-info-grid{
+    order:4;
+}
+
+@media (max-width:768px){
+
+/* Review cards */
+.review-card{
+    padding:16px;
+    border-radius:20px;
+    min-height:auto;
+    margin-bottom:14px;
+}
+
+/* Profile image */
+.review-avatar{
+    width:50px;
+    height:50px;
+}
+
+/* Name */
+.review-name{
+    font-size:22px;
+    margin-bottom:2px;
+}
+
+/* Stars */
+.review-stars{
+    font-size:15px;
+    margin:4px 0 10px;
+}
+
+/* Review text */
+.review-text{
+    font-size:14px;
+    line-height:1.6;
+}
+
+/* Reduce spacing between cards */
+.reviews-grid{
+    gap:16px;
+}
+
+}
+
+/* ================================================
+   SIGNUP — CLOSE BUTTON
+   ================================================ */
+
+.signup-close {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 34px;
+  height: 34px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+  z-index: 10;
+  padding: 6px;
+  box-sizing: border-box;
+}
+
+.signup-close:hover {
+  background: rgba(240,185,11,0.12);
+  border-color: rgba(240,185,11,0.4);
+}
+
+.signup-close svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+  flex-shrink: 0;
+}
+
+/* ================================================
+   NAV — MOBILE FIX
+   ================================================ */
+
+@media (max-width: 480px) {
+  .top-nav {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 10px 16px !important;
+    position: absolute !important;
+    top: 45px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    gap: 0 !important;
+  }
+
+  .nav-logo {
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    line-height: 1.2 !important;
+  }
+
+  .nav-buttons {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 8px !important;
+    flex-shrink: 0 !important;
+    margin-left: auto !important;
+  }
+
+  .nav-btn {
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+    border-radius: 10px !important;
+    white-space: nowrap !important;
+  }
+}

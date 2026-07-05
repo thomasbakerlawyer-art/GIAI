@@ -146,6 +146,49 @@ Withdraw
 
 <div class="rep-cards-container" id="repCardsContainer"></div>
 
+<div class="performance-card">
+
+    <div class="performance-header">
+
+<h3>Profit Growth</h3>
+
+<div class="growth-label">
+
+    Live Profit Tracking
+
+</div>
+
+  </div>
+
+<canvas id="portfolioChart"></canvas>
+
+<div
+    id="tradingviewChart"
+    style="
+        width:100%;
+        height:350px;
+        display:none;
+        border-radius:16px;
+        overflow:hidden;
+    ">
+</div>
+
+    <div class="performance-stats">
+
+        <div>
+            <span>Today's Profit</span>
+            <h4 id="todayProfit">$0.00</h4>
+        </div>
+
+        <div>
+            <span>ROI</span>
+            <h4 id="roiPercent">0%</h4>
+        </div>
+
+    </div>
+
+</div>
+
 <!-- ACTIVITY -->
 
 <div class="dashboard-stats">
@@ -934,8 +977,11 @@ window.addEventListener("load", () => {
 </script>
 
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="dashboard.js"></script>
+<script src="portfolio.js"></script>
+
+<script src="https://s3.tradingview.com/tv.js"></script>
 
 </body>
 </html>

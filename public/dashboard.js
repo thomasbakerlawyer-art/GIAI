@@ -86,16 +86,23 @@ function updateDashboard() {
 ========================= */
 
 function updatePortfolio() {
-  document.getElementById("portfolioBalance").innerText =
-    "$" + Number(currentUser.balance || 0).toLocaleString();
+ document.getElementById("portfolioBalance").textContent =
+    "$" + Number(currentUser.balance || 0).toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+
 
   const amount = Number(currentUser.investmentAmount || 0);
   const profitPercent = Number(currentUser.profitPercent || 0);
   const duration = Number(currentUser.investmentDuration || 0);
   const start = Number(currentUser.investmentStart || 0);
 
-  document.getElementById("investmentAmount").innerText =
-    "$" + Number(currentUser.investmentAmount || 0).toLocaleString();
+document.getElementById("investmentAmount").textContent =
+    "$" + Number(currentUser.investmentAmount || 0).toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
 
   if (!duration || !start) {
     document.getElementById("expectedProfit").innerText = "$0.00";
@@ -115,6 +122,14 @@ function updatePortfolio() {
   const progress = Math.min((now - start) / (endTime - start), 1);
   const claimable = totalProfit * progress;
 
+// ROI
+const roi = amount > 0 ? (claimable / amount) * 100 : 0;
+
+// Today's Profit
+const todayProfit = duration > 0
+    ? totalProfit / duration
+    : 0;
+
   document.getElementById("claimableProfit").innerText =
     "$" + claimable.toLocaleString(undefined, { maximumFractionDigits: 2 });
 
@@ -122,6 +137,17 @@ function updatePortfolio() {
 
   const daysRemaining = Math.max(0, Math.ceil((endTime - now) / 86400000));
   document.getElementById("daysRemaining").innerText = daysRemaining;
+
+loadPortfolioHistory();
+
+document.getElementById("todayProfit").innerText =
+"$" + Number(currentUser.todayProfit || todayProfit).toLocaleString(undefined,{
+    maximumFractionDigits:2
+});
+
+document.getElementById("roiPercent").innerText =
+Number(currentUser.roi || roi).toFixed(2) + "%";
+
 }
 
 /* =========================
