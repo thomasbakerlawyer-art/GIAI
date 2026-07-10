@@ -186,8 +186,6 @@ if(window.TradingView){
 
         autosize:true,
 
-        symbol:"BINANCE:BTCUSDT",
-
         interval:"15",
 
         timezone:"Etc/UTC",

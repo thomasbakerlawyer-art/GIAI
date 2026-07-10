@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Create Account • GIAI</title>
+<title> • GIAI</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
 
@@ -248,7 +248,51 @@ body{
   .logo{font-size:27px;}
   .wallet-tab{font-size:11px;padding:9px 4px;}
 }
+.password-box{
+    position:relative !important;
+    width:100%;
+    display:block !important;
+}
+
+.password-box input{
+    width:100% !important;
+    padding-right:55px !important;
+    box-sizing:border-box !important;
+}
+
+.toggle-password{
+    position:absolute !important;
+    right:15px !important;
+    top:50% !important;
+    transform:translateY(-50%) !important;
+
+    width:22px !important;
+    height:22px !important;
+
+    border:none !important;
+    background:transparent !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+
+    cursor:pointer;
+    padding:0 !important;
+    margin:0 !important;
+    color:#888;
+}
+
+.toggle-password:hover{
+    color:#f0b90b;
+}
+
+.toggle-password svg{
+    width:20px;
+    height:20px;
+    display:block;
+}
 </style>
+
 </head>
 <body>
 
@@ -269,7 +313,7 @@ body{
   </svg>
 </button>
 
-<div class="logo">BNCE • GIAI</div>
+<div class="logo">• GIAI</div>
   <div class="subtitle">Create your investor account and gain access to our AI‑powered global investment infrastructure.</div>
 
   <form id="signupForm" novalidate>
@@ -300,16 +344,83 @@ body{
     <!-- ── Security ── -->
     <div class="section-label">Security</div>
 
-    <div class="input-group">
-      <label>Password</label>
-      <input type="password" id="password" placeholder="Create a strong password" required>
-    </div>
+<div class="input-group">
+  <label>Password</label>
 
-    <div class="input-group">
-      <label>Confirm Password</label>
-      <input type="password" id="confirmPassword" placeholder="Re-enter your password" required>
-      <div class="field-error" id="passwordError">Passwords do not match.</div>
-    </div>
+  <div class="password-box">
+
+    <input
+      type="password"
+      id="password"
+      placeholder="Create a strong password"
+      required>
+
+    <button
+      type="button"
+      class="toggle-password"
+      onclick="togglePassword('password', this)">
+
+      <svg xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round">
+
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"></path>
+        <circle cx="12" cy="12" r="3"></circle>
+
+      </svg>
+
+    </button>
+
+  </div>
+
+</div>
+
+<div class="input-group">
+  <label>Confirm Password</label>
+
+  <div class="password-box">
+
+    <input
+      type="password"
+      id="confirmPassword"
+      placeholder="Re-enter your password"
+      required>
+
+    <button
+      type="button"
+      class="toggle-password"
+      onclick="togglePassword('confirmPassword', this)">
+
+      <svg xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round">
+
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"></path>
+        <circle cx="12" cy="12" r="3"></circle>
+
+      </svg>
+
+    </button>
+
+  </div>
+
+  <div class="field-error" id="passwordError">
+    Passwords do not match.
+  </div>
+
+</div>
 
     <!-- ── Location ── -->
     <div class="section-label">Location</div>
@@ -545,7 +656,33 @@ document.getElementById("signupForm").addEventListener("submit", async function(
     return;
   }
 
-  const payload = {
+// User must enter at least one wallet
+if (!walletBTC && !walletETH && !walletUSDT) {
+  alert("Please enter at least one wallet address.");
+  return;
+}
+
+// Prevent the same wallet address from being used twice
+const enteredWallets = [walletBTC, walletETH, walletUSDT]
+  .map(w => w.trim())
+  .filter(w => w !== "");
+
+if (new Set(enteredWallets).size !== enteredWallets.length) {
+  alert("The same wallet address cannot be used for multiple wallet types.");
+  return;
+}
+
+// Validate each wallet if it was entered
+if (
+  (walletBTC && !validateWallet(walletBTC, "btc")) ||
+  (walletETH && !validateWallet(walletETH, "eth")) ||
+  (walletUSDT && !validateWallet(walletUSDT, "usdt"))
+) {
+  alert("Please enter a valid wallet address.");
+  return;
+}
+
+ const payload = {
     username, name, email, phone,
     password, country, referrer,
     secretQuestion,
@@ -610,5 +747,6 @@ window.addEventListener("load", () => {
 
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
+<script src="script.js"></script>
 </body>
 </html>

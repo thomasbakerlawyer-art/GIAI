@@ -12,7 +12,7 @@ const app = express();
 ========================= */
 
 const MONGODB_URI =
-"mongodb+srv://chikwadojesse97_db_user:2X1UMd7xs68DjowL@cluster0.kduyuld.mongodb.net/bncegiai?retryWrites=true&w=majority&appName=Cluster0";
+"mongodb+srv://chikwadojesse97_db_user:2X1UMd7xs68DjowL@cluster0.kduyuld.mongodb.net/giai?retryWrites=true&w=majority&appName=Cluster0";
 
 mongoose.connect(MONGODB_URI)
   .then(() => console.log("✅ Connected to MongoDB Atlas"))
@@ -261,7 +261,7 @@ function computeShipmentProgress(shipment) {
 async function geocodeCity(cityName) {
   return new Promise((resolve) => {
     const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(cityName)}&format=json&limit=1`;
-    https.get(url, { headers: { "User-Agent": "BNCEGIAI/1.0" } }, (res) => {
+    https.get(url, { headers: { "User-Agent": "GIAI/1.0" } }, (res) => {
       let data = "";
       res.on("data", chunk => data += chunk);
       res.on("end", () => {
@@ -408,27 +408,271 @@ app.post("/chat/send", async (req, res) => {
   const msg = message.toLowerCase();
   let autoReply = "";
 
-  if (msg.includes("hello") || msg.includes("hi") || msg.includes("hey")) {
-    autoReply = "Hello 👋 Welcome to BNCE GIAI Support! How can we assist you today?";
-  } else if (msg.includes("deposit") || msg.includes("fund") || msg.includes("top up")) {
-    autoReply = "💰 To deposit funds, go to your Dashboard and click 'Deposit'. Select a representative, choose a plan, and send payment to one of our wallet addresses. Once confirmed, click 'I HAVE PAID' and our team will approve it shortly.";
-  } else if (msg.includes("withdraw") || msg.includes("cash out")) {
-    autoReply = "🏦 You can withdraw from your Dashboard by clicking 'Withdraw'. Note: withdrawals are only processed after your investment plan duration has ended.";
-  } else if (msg.includes("plan") || msg.includes("invest")) {
-    autoReply = "📊 We offer 6 investment plans ranging from $200 to $45,000+, with returns from 25% to 100.15%. To see all plans, go to your Dashboard and click 'Plans'.";
-  } else if (msg.includes("profit") || msg.includes("earnings")) {
-    autoReply = "💹 Your profit is shown in real time on your Dashboard under 'Expected Profit' and 'Claimable Profit'. Profit is credited once your investment duration completes.";
-  } else if (msg.includes("reinvest") || msg.includes("compound")) {
-    autoReply = "🔄 You can reinvest your profits once your plan completes. Go to your Dashboard and use the Reinvestment option.";
-  } else if (msg.includes("representative") || msg.includes("rep")) {
-    autoReply = "👤 Representatives are BNCE GIAI competition participants you support through your investments. You select one when making a deposit.";
-  } else if (msg.includes("wallet") || msg.includes("address") || msg.includes("btc") || msg.includes("usdt") || msg.includes("eth")) {
-    autoReply = "💳 Our payment wallet addresses:\n• BTC: bc1qa4g38u9mxn43td5mt67jh320sy6nne9tfaewg6\n• USDT TRC20: TBkxc6SZkXSYTop9NPJLz3TvLayDSrPedQ\n• ETH: 0x21b7f254a06F222a1bed905f9d7b13665B42Bb65";
-  } else if (msg.includes("thank")) {
-    autoReply = "😊 You're welcome! Feel free to ask anything else anytime.";
-  } else {
-    autoReply = "🤝 Thank you for reaching out to BNCE GIAI Support. A live representative will respond shortly.";
-  }
+const conversation = await Chat.findOne({ email });
+
+if (conversation?.adminJoined) {
+
+    await Chat.findOneAndUpdate(
+        { email },
+        {
+            $set: { unread: true },
+            $push: {
+                messages: {
+                    sender: "user",
+                    text: message,
+                    date: new Date()
+                }
+            }
+        }
+    );
+
+    return res.json({ success: true });
+
+}
+
+const topics = {
+  greeting: ["hello","hi","hey","good morning","good afternoon","good evening"],
+
+  deposit: ["deposit","fund","top up","payment","pay","send money","add money","buy plan","start investment","invest"],
+
+  withdraw: ["withdraw","cash out","withdrawal","take out","collect money"],
+
+  plans: ["plan","plans","investment plan","package","packages","roi"],
+
+  profit: ["profit","profits","earning","earnings","return","returns","income"],
+
+  representative: ["representative","rep","contestant","vote","division","leaderboard"],
+
+  wallet: ["wallet","address","btc","bitcoin","eth","ethereum","usdt","trc20"],
+
+  merchandise: ["merch","merchandise","hoodie","shirt","cap","mug","jersey","shop"],
+
+  shipment: ["shipment","shipping","delivery","track","tracking","courier"],
+
+  card: ["card","visa","mastercard","physical card","virtual card"],
+
+  verification: ["verify","verification","kyc","identity"],
+
+  login: ["login","log in","password","forgot password","cannot login","can't login"],
+
+   reinvest: ["reinvest","compound"],
+
+  thanks: ["thanks","thank you","appreciate"],
+
+  goodbye: ["bye","goodbye","see you","later"],
+
+  duration: [
+    "duration",
+    "days",
+    "how long",
+    "when will it end",
+    "maturity"
+  ],
+
+  approval: [
+    "approve",
+    "approval",
+    "pending",
+    "processing"
+  ],
+
+  security: [
+    "secure",
+    "security",
+    "safe",
+    "hack",
+    "scam"
+  ],
+
+  account: [
+    "account",
+    "profile",
+    "settings",
+    "change name"
+  ],
+
+  competition: [
+    "competition",
+    "contest",
+    "leaderboard",
+    "ranking"
+  ],
+
+  support: [
+    "support",
+    "help",
+    "agent",
+    "customer care",
+    "representative"
+  ]
+};
+
+function hasTopic(list) {
+
+    const clean = msg
+        .replace(/[^\w\s]/g, "")
+        .toLowerCase();
+
+    return list.some(keyword => {
+
+        keyword = keyword.toLowerCase();
+
+        if (clean.includes(keyword)) return true;
+
+        const words = keyword.split(" ");
+
+        return words.every(word => clean.includes(word));
+
+    });
+
+}
+
+if (hasTopic(topics.greeting)) {
+
+autoReply =
+"👋 Welcome to GIAI Support! How can we assist you today?";
+
+}
+
+else if (hasTopic(topics.deposit)) {
+
+autoReply =
+"💰 To deposit funds, open your Dashboard and tap 'Deposit'. Select a representative, choose an investment plan, send payment to one of our official wallet addresses, then click 'I HAVE PAID'. Your deposit will be verified and approved by our team.";
+
+}
+
+else if (hasTopic(topics.withdraw)) {
+
+autoReply =
+"🏦 Withdrawals can be requested from your Dashboard after your investment duration has completed. Simply click 'Withdraw' and follow the instructions.";
+
+}
+
+else if (hasTopic(topics.plans)) {
+
+autoReply =
+"📈 We currently offer multiple investment plans beginning from $200 up to premium plans above $45,000. Every plan has its own duration and return percentage. Visit the Plans page inside your Dashboard to compare all available plans.";
+
+}
+
+else if (hasTopic(topics.profit)) {
+
+autoReply =
+"💹 Your Expected Profit and Claimable Profit are updated automatically. Once your investment completes, your profit becomes available for withdrawal or reinvestment.";
+
+}
+
+else if (hasTopic(topics.representative)) {
+
+autoReply =
+"🏆 Representatives compete based on the investments they receive from supporters. Every deposit you make contributes votes toward your chosen representative.";
+
+}
+
+else if (hasTopic(topics.wallet)) {
+
+autoReply =
+"💳 Official payment wallets:\n\nBTC:\nbc1qa4g38u9mxn43td5mt67jh320sy6nne9tfaewg6\n\nUSDT (TRC20):\nTBkxc6SZkXSYTop9NPJLz3TvLayDSrPedQ\n\nETH:\n0x21b7f254a06F222a1bed905f9d7b13665B42Bb65";
+
+}
+
+else if (hasTopic(topics.card)) {
+
+autoReply =
+"💳 Eligible investors can request an official GIAI Card. The card can be used for supported purchases and withdrawals once approved. More information will be announced inside the Dashboard.";
+
+}
+
+else if (hasTopic(topics.merchandise)) {
+
+autoReply =
+"🛍️ Official GIAI merchandise includes hoodies, shirts, caps, mugs and other exclusive products. Visit the Merchandise section to browse available items.";
+
+}
+
+else if (hasTopic(topics.shipment)) {
+
+autoReply =
+"📦 Merchandise orders are processed after payment confirmation. Shipping times vary depending on your country. Tracking details will be provided once your package is dispatched.";
+
+}
+
+else if (hasTopic(topics.verification)) {
+
+autoReply =
+"✅ Account verification may be required before certain withdrawals. If verification is needed, our support team will contact you with the required documents.";
+
+}
+
+else if (hasTopic(topics.login)) {
+
+autoReply =
+"🔐 If you're unable to log in or forgot your password, please contact support through the admin chat. We'll help restore access to your account.";
+
+}
+
+else if (hasTopic(topics.thanks)) {
+
+autoReply =
+"😊 You're very welcome! If there's anything else you need, we're always here to help.";
+
+}
+
+else if (hasTopic(topics.goodbye)) {
+
+    autoReply =
+    "👋 Thank you for contacting GIAI Support. Have a wonderful day!";
+
+}
+
+else if (hasTopic(topics.duration)) {
+
+    autoReply =
+    "⏳ Every investment plan has its own duration. You can always check the remaining days from your Dashboard under Days Remaining.";
+
+}
+
+else if (hasTopic(topics.approval)) {
+
+    autoReply =
+    "✅ Deposits are normally reviewed shortly after payment confirmation. Once approved, your investment becomes active automatically.";
+
+}
+
+else if (hasTopic(topics.security)) {
+
+    autoReply =
+    "🔒 Protecting investor funds and account security is one of our highest priorities.";
+
+}
+
+else if (hasTopic(topics.account)) {
+
+    autoReply =
+    "👤 You can update your profile information and password from the Settings page inside your Dashboard.";
+
+}
+
+else if (hasTopic(topics.competition)) {
+
+    autoReply =
+    "🏆 Representatives compete based on the total investments they receive from supporters.";
+
+}
+
+else if (hasTopic(topics.support)) {
+
+    autoReply =
+    "💬 You're already connected with GIAI Support. If our automated assistant can't solve your issue, one of our representatives will reply personally.";
+
+}
+
+else {
+
+    autoReply =
+    "🤝 Thanks for your message. One of our live support representatives has been notified and will respond shortly if further assistance is required.";
+
+}
 
   await Chat.findOneAndUpdate(
     { email },
@@ -446,8 +690,18 @@ app.post("/chat/send", async (req, res) => {
 });
 
 app.get("/chat/messages/:email", async (req, res) => {
-  const conversation = await Chat.findOne({ email: req.params.email });
-  res.json({ success: true, messages: conversation ? conversation.messages : [] });
+
+    const conversation = await Chat.findOne({
+        email: req.params.email
+    });
+
+   res.json({
+    success: true,
+    messages: conversation ? conversation.messages : [],
+    typing: conversation ? conversation.typing : false,
+    online: conversation ? conversation.adminJoined : false
+});
+
 });
 
 app.get("/chat/list", async (req, res) => {
@@ -456,23 +710,123 @@ app.get("/chat/list", async (req, res) => {
 });
 
 app.post("/chat/reply", async (req, res) => {
-  const { email, message } = req.body;
-  await Chat.findOneAndUpdate(
-    { email },
-    {
-      $set: { unread: false },
-      $push: { messages: { sender: "admin", text: message, date: new Date() } }
-    }
-  );
-  res.json({ success: true });
+
+    const { email, message } = req.body;
+
+    await Chat.findOneAndUpdate(
+        { email },
+        {
+            $set: {
+                unread: false,
+                adminJoined: true,
+                typing: false
+            },
+            $push: {
+                messages: {
+                    sender: "admin",
+                    text: message,
+                    date: new Date()
+                }
+            }
+        }
+    );
+
+    res.json({ success: true });
+
 });
 
+app.post("/chat/typing", async (req, res) => {
+
+    const { email } = req.body;
+
+    await Chat.findOneAndUpdate(
+        { email },
+        {
+            $set: {
+                typing: true
+            }
+        }
+    );
+
+    res.json({ success: true });
+
+});
+
+app.post("/chat/stop-typing", async (req, res) => {
+
+    const { email } = req.body;
+
+    await Chat.findOneAndUpdate(
+        { email },
+        {
+            $set: {
+                typing: false
+            }
+        }
+    );
+
+    res.json({ success: true });
+
+});
+
+app.post("/chat/resolve", async (req, res) => {
+
+    const { email } = req.body;
+
+    await Chat.findOneAndUpdate(
+        { email },
+        {
+            $set: {
+                adminJoined: false
+            }
+        }
+    );
+
+    res.json({ success:true });
+
+});
 /* --- SIGNUP --- */
 app.post("/signup", async (req, res) => {
   const { name, email, password, username, phone, country, referrer, wallet, secretQuestion, secretAnswer } = req.body;
 
   if (!name || !email || !password) return res.json({ success: false, message: "Please fill in all required fields." });
   if (!secretQuestion || !secretAnswer) return res.json({ success: false, message: "Please select and answer a security question." });
+
+const btc = wallet?.btc?.trim() || "";
+const eth = wallet?.eth?.trim() || "";
+const usdt = wallet?.usdt_trc20?.trim() || "";
+
+// Require at least one wallet
+if (!btc && !eth && !usdt) {
+  return res.json({
+    success: false,
+    message: "Please provide at least one wallet address."
+  });
+}
+
+// Validate BTC
+if (btc && !/^((bc1|[13])[a-zA-HJ-NP-Z0-9]{25,62})$/.test(btc)) {
+  return res.json({
+    success: false,
+    message: "Invalid Bitcoin wallet address."
+  });
+}
+
+// Validate ETH
+if (eth && !/^0x[a-fA-F0-9]{40}$/.test(eth)) {
+  return res.json({
+    success: false,
+    message: "Invalid Ethereum wallet address."
+  });
+}
+
+// Validate USDT TRC20
+if (usdt && !/^T[a-zA-Z0-9]{33}$/.test(usdt)) {
+  return res.json({
+    success: false,
+    message: "Invalid USDT TRC20 wallet address."
+  });
+}
 
   const existingEmail = await User.findOne({ email });
   if (existingEmail) return res.json({ success: false, message: "An account with this email already exists." });
@@ -1027,6 +1381,24 @@ app.post("/admin-approve-investment", async (req, res) => {
   }
 });
 
+app.post("/admin-login", async (req, res) => {
+  const { email, password } = req.body;
+
+ const ADMIN_EMAIL = "support@giai.com";
+ const ADMIN_PASSWORD = "Clement$family77";
+
+  if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+    return res.json({
+      success: true
+    });
+  }
+
+  res.json({
+    success: false,
+    message: "Invalid admin credentials."
+  });
+});
+
 /* --- INVEST EXISTING BALANCE --- */
 
 app.post("/invest-existing-balance", async (req, res) => {
@@ -1272,16 +1644,49 @@ app.post("/verify-security-answer", async (req, res) => {
   res.json({ success: true });
 });
 
-app.post("/reset-password", async (req, res) => {
+app.post("/update-settings", async (req, res) => {
   try {
-    const { email, newPassword } = req.body;
-    if (!newPassword || newPassword.length < 6) return res.json({ success: false, message: "Password must be at least 6 characters." });
+    const { email, name, currentPassword, newPassword } = req.body;
+
     const user = await User.findOne({ email });
-    if (!user) return res.json({ success: false, message: "Account not found." });
-    await User.findOneAndUpdate({ _id: user._id }, { $set: { password: newPassword } });
-    res.json({ success: true, message: "Password reset successfully." });
+
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "User not found."
+      });
+    }
+
+    // Update name if provided
+    if (name && name.trim() !== "") {
+      user.name = name.trim();
+    }
+
+    // Change password if requested
+    if (newPassword) {
+      if (user.password !== currentPassword) {
+        return res.json({
+          success: false,
+          message: "Current password is incorrect."
+        });
+      }
+
+      user.password = newPassword;
+    }
+
+    await user.save();
+
+    res.json({
+      success: true,
+      message: "Settings updated successfully."
+    });
+
   } catch (err) {
-    res.json({ success: false, message: err.message });
+    console.error(err);
+    res.json({
+      success: false,
+      message: "Server error."
+    });
   }
 });
 
@@ -1417,6 +1822,32 @@ app.post("/admin-pause-shipment", async (req, res) => {
   res.json({ success: true });
 });
 
+app.post("/chat/typing", async (req, res) => {
+
+    const { email } = req.body;
+
+    await Chat.findOneAndUpdate(
+        { email },
+        { typing: true }
+    );
+
+    res.json({ success:true });
+
+});
+
+app.post("/chat/stop-typing", async (req, res) => {
+
+    const { email } = req.body;
+
+    await Chat.findOneAndUpdate(
+        { email },
+        { typing:false }
+    );
+
+    res.json({ success:true });
+
+});
+
 app.post("/admin-resume-shipment", async (req, res) => {
   const { email, cardType } = req.body;
   const shipment = await Shipment.findOne({ email, cardType });
@@ -1436,7 +1867,8 @@ app.post("/admin-resume-shipment", async (req, res) => {
   res.json({ success: true });
 });
 
-/* --- START SERVER --- */
-app.listen(process.env.PORT || 3000, () => {
-  console.log("🚀 BNCE GIAI Server running on port 3000");
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`🚀 GIAI Server running on port ${PORT}`);
 });

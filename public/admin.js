@@ -1,3 +1,12 @@
+/* =========================
+   ADMIN AUTH GUARD
+========================= */
+let adminTyping = false;
+
+if (localStorage.getItem("adminLoggedIn") !== "true") {
+  window.location.href = "/admin-login.html";
+}
+
 let allUsers = [];
 let allDeposits = [];
 let allWithdrawals = [];
@@ -47,6 +56,7 @@ window.onload = async () => {
   await loadWithdrawals();
   await loadRepresentatives();
   await loadChats();
+  renderChatList();
   updateOverview();
 };
 
@@ -650,7 +660,10 @@ function renderChatList() {
     <div class="chat-user-item ${isActive ? "active" : ""}" onclick="openChat('${chat.email}')">
       <div class="chat-avatar">${initials}</div>
       <div class="chat-user-info">
-        <div class="chat-user-name">${chat.name}</div>
+       <div class="chat-user-name">
+    ${chat.name}
+    ${chat.unread ? '<span class="unread-badge">1</span>' : ''}
+</div>
         <div class="chat-user-preview">${preview}</div>
       </div>
       ${hasUnread && !isActive ? `<div class="chat-unread-badge">!</div>` : ""}
@@ -661,11 +674,30 @@ function renderChatList() {
 function openChat(email) {
   activeChatEmail = email;
   const chat = allChats.find(c => c.email === email);
+if (chat) {
+    chat.unread = false;
+}
   if (!chat) return;
   renderChatList();
   renderConversation(chat);
   if (chatRefreshInterval) clearInterval(chatRefreshInterval);
-  chatRefreshInterval = setInterval(loadChats, 3000);
+chatRefreshInterval = setInterval(() => {
+
+    const activeInput = document.activeElement;
+
+    // Don't refresh while the admin is typing
+    if (
+        activeInput &&
+        activeInput.id &&
+        activeInput.id.startsWith("replyInput-")
+    ) {
+        return;
+    }
+
+    loadChats();
+
+}, 3000);
+
 }
 
 function renderConversation(chat) {
@@ -675,6 +707,7 @@ function renderConversation(chat) {
   const messagesHtml = chat.messages.map(m => {
     const fromClass = m.sender === "user" ? "from-user" : m.sender === "admin" ? "from-admin" : "from-bot";
     const time = new Date(m.date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
     return `
     <div class="msg-row ${fromClass}">
       <div class="msg-bubble">${m.text}</div>
@@ -682,35 +715,134 @@ function renderConversation(chat) {
     </div>`;
   }).join("");
   conv.innerHTML = `
-  <div class="chat-conv-header">
+<div class="chat-conv-header">
     <div class="chat-avatar">${initials}</div>
-    <div>
-      <div class="chat-conv-name">${chat.name}</div>
-      <div class="chat-conv-email">${chat.email}</div>
+
+    <div style="flex:1;">
+        <div class="chat-conv-name">${chat.name}</div>
+        <div class="chat-conv-email">${chat.email}</div>
     </div>
-  </div>
-  <div class="chat-messages" id="chatMessages">${messagesHtml}</div>
+
+    <button
+        onclick="resolveChat('${chat.email}')"
+        class="resolve-btn">
+        ✓ Resolve
+    </button>
+</div>
+ <div class="chat-messages" id="chatMessages">${messagesHtml}</div>
   <div class="chat-reply-box">
     <input type="text" id="replyInput-${chat.email}" placeholder="Type a reply…"
       onkeydown="if(event.key==='Enter') sendReply('${chat.email}')">
     <button class="chat-send-btn" onclick="sendReply('${chat.email}')">➤</button>
   </div>`;
-  const msgs = document.getElementById("chatMessages");
-  if (msgs) msgs.scrollTop = msgs.scrollHeight;
+
+const replyBox = document.getElementById(`replyInput-${chat.email}`);
+
+let typingTimeout;
+
+replyBox.addEventListener("input", async () => {
+
+    await fetch("/chat/typing", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            email: chat.email
+        })
+    });
+
+    clearTimeout(typingTimeout);
+
+    typingTimeout = setTimeout(async () => {
+
+        await fetch("/chat/stop-typing", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: chat.email
+            })
+        });
+
+    }, 1000);
+
+});
+
+const msgs = document.getElementById("chatMessages");
+
+requestAnimationFrame(() => {
+    msgs.scrollTop = msgs.scrollHeight;
+});
+
 }
 
 async function sendReply(email) {
-  const input = document.getElementById("replyInput-" + email);
-  if (!input) return;
-  const message = input.value.trim();
-  if (!message) return;
-  input.value = "";
-  await fetch("/chat/reply", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, message })
-  });
-  await loadChats();
+
+    const input = document.getElementById("replyInput-" + email);
+
+    if (!input) return;
+
+    const message = input.value.trim();
+
+    if (!message) return;
+
+    input.value = "";
+
+    await fetch("/chat/reply", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            email,
+            message
+        })
+    });
+
+    // Stop typing immediately
+    await fetch("/chat/stop-typing", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            email
+        })
+    });
+
+    adminTyping = false;
+
+    await loadChats();
+
+    setTimeout(() => {
+
+        const msgs = document.getElementById("chatMessages");
+
+        if (msgs)
+            msgs.scrollTop = msgs.scrollHeight;
+
+    }, 50);
+
+}
+
+async function resolveChat(email) {
+
+    await fetch("/chat/resolve", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type":"application/json"
+        },
+
+        body: JSON.stringify({ email })
+
+    });
+
+    loadChats();
+
 }
 
 /* ========================= */
@@ -854,4 +986,21 @@ function toggleSidebar() {
   document.querySelector(".sidebar").classList.toggle("active");
   document.getElementById("sidebarOverlay").classList.toggle("active");
   document.body.classList.toggle("sidebar-open");
+}
+
+function adminLogout() {
+  localStorage.removeItem("adminLoggedIn");
+  window.location.href = "/admin-login.html";
+}
+
+function toggleAdminPassword() {
+
+    const input = document.getElementById("adminPassword");
+
+    if (input.type === "password") {
+        input.type = "text";
+    } else {
+        input.type = "password";
+    }
+
 }

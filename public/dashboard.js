@@ -19,21 +19,31 @@ const repDivisions = {
 let currentUser = null;
 
 /* =========================
+   AUTH GUARD
+========================= */
+
+const savedUser = JSON.parse(localStorage.getItem("user"));
+
+if (!savedUser) {
+  window.location.replace("/signup.html");
+}
+
+/* =========================
    PAGE LOAD
 ========================= */
 
 window.addEventListener("DOMContentLoaded", async () => {
-  const theme = localStorage.getItem("dashboard_theme") || "dark";
-  applyTheme(theme);
 
   if (window.location.hash === "#cards") {
     setTimeout(() => {
-      document.getElementById("cardsSection")?.scrollIntoView({ behavior: "smooth" });
+      document.getElementById("cardsSection")?.scrollIntoView({
+        behavior: "smooth"
+      });
     }, 600);
   }
 
   await loadUser();
-  setInterval(loadUser, 30000);
+  setInterval(loadUser, 3000);
 });
 
 /* =========================
@@ -41,9 +51,12 @@ window.addEventListener("DOMContentLoaded", async () => {
 ========================= */
 
 async function loadUser() {
-  const savedUser = JSON.parse(localStorage.getItem("user"));
-  if (!savedUser) return;
+const savedUser = JSON.parse(localStorage.getItem("user"));
 
+if (!savedUser) {
+  window.location.replace("/signup.html");
+  return;
+}
   const response = await fetch("/get-user", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -317,11 +330,14 @@ function closeDeposit() {
 
 function continueDeposit() {
   const representative = document.getElementById("depositRepresentative").value;
+
   if (!representative) {
     alert("Please select a representative to continue.");
     return;
   }
+
   localStorage.setItem("pendingRepresentative", representative);
+
   closeDeposit();
   openPlans();
 }
@@ -373,23 +389,20 @@ function showSettingsTab(tab, btn) {
    SETTINGS
 ========================= */
 
+/* ===========================
+   SETTINGS
+=========================== */
+
 function openSettings() {
   if (currentUser) {
     const nameEl = document.getElementById("settingsName");
     const emailEl = document.getElementById("settingsEmail");
+
     if (nameEl) nameEl.value = currentUser.name || "";
     if (emailEl) emailEl.value = currentUser.email || "";
-
-    const notifDeposit = localStorage.getItem("notif_deposit") !== "false";
-    const notifWithdraw = localStorage.getItem("notif_withdraw") !== "false";
-    const notifProfit = localStorage.getItem("notif_profit") !== "false";
-    document.getElementById("notifDeposit").checked = notifDeposit;
-    document.getElementById("notifWithdraw").checked = notifWithdraw;
-    document.getElementById("notifProfit").checked = notifProfit;
-
-    const theme = localStorage.getItem("dashboard_theme") || "dark";
-    document.getElementById("themeSelect").value = theme;
   }
+
+  showSettingsTab("profile");
 
   document.getElementById("settingsPopup").style.display = "flex";
 }
@@ -398,69 +411,105 @@ function closeSettings() {
   document.getElementById("settingsPopup").style.display = "none";
 }
 
+function showSettingsTab(tabName, button = null) {
+
+  document.querySelectorAll(".stab-content").forEach(tab => {
+    tab.style.display = "none";
+  });
+
+  document.querySelectorAll(".stab").forEach(btn => {
+    btn.classList.remove("active");
+  });
+
+  const activeTab = document.getElementById("stab-" + tabName);
+  if (activeTab) {
+    activeTab.style.display = "block";
+  }
+
+  if (button) {
+    button.classList.add("active");
+  } else {
+    const firstButton = document.querySelector('.stab[onclick*="' + tabName + '"]');
+    if (firstButton) firstButton.classList.add("active");
+  }
+}
+
 async function saveSettings() {
+
   const name = document.getElementById("settingsName").value.trim();
+
   const currentPassword = document.getElementById("settingsCurrentPassword").value;
+
   const newPassword = document.getElementById("settingsNewPassword").value;
+
   const confirmPassword = document.getElementById("settingsConfirmPassword").value;
 
-  localStorage.setItem("notif_deposit", document.getElementById("notifDeposit").checked);
-  localStorage.setItem("notif_withdraw", document.getElementById("notifWithdraw").checked);
-  localStorage.setItem("notif_profit", document.getElementById("notifProfit").checked);
-
-  const theme = document.getElementById("themeSelect").value;
-  localStorage.setItem("dashboard_theme", theme);
-  applyTheme(theme);
-
   if (newPassword || currentPassword) {
+
     if (!currentPassword) {
-      alert("Enter your current password to change it.");
+      alert("Enter your current password.");
       return;
     }
-    if (newPassword !== confirmPassword) {
-      alert("New passwords do not match.");
-      return;
-    }
+
     if (newPassword.length < 6) {
       alert("New password must be at least 6 characters.");
       return;
     }
+
+    if (newPassword !== confirmPassword) {
+      alert("New passwords do not match.");
+      return;
+    }
+
   }
 
   try {
-    const payload = { email: currentUser.email };
-    if (name) payload.name = name;
-    if (newPassword && currentPassword) {
+
+    const payload = {
+      email: currentUser.email,
+      name
+    };
+
+    if (newPassword) {
       payload.currentPassword = currentPassword;
       payload.newPassword = newPassword;
     }
 
     const response = await fetch("/update-settings", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify(payload)
     });
 
     const data = await response.json();
 
     if (data.success) {
-      alert("Settings saved successfully.");
+
+      alert("Settings updated successfully.");
+
       document.getElementById("settingsCurrentPassword").value = "";
       document.getElementById("settingsNewPassword").value = "";
       document.getElementById("settingsConfirmPassword").value = "";
-      closeSettings();
-      await loadUser();
-    } else {
-      alert(data.message || "Failed to save settings.");
-    }
-  } catch (err) {
-    alert("Preferences saved locally.");
-    closeSettings();
-  }
-}
 
-function applyTheme(theme) {
-  document.body.setAttribute("data-theme", theme);
+      closeSettings();
+
+      await loadUser();
+
+    } else {
+
+      alert(data.message || "Unable to update settings.");
+
+    }
+
+  } catch (err) {
+
+    console.error(err);
+    alert("Something went wrong.");
+
+  }
+
 }
 
 /* =========================
@@ -1162,3 +1211,100 @@ function applyBalanceVisibility() {
     }
   }
 }
+
+function copyText(text) {
+  navigator.clipboard.writeText(text)
+    .then(() => {
+      alert("Copied!");
+    })
+    .catch(() => {
+      alert("Unable to copy.");
+    });
+}
+
+function showToast(message,type="success"){
+
+    const toast=document.getElementById("toast");
+
+    toast.innerHTML=message;
+
+    toast.className="";
+
+    toast.classList.add(type);
+
+    toast.classList.add("show");
+
+    setTimeout(()=>{
+
+        toast.classList.remove("show");
+
+    },2000);
+
+}
+
+async function copyWallet(id,button){
+
+    const text=document.getElementById(id).innerText;
+
+    try{
+
+        await navigator.clipboard.writeText(text);
+
+        button.classList.add("success");
+
+        button.innerHTML=`
+
+        <svg xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round">
+
+        <polyline points="20 6 9 17 4 12"></polyline>
+
+        </svg>`;
+
+        showToast("Wallet address copied");
+
+        setTimeout(()=>{
+
+            button.classList.remove("success");
+
+            button.innerHTML=`
+
+            <svg xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round">
+
+            <rect x="9" y="9" width="13" height="13" rx="2"></rect>
+
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+
+            </svg>`;
+
+        },1400);
+
+    }
+
+    catch{
+
+        showToast("Copy failed","error");
+
+    }
+
+}
+
+window.addEventListener("load", () => {
+    document.body.style.visibility = "visible";
+});
+

@@ -1,168 +1,18 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <link rel="stylesheet" href="style.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BINANCE • GIAI</title>
-<style>
+<title> • GIAI</title>
 
-/* ========================= */
-/* FIX DARK LINE AT TOP      */
-/* ========================= */
-
-* { margin:0; padding:0; box-sizing:border-box; }
-html, body { margin:0; padding:0; background:#050505; }
-body { overflow-x:hidden; }
-
-/* Remove any dark dot / line artifacts */
-body::before, body::after { display:none !important; }
-
-/* ========================= */
-/* STATS ROW — RESPONSIVE    */
-/* ========================= */
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-top: 50px;
-  width: 100%;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-@media(max-width: 900px) {
-  .stats { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media(max-width: 480px) {
-  .stats { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .stat-card h3 { font-size: 26px; }
-  .stat-card p { font-size: 12px; }
-}
-
-/* ========================= */
-/* YOUTUBE-STYLE VIDEO       */
-/* ========================= */
-
-.youtube-video-wrap {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  border-radius: 18px;
-  overflow: hidden;
-  background: #000;
-  border: 1px solid rgba(240,185,11,0.15);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-}
-
-.youtube-video-wrap video {
-  width: 100%;
-  display: block;
-  background: #000;
-}
-
-/* ========================= */
-/* FOOTER FIX                */
-/* ========================= */
-
-.site-footer {
-  padding: 80px 8% 40px;
-  background: #080808;
-  border-top: 1px solid rgba(240,185,11,0.1);
-}
-
-.footer-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 40px;
-  margin-bottom: 50px;
-}
-
-.footer-grid h3, .footer-grid h4 { color: #f0b90b; margin-bottom: 16px; }
-.footer-grid p { color: #666; margin-bottom: 8px; line-height: 1.7; font-size: 14px; }
-
-@media(max-width: 600px) {
-  .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 25px; }
-}
-
-/* ========================= */
-/* SECTION SPACING FIX       */
-/* ========================= */
-
-.steps-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 25px;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px 80px;
-}
-
-.plan-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 25px;
-}
-
-@media(max-width: 600px) {
-  .plan-grid { grid-template-columns: 1fr; }
-  .steps-grid { grid-template-columns: 1fr; }
-  .rules-grid { grid-template-columns: 1fr; }
-  .review-grid { grid-template-columns: 1fr; }
-  .vision-section { flex-direction: column; padding: 60px 5%; gap: 40px; }
-  .vision-content h1 { font-size: 32px; }
-  .merch-section { flex-direction: column; padding: 60px 5%; gap: 40px; }
-  .merch-left h1 { font-size: 36px; }
-  .card-section { flex-direction: column; padding: 60px 5%; gap: 40px; }
-  .card-content h1 { font-size: 34px; }
-  .support-feature { flex-direction: column; padding: 60px 5%; gap: 40px; }
-  .support-left h1 { font-size: 34px; }
-  .ceo-box { flex-direction: column; padding: 30px; }
-  .ceo-content h2 { font-size: 30px; }
-  .trust-container { grid-template-columns: 1fr; }
-  .partner-boxes { grid-template-columns: 1fr; }
-  .hero h1 { font-size: 52px; }
-  .hero h2 { font-size: 24px; }
-  .section-title { font-size: 36px; }
-  .trust-left h2 { font-size: 30px; }
-  .users-title { font-size: 38px; }
-  .ronaldo-grid { grid-template-columns: 1fr; }
-  .users-video-box { height: 450px; }
-  .video-caption h2 { font-size: 30px; }
-  .rep-card { flex-direction: column; }
-  .rep-img { width: 100%; height: 260px; }
-  .countries { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media(max-width: 768px) {
-  .top-nav { padding: 14px 20px; }
-  .nav-logo { font-size: 18px; }
-  .hero { padding: 120px 20px 60px; }
-  .hero h1 { font-size: 60px; }
-  .video-layout { flex-direction: column; }
-  .video-box { height: 400px; }
-  .card-features { grid-template-columns: 1fr; }
-  .vision-grid { grid-template-columns: 1fr; }
-  .support-grid { grid-template-columns: 1fr; }
-  .trust-stats { grid-template-columns: 1fr 1fr; }
-}
-
-@media(min-width: 1400px) {
-  .hero h1 { font-size: 110px; }
-  .hero h2 { font-size: 50px; }
-  .section-title { font-size: 72px; }
-}
-
-</style>
 </head>
 <body>
 
 <!-- NAV -->
 <div class="top-nav">
-  <div class="nav-logo">BNCE • GIAI</div>
+  <div class="nav-logo"> GIAI</div>
   <div class="nav-buttons">
     <button class="nav-btn login-nav" onclick="window.location.href='login.html'">Sign in</button>
 <button class="nav-btn create-nav" onclick="window.location.href='signup.html'">Create Account</button>
@@ -180,8 +30,7 @@ body::before, body::after { display:none !important; }
   <div class="glow glow3"></div>
   <div class="hero-content">
 
-    <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Binance_Logo.png" class="binance-logo">
-    <h1>BINANCE</h1>
+   <h1> GIAI</h1>
     <h2>Global Investor Acquisition Initiative</h2>
     <p class="sub">2026 / 2027 • Powered by AI</p>
 
@@ -223,7 +72,7 @@ body::before, body::after { display:none !important; }
   <div class="vision-content">
     <h1>AI Infrastructure &amp; Future Expansion</h1>
     <p>
-      The Binance GIAI infrastructure integrates automated portfolio systems, blockchain verification layers,
+      The GIAI infrastructure integrates automated portfolio systems, blockchain verification layers,
       and institutional AI-driven market analysis. Our systems are engineered to scale across international
       markets, processing thousands of investor transactions simultaneously with zero downtime.
     </p>
@@ -259,12 +108,12 @@ body::before, body::after { display:none !important; }
   <div class="step-card">
     <div class="step-number">02</div>
     <h3>Select Investment Plan</h3>
-    <p>Choose from six structured investment plans ranging from $200 to $45,000+. Each plan offers a fixed return percentage and duration, managed entirely through Binance's AI-powered portfolio systems.</p>
+    <p>Choose from six structured investment plans ranging from $200 to $45,000+. Each plan offers a fixed return percentage and duration, managed entirely through AI-powered portfolio systems.</p>
   </div>
   <div class="step-card">
     <div class="step-number">03</div>
     <h3>Receive Confirmation</h3>
-    <p>Your deposit request is reviewed and approved by our team through the Binance AI verification system. Once approved, your investment begins immediately and your Dashboard updates in real time.</p>
+    <p>Your deposit request is reviewed and approved by our team through the GIAI  AI verification system. Once approved, your investment begins immediately and your Dashboard updates in real time.</p>
   </div>
 </div>
 
@@ -373,7 +222,7 @@ body::before, body::after { display:none !important; }
 <!-- MERCH SECTION -->
 <section id="merch-store" class="merch-section">
   <div class="merch-left">
-    <h1>Official Binance GIAI Merchandise</h1>
+    <h1>Official GIAI Merchandise</h1>
     <p>
       Exclusive limited-edition apparel and accessories designed for verified members of the Global Investor Acquisition Initiative.
       Premium branded hoodies, caps, jerseys, and footwear are released in seasonal drops throughout each GIAI competition cycle.
@@ -383,10 +232,8 @@ body::before, body::after { display:none !important; }
   </div>
   <div class="merch-right">
     <div class="merch-image">
-     <video class="cinematic-video scroll-video" loop playsinline>
-  <source src="img/vidmerch.mov" type="video/mp4">
-</video>
-    </div>
+<img src="img/GIAI_JERSEY.png" alt="GIAI Jersey" class="cinematic-image">
+   </div>
      </div>
 </section>
 
@@ -501,7 +348,7 @@ body::before, body::after { display:none !important; }
   <div class="users-content">
     <h1 class="users-title">Global Representation</h1>
     <p class="users-desc">
-      Binance representatives are expanding investor networks worldwide through GIAI using
+      GIAI representatives are expanding investor networks worldwide through GIAI using
       elite global partnerships, AI-powered onboarding systems, and strategic investor
       acquisition programs across six international divisions.
     </p>
@@ -525,15 +372,8 @@ body::before, body::after { display:none !important; }
     </div>
   </div>
   <div class="users-video-box">
-    <video class="cinematic-video scroll-video" loop playsinline preload="auto">
-     <source src="img/ronaldo300m.MP4" type="video/mp4">
-    </video>
-   <div class="video-overlay"></div>
-    <div class="video-caption">
-      <h2>300M+ GLOBAL USERS</h2>
-      <p>Building the future of digital investment.</p>
-    </div>
-  </div>
+    <img src="img/IMG_300m.png" alt="Global Community" class="users-image">
+</div>
 </section>
 
 <!-- COMPETITION RULES -->
@@ -542,7 +382,7 @@ body::before, body::after { display:none !important; }
   <div class="rules-grid">
     <div class="rule-card">
       <h3>Verified Participation</h3>
-      <p>All investor activity and onboarding requests are monitored through Binance AI verification systems. Only deposits processed through official wallet addresses and confirmed by our team count toward representative rankings during the active competition season.</p>
+      <p>All investor activity and onboarding requests are monitored through GIAI AI verification systems. Only deposits processed through official wallet addresses and confirmed by our team count toward representative rankings during the active competition season.</p>
     </div>
     <div class="rule-card">
       <h3>Representative Rankings</h3>
@@ -550,7 +390,7 @@ body::before, body::after { display:none !important; }
     </div>
     <div class="rule-card">
       <h3>Security &amp; Compliance</h3>
-      <p>All representatives and investors must operate within Binance global compliance policies and regional financial guidelines. Accounts flagged for irregular activity are suspended pending AI verification review.</p>
+      <p>All representatives and investors must operate within GIAI global compliance policies and regional financial guidelines. Accounts flagged for irregular activity are suspended pending AI verification review.</p>
     </div>
     <div class="rule-card">
       <h3>Live Competition Tracking</h3>
@@ -567,7 +407,6 @@ body::before, body::after { display:none !important; }
       <div class="coin-row"><span>BTC / USDT</span><span id="btc-price">$0</span><span class="green">LIVE</span></div>
       <div class="coin-row"><span>ETH / USDT</span><span id="eth-price">$0</span><span class="green">LIVE</span></div>
       <div class="coin-row"><span>SOL / USDT</span><span id="sol-price">$0</span><span class="green">LIVE</span></div>
-      <div class="coin-row"><span>BNB / USDT</span><span id="bnb-price">$0</span><span class="green">LIVE</span></div>
       <div class="coin-row"><span>XRP / USDT</span><span id="xrp-price">$0</span><span class="green">LIVE</span></div>
       <div class="coin-row"><span>DOGE / USDT</span><span id="doge-price">$0</span><span class="green">LIVE</span></div>
       <div class="coin-row"><span>ADA / USDT</span><span id="ada-price">$0</span><span class="green">LIVE</span></div>
@@ -578,10 +417,10 @@ body::before, body::after { display:none !important; }
   </div>
 </section>
 
-<!-- BINANCE SYSTEM — YOUTUBE STYLE VIDEO -->
+<!-- SYSTEM — YOUTUBE STYLE VIDEO -->
 <section class="video-section">
   <div class="video-heading">
-    <h2 class="section-title">Inside The BNCE GIAI System</h2>
+    <h2 class="section-title">Inside The GIAI System</h2>
     <p class="video-sub">
       A complete breakdown of how the Global Investor Acquisition Initiative operates across
       international markets — covering AI-driven investment infrastructure, representative
@@ -591,7 +430,7 @@ body::before, body::after { display:none !important; }
   <div class="video-layout">
     <div class="youtube-video-wrap">
 <video controls preload="metadata">
-  <source src="img/binanceglobal.MOV" type="video/mp4">
+  <source src="img/global.MOV" type="video/mp4">
 </video>
    </div>
     <div class="video-info-grid">
@@ -618,7 +457,7 @@ body::before, body::after { display:none !important; }
       <p class="trust-small">TRUSTED WORLDWIDE</p>
       <h2>7+ Years Of Excellence Built On Trust &amp; Performance</h2>
       <p class="trust-text">
-        Since 2017, Binance GIAI has continued to expand globally through advanced AI-powered investment
+        Since 2017, GIAI has continued to expand globally through advanced AI-powered investment
         systems, secure blockchain infrastructure, and trusted regional partnerships across more than
         180 countries. Every investment cycle is managed through verified, transparent systems designed
         to protect and grow investor capital.
@@ -631,7 +470,7 @@ body::before, body::after { display:none !important; }
       </div>
     </div>
     <div class="trust-right">
-      <img src="img/IMG_binancebulding.jpg" alt="Binance Building">
+      <img src="img/IMG_bulding.jpg" alt="Building">
     </div>
   </div>
   <div class="partner-boxes">
@@ -654,7 +493,7 @@ body::before, body::after { display:none !important; }
   </div>
 </section>
 
-<!-- BINANCE CARD SECTION -->
+<!--  CARD SECTION -->
 <section class="card-section">
 
   <div class="card-section-inner">
@@ -669,7 +508,7 @@ body::before, body::after { display:none !important; }
 
       <!-- CARD IMAGE -->
       <div class="card-image-wrap" onclick="goToCards()" style="cursor:pointer;">
-        <img src="img/binancecarde.png" alt="GIAI Cards">
+        <img src="img/giaicard.png" alt="GIAI Cards">
       </div>
 
       <!-- BUTTON -->
@@ -727,7 +566,7 @@ function goToCards() {
       <h2>Leadership &amp; AI Infrastructure</h2>
       <p>
         Under the leadership of Richard Teng and the strategic vision originally shaped by Yi He,
-        Binance continues expanding its AI-powered global investment infrastructure across over
+        GIAI continues expanding its AI-powered global investment infrastructure across over
         180 countries worldwide. The executive team drives continuous innovation across trading
         systems, compliance frameworks, and regional expansion programs.
       </p>
@@ -754,7 +593,7 @@ function goToCards() {
 <footer class="site-footer">
   <div class="footer-grid">
     <div>
-      <h3>BNCE • GIAI</h3>
+      <h3> GIAI</h3>
       <p>Global Investor Acquisition Initiative — connecting verified investors and representatives across 180+ countries through AI-powered portfolio systems.</p>
     </div>
     <div>
@@ -779,18 +618,25 @@ function goToCards() {
       <p>Risk Disclosure</p>
     </div>
   </div>
-  <p class="footer-copy">© 2026 Binance GIAI. All Rights Reserved.</p>
+  <p class="footer-copy">© 2026  GIAI. All Rights Reserved.</p>
 </footer>
 
 <!-- FLOATING CHAT -->
+
 <div id="chatButton">💬</div>
 <div id="chatWindow">
   <div class="chat-header">
-    Binance Support
+
+    <div>
+      <div>GIAI Support</div>
+      <div id="supportStatus">🟢 Support Online</div>
+    </div>
+
     <span id="closeChat">✕</span>
+
   </div>
-  <div id="chatMessages">
-    <div class="bot-message">Hello 👋 Welcome to Binance GIAI Support. How can we help you today?</div>
+ <div id="chatMessages">
+    <div class="bot-message">Hello 👋 Welcome to GIAI Support. How can we help you today?</div>
   </div>
   <div class="chat-input">
     <input type="text" id="userMessage" placeholder="Type your message...">
@@ -828,12 +674,27 @@ function goToCards() {
 
 <!-- TRANSLATOR (HIDDEN) -->
 <div id="google_translate_element" style="display:none;"></div>
+
 <script>
 function googleTranslateElementInit(){
-  new google.translate.TranslateElement({pageLanguage:'en',autoDisplay:false},'google_translate_element');
+  new google.translate.TranslateElement(
+    { pageLanguage: 'en', autoDisplay: false },
+    'google_translate_element'
+  );
 }
+
+/* Hide the Google bar/banner without breaking translation */
+const hideGoogleBar = setInterval(() => {
+  const banner = document.querySelector('.goog-te-banner-frame');
+  if (banner) banner.style.display = 'none';
+
+  const body = document.body;
+  if (body) body.style.top = '0px';
+}, 500);
 </script>
+
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 <script src="script.js"></script>
 
 </body>

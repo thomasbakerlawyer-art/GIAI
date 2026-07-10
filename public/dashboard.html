@@ -1,15 +1,21 @@
+Dashboard
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard GIAI</title>
 
-<title>Dashboard • BINANCE GIAI</title>
+<script>
+const user = localStorage.getItem("user");
+if (!user) {
+  window.location.replace("/signup.html");
+}
+</script>
 
 <link rel="stylesheet" href="dashboard.css">
-
 </head>
 
 <body>
@@ -22,63 +28,46 @@
 <!-- SIDEBAR -->
 <div class="sidebar">
 
-<h2 class="logo">
-BINANCE GIAI
-</h2>
+<h2 class="logo"> • GIAI</h2>
 
 <div class="sidebar-links">
 
-<button class="dash-link active-tab">
-Dashboard
-</button>
+<button class="dash-link active-tab">Dashboard</button>
 
-<button class="dash-link" onclick="openWithdraw()">
-Withdraw
-</button>
+<button class="dash-link" onclick="openDeposit()">Deposit</button>
 
-<button class="dash-link" onclick="openPlans()">
-Plans
-</button>
+<button class="dash-link" onclick="openWithdraw()">Withdraw</button>
 
-<button class="dash-link" onclick="scrollTransactions()">
-Transactions
-</button>
+<button class="dash-link" onclick="openPlans()">Plans</button>
 
-<button class="dash-link" onclick="document.getElementById('cardsSection').scrollIntoView({behavior:'smooth'})">
-  Cards
-</button>
+<button class="dash-link" onclick="scrollTransactions()">Transactions</button>
 
-<button class="dash-link" onclick="openSettings()">
-Settings
-</button>
+<button class="dash-link" onclick="document.getElementById('cardsSection').scrollIntoView({behavior:'smooth'})">Cards</button>
+
+<button class="dash-link" onclick="openSettings()">Settings</button>
 
 </div>
 
 </div>
 
 <!-- MAIN -->
-
 <div class="dashboard-main">
 
 <div class="dashboard-top">
 
 <div>
-
 <p style="font-size:1.1rem;font-weight:600;color:#fff;margin:0;">Welcome Back</p>
-
 <h2 id="welcomeName" style="margin:0;color:#F0B90B;font-size:1.3rem;"></h2>
-
 </div>
 
 <div class="dashboard-user">
 
-<div class="avatar-icon" onclick="openProfilePopup()" style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#F0B90B,#f77f00);display:flex;align-items:center;justify-content:center;cursor:pointer;">
-
-  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="8" r="4"/>
-    <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-  </svg>
-</div>
+  <div class="avatar-icon" onclick="openProfilePopup()" style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#F0B90B,#f77f00);display:flex;align-items:center;justify-content:center;cursor:pointer;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="8" r="4"/>
+      <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+    </svg>
+  </div>
 
 </div>
 
@@ -96,9 +85,7 @@ Settings
   </span>
 </div>
 
-<h1 id="portfolioBalance" data-real="$0.00">
-$0.00
-</h1>
+<h1 id="portfolioBalance" data-real="$0.00">$0.00</h1>
 
 <div class="stats-box">
 
@@ -106,17 +93,17 @@ $0.00
 
 <div>
 <span>Expected Profit</span>
-<h3 id="expectedProfit" class="profit-green" data-real="$0.00">$0.00</h3> 
+<h3 id="expectedProfit" class="profit-green" data-real="$0.00">$0.00</h3>
 </div>
 
 <div>
 <span>Claimable Profit</span>
-<h3 id="claimableProfit" class="profit-green" data-real="$0.00">$0.00</h3> 
+<h3 id="claimableProfit" class="profit-green" data-real="$0.00">$0.00</h3>
 </div>
 
 <div>
 <span>Investment Amount</span>
-<h3 id="investmentAmount" class="profit-green" data-real="$0.00">$0.00</h3> 
+<h3 id="investmentAmount" class="profit-green" data-real="$0.00">$0.00</h3>
 </div>
 
 <div>
@@ -130,67 +117,37 @@ $0.00
 <div id="progressFill" class="progress-fill"></div>
 </div>
 
-<button class="deposit-btn" onclick="openDeposit()">
-Deposit
-</button>
-
-<button class="withdraw-btn" onclick="openWithdraw()">
-Withdraw
-</button>
+<button class="deposit-btn" onclick="openDeposit()">Deposit</button>
+<button class="withdraw-btn" onclick="openWithdraw()">Withdraw</button>
 
 </div>
 
 </div>
 
 <!-- REPRESENTATIVE -->
-
 <div class="rep-cards-container" id="repCardsContainer"></div>
 
+<!-- PERFORMANCE CHART -->
 <div class="performance-card">
-
-    <div class="performance-header">
-
-<h3>Profit Growth</h3>
-
-<div class="growth-label">
-
-    Live Profit Tracking
-
-</div>
-
+  <div class="performance-header">
+    <h3>Profit Growth</h3>
+    <div class="growth-label">Live Profit Tracking</div>
   </div>
-
-<canvas id="portfolioChart"></canvas>
-
-<div
-    id="tradingviewChart"
-    style="
-        width:100%;
-        height:350px;
-        display:none;
-        border-radius:16px;
-        overflow:hidden;
-    ">
-</div>
-
-    <div class="performance-stats">
-
-        <div>
-            <span>Today's Profit</span>
-            <h4 id="todayProfit">$0.00</h4>
-        </div>
-
-        <div>
-            <span>ROI</span>
-            <h4 id="roiPercent">0%</h4>
-        </div>
-
+  <canvas id="portfolioChart"></canvas>
+  <div id="tradingviewChart" style="width:100%;height:350px;display:none;border-radius:16px;overflow:hidden;"></div>
+  <div class="performance-stats">
+    <div>
+      <span>Today's Profit</span>
+      <h4 id="todayProfit">$0.00</h4>
     </div>
-
+    <div>
+      <span>ROI</span>
+      <h4 id="roiPercent">0%</h4>
+    </div>
+  </div>
 </div>
 
 <!-- ACTIVITY -->
-
 <div class="dashboard-stats">
 
 <div class="dashboard-stat">
@@ -213,7 +170,6 @@ Withdraw
 </div>
 
 <!-- GIAI CARDS -->
-
 <div class="cards-section" id="cardsSection">
 
   <h2 class="cards-title">GIAI Cards</h2>
@@ -249,7 +205,6 @@ Withdraw
           <span id="goldCardStatusText">Locked</span>
         </div>
       </div>
-
       <button class="deposit-btn" id="goldCardBtn" onclick="openCardApply('gold')">
         Apply for Gold Card
       </button>
@@ -279,7 +234,6 @@ Withdraw
           <span id="blackCardStatusText">Locked</span>
         </div>
       </div>
-
       <button class="withdraw-btn" id="blackCardBtn" onclick="openCardApply('black')">
         Apply for Black Card
       </button>
@@ -289,95 +243,44 @@ Withdraw
 
 </div>
 
- <!-- CARD DESCRIPTIONS -->
-  <div class="cards-descriptions">
-
-    <details class="card-description-box">
-      <summary>What is the GIAI Gold Card?</summary>
-      <p>
-        Spending limit between <b>$50,000 and $80,000</b>, backed by your investment balance.
-        Spend without needing cash upfront, and pay back over time within the agreed terms.
-        The more you invest, the higher your limit can grow.
-      </p>
-    </details>
-
-    <details class="card-description-box">
-      <summary>What is the GIAI Black Card?</summary>
-      <p>
-        GIAI's top tier: spending limit between <b>$200,000 and $500,000</b>. Reserved for
-        investors on <b>Capital Boost</b> or <b>Rapid Return</b> plans with a balance of at
-        least <b>$30,000</b>, which acts as collateral for this higher limit.
-      </p>
-    </details>
-
-  </div>
+<!-- CARD DESCRIPTIONS -->
+<div class="cards-descriptions">
+  <details class="card-description-box">
+    <summary>What is the GIAI Gold Card?</summary>
+    <p>Spending limit between <b>$50,000 and $80,000</b>, backed by your investment balance. Spend without needing cash upfront, and pay back over time within the agreed terms. The more you invest, the higher your limit can grow.</p>
+  </details>
+  <details class="card-description-box">
+    <summary>What is the GIAI Black Card?</summary>
+    <p>GIAI's top tier: spending limit between <b>$200,000 and $500,000</b>. Reserved for investors on <b>Capital Boost</b> or <b>Rapid Return</b> plans with a balance of at least <b>$30,000</b>, which acts as collateral for this higher limit.</p>
+  </details>
+</div>
 
 <!-- TRANSACTIONS -->
-
 <div class="transactions-box" id="transactionsBox">
-
-<h2>Transaction History</h2>
-
-<div id="transactionList">
-<div class="transaction">No transactions yet</div>
+  <h2>Transaction History</h2>
+  <div id="transactionList">
+    <div class="transaction">No transactions yet</div>
+  </div>
 </div>
 
 </div>
-
 </div>
 
 <!-- DEPOSIT POPUP -->
-
-<div
-class="popup-overlay"
-id="depositPopup">
-
-<div class="popup-box">
-
-<div
-class="popup-close"
-onclick="closeDeposit()">
-
-✕
-
-</div>
-
-<h2>
-Deposit Funds
-</h2>
-
-<p>
-Choose Representative
-</p>
-
-<select id="depositRepresentative">
-
-<option value="">
-Select Representative
-</option>
-
-<option>
-Michael Scott
-</option>
-
-<option>
-Robert Rachel
-</option>
-
-<option>
-Lincoln Hayes
-</option>
-
-<option>
-Amber Agrawal
-</option>
-
-</select>
-
-<button onclick="continueDeposit()">Continue</button>
-
-</div>
-
+<div class="popup-overlay" id="depositPopup">
+  <div class="popup-box">
+    <div class="popup-close" onclick="closeDeposit()">✕</div>
+    <h2>Deposit Funds</h2>
+    <p>Choose Representative</p>
+    <select id="depositRepresentative">
+      <option value="">Select Representative</option>
+      <option>Michael Scott</option>
+      <option>Robert Rachel</option>
+      <option>Lincoln Hayes</option>
+      <option>Amber Agrawal</option>
+    </select>
+    <button onclick="continueDeposit()">Continue</button>
+  </div>
 </div>
 
 <!-- BALANCE REP SELECTION -->
@@ -385,10 +288,7 @@ Amber Agrawal
   <div class="popup-box">
     <div class="popup-close" onclick="closeBalanceRepPopup()">✕</div>
     <h2>Choose Representative</h2>
-    <p style="color:#888;font-size:14px;margin-bottom:20px;">
-      Select a representative to support with your balance investment.
-      They will receive votes based on your investment amount.
-    </p>
+    <p style="color:#888;font-size:14px;margin-bottom:20px;">Select a representative to support with your balance investment. They will receive votes based on your investment amount.</p>
     <select id="balanceRepSelect">
       <option value="">-- Select Representative --</option>
       <option value="Robert Rachel">Robert Rachel — North African Division</option>
@@ -396,352 +296,166 @@ Amber Agrawal
       <option value="Lincoln Hayes">Lincoln Hayes — Global Expansion</option>
       <option value="Amber Agrawal">Amber Agrawal — Asia-Pacific Division</option>
     </select>
-    <button
-      onclick="confirmBalanceRep()"
-      style="margin-top:20px;width:100%;padding:16px;background:#f0b90b;border:none;border-radius:14px;font-weight:bold;font-size:15px;cursor:pointer;">
+    <button onclick="confirmBalanceRep()" style="margin-top:20px;width:100%;padding:16px;background:#f0b90b;border:none;border-radius:14px;font-weight:bold;font-size:15px;cursor:pointer;">
       Invest My Balance ➤
     </button>
   </div>
 </div>
 
-<!-- WITHDRAW -->
-
+<!-- WITHDRAW POPUP -->
 <div class="popup-overlay" id="withdrawPopup">
   <div class="popup-box">
-
     <div class="popup-close" onclick="closeWithdraw()">✕</div>
-
     <h2>Withdraw Funds</h2>
-
-   <label style="font-size:0.82rem;color:#aaa;display:block;margin-bottom:4px;">
-      Amount ($)
-    </label>
-    <input
-      id="withdrawAmount"
-      type="number"
-      placeholder="Enter amount"
-      style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:#fff;font-size:0.9rem;box-sizing:border-box;margin-bottom:18px;">
-
-    <button class="withdraw-btn" onclick="submitWithdraw()">
-      Submit Withdrawal
-    </button>
-
+    <label style="font-size:0.82rem;color:#aaa;display:block;margin-bottom:4px;">Amount ($)</label>
+    <input id="withdrawAmount" type="number" placeholder="Enter amount" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.06);color:#fff;font-size:0.9rem;box-sizing:border-box;margin-bottom:18px;">
+    <button class="withdraw-btn" onclick="submitWithdraw()">Submit Withdrawal</button>
   </div>
 </div>
 
+<!-- SHIPPING POPUP -->
 <div class="popup-overlay" id="shippingPopup">
   <div class="popup-box">
     <div class="popup-close" onclick="closeShipping()">✕</div>
     <h2>📦 Shipping Details</h2>
-    <p style="color:#999;font-size:0.85rem;margin-bottom:16px;">
-      Your physical card will be delivered to this address. Please fill in all fields exactly as they appear on your ID.
-    </p>
-
+    <p style="color:#999;font-size:0.85rem;margin-bottom:16px;">Your physical card will be delivered to this address. Please fill in all fields exactly as they appear on your ID.</p>
     <label>Full Legal Name</label>
     <input id="shipName" type="text" placeholder="As it appears on your ID">
-
     <label>Phone Number</label>
     <input id="shipPhone" type="tel" placeholder="+1 234 567 8900">
-
     <label>Address Line 1</label>
     <input id="shipAddress" type="text" placeholder="Street number and name">
-
     <label>Address Line 2 (Apartment, Suite, etc.)</label>
     <input id="shipAddress2" type="text" placeholder="Optional">
-
     <label>City</label>
     <input id="shipCity" type="text" placeholder="City">
-
     <label>State / Province / Region</label>
     <input id="shipState" type="text" placeholder="State or Province">
-
     <label>Postal / ZIP Code</label>
     <input id="shipPostal" type="text" placeholder="e.g. 10001">
-
     <label>Country</label>
     <input id="shipCountry" type="text" placeholder="Country">
-
     <label>Delivery Instructions (optional)</label>
     <input id="shipInstructions" type="text" placeholder="e.g. Leave at door, Ring bell, etc.">
-
     <div class="notif-row" style="margin-top:14px;">
-      <label style="margin:0;flex:1;font-size:0.85rem;">
-        I confirm this address is correct and matches my registered ID.
-      </label>
+      <label style="margin:0;flex:1;font-size:0.85rem;">I confirm this address is correct and matches my registered ID.</label>
       <input id="shipConfirm" type="checkbox">
     </div>
-
-    <button class="deposit-btn" onclick="submitShipping()" style="margin-top:18px;">
-      Confirm & Submit Shipping
-    </button>
+    <button class="deposit-btn" onclick="submitShipping()" style="margin-top:18px;">Confirm & Submit Shipping</button>
   </div>
 </div>
 
-<!-- PLANS -->
+<!-- PLANS POPUP -->
+<div class="plans-popup" id="plansPopup">
+  <div class="plans-box">
+    <div class="close-popup" onclick="closePlans()">✕</div>
+    <h2>Choose Investment Plan</h2>
 
-<div
-class="plans-popup"
-id="plansPopup">
+    <div class="popup-plan">
+      <h3>Starter Plan</h3>
+      <p>$200 - $999</p>
+      <input id="basicAmount" type="number" placeholder="Enter Amount">
+      <button onclick="activatePlan('Starter Plan',200,999,'basicAmount')">Activate</button>
+    </div>
 
-<div class="plans-box">
+    <div class="popup-plan">
+      <h3>Standard Plan</h3>
+      <p>$1000 - $2999</p>
+      <input id="standardAmount" type="number" placeholder="Enter Amount">
+      <button onclick="activatePlan('Standard Plan',1000,2999,'standardAmount')">Activate</button>
+    </div>
 
-<div
-class="close-popup"
-onclick="closePlans()">
+    <div class="popup-plan">
+      <h3>Premium Plan</h3>
+      <p>$3000 - $7999</p>
+      <input id="premiumAmount" type="number" placeholder="Enter Amount">
+      <button onclick="activatePlan('Premium Plan',3000,7999,'premiumAmount')">Activate</button>
+    </div>
 
-✕
+    <div class="popup-plan">
+      <h3>Contact Manager</h3>
+      <p>$8000 - $14999</p>
+      <input id="managerAmount" type="number" placeholder="Enter Amount">
+      <button onclick="activatePlan('Contact Manager',8000,14999,'managerAmount')">Activate</button>
+    </div>
 
-</div>
+    <div class="popup-plan">
+      <h3>Capital Boost</h3>
+      <p>$15000 - $44999</p>
+      <input id="capitalAmount" type="number" placeholder="Enter Amount">
+      <button onclick="activatePlan('Capital Boost',15000,44999,'capitalAmount')">Activate</button>
+    </div>
 
-<h2>
-Choose Investment Plan
-</h2>
+    <div class="popup-plan">
+      <h3>Rapid Return</h3>
+      <p>$45000+</p>
+      <input id="rapidAmount" type="number" placeholder="Enter Amount">
+      <button onclick="activatePlan('Rapid Return',45000,999999999,'rapidAmount')">Activate</button>
+    </div>
 
-<div class="popup-plan">
-
-<h3>
-Starter Plan
-</h3>
-
-<p>
-$200 - $999
-</p>
-
-<input
-id="basicAmount"
-type="number"
-placeholder="Enter Amount">
-
-<button onclick="
-activatePlan(
-'Starter Plan',
-200,
-999,
-'basicAmount'
-)">
-Activate
-</button>
-
-</div>
-
-<div class="popup-plan">
-
-<h3>
-Standard Plan
-</h3>
-
-<p>
-$1000 - $2999
-</p>
-
-<input
-id='standardAmount'
-type='number'
-placeholder='Enter Amount'>
-
-<button onclick="
-activatePlan(
-'Standard Plan',
-1000,
-2999,
-'standardAmount'
-)">
-Activate
-</button>
-
-</div>
-
-<div class="popup-plan">
-
-<h3>
-Premium Plan
-</h3>
-
-<p>
-$3000 - $7999
-</p>
-
-<input
-id='premiumAmount'
-type='number'
-placeholder='Enter Amount'>
-
-<button onclick="
-activatePlan(
-'Premium Plan',
-3000,
-7999,
-'premiumAmount'
-)">
-Activate
-</button>
-
-</div>
-
-<div class="popup-plan">
-
-<h3>
-Contact Manager
-</h3>
-
-<p>
-$8000 - $14999
-</p>
-
-<input
-id='managerAmount'
-type='number'
-placeholder='Enter Amount'>
-
-<button onclick="
-activatePlan(
-'Contact Manager',
-8000,
-14999,
-'managerAmount'
-)">
-Activate
-</button>
-
-</div>
-
-<div class="popup-plan">
-
-<h3>
-Capital Boost
-</h3>
-
-<p>
-$15000 - $44999
-</p>
-
-<input
-id='capitalAmount'
-type='number'
-placeholder='Enter Amount'>
-
-<button onclick="
-activatePlan(
-'Capital Boost',
-15000,
-44999,
-'capitalAmount'
-)">
-Activate
-</button>
-
-</div>
-
-<div class="popup-plan">
-
-<h3>
-Rapid Return
-</h3>
-
-<p>
-$45000+
-</p>
-
-<input
-id='rapidAmount'
-type='number'
-placeholder='Enter Amount'>
-
-<button onclick="
-activatePlan(
-'Rapid Return',
-45000,
-999999999,
-'rapidAmount'
-)">
-Activate
-</button>
-
-</div>
-
-</div>
-
+  </div>
 </div>
 
 <!-- WALLET POPUP -->
+<div class="popup-overlay" id="walletPopup">
+  <div class="popup-box">
+    <div class="popup-close" onclick="closeWalletPopup()">✕</div>
+    <h2>Complete Payment</h2>
+    <p>Send payment to one of the wallet addresses below</p>
 
-<div
-class="popup-overlay"
-id="walletPopup">
+    <div class="wallet-card">
+      <h3>BTC</h3>
+      <div class="wallet-address">
+        <p id="btcAddress">bc1qa4g38u9mxn43td5mt67jh320sy6nne9tfaewg6</p>
+        <button class="copy-btn" onclick="copyWallet('btcAddress', this)">
+          <svg class="copy-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
 
-<div class="popup-box">
+    <div class="wallet-card">
+      <h3>USDT TRC20</h3>
+      <div class="wallet-address">
+        <p id="usdtAddress">TBkxc6SZkXSYTop9NPJLz3TvLayDSrPedQ</p>
+        <button class="copy-btn" onclick="copyWallet('usdtAddress', this)">
+          <svg class="copy-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
 
-<div
-class="popup-close"
-onclick="closeWalletPopup()">
+    <div class="wallet-card">
+      <h3>ETH</h3>
+      <div class="wallet-address">
+        <p id="ethAddress">0x21b7f254a06F222a1bed905f9d7b13665B42Bb65</p>
+        <button class="copy-btn" onclick="copyWallet('ethAddress', this)">
+          <svg class="copy-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
 
-✕
-
-</div>
-
-<h2>
-Complete Payment
-</h2>
-
-<p>
-Send payment to one of the wallet addresses below
-</p>
-
-<div class="wallet-card">
-
-<h3>BTC</h3>
-
-<p>
-bc1qa4g38u9mxn43td5mt67jh320sy6nne9tfaewg6
-</p>
-
-</div>
-
-<div class="wallet-card">
-
-<h3>USDT TRC20</h3>
-
-<p>
-TBkxc6SZkXSYTop9NPJLz3TvLayDSrPedQ
-</p>
-
-</div>
-
-<div class="wallet-card">
-
-<h3>ETH</h3>
-
-<p>
-0x21b7f254a06F222a1bed905f9d7b13665B42Bb65
-</p>
-
-</div>
-
-<button
-class="deposit-btn"
-onclick="submitDeposit()">
-
-I HAVE PAID
-
-</button>
-
-</div>
-
+    <button class="deposit-btn" onclick="submitDeposit()">I HAVE PAID</button>
+  </div>
 </div>
 
 <!-- REINVEST POPUP -->
-
 <div class="popup-overlay" id="reinvestPopup">
   <div class="popup-box">
     <div class="popup-close" onclick="closeReinvestPopup()">✕</div>
     <h2>Reinvest</h2>
     <p>Top up your <span id="reinvestPlanName" style="color:#F0B90B;font-weight:bold;"></span> to start a new cycle.</p>
-<p id="reinvestMinInfo" style="color:#999;font-size:0.85rem;"></p>
-
+    <p id="reinvestMinInfo" style="color:#999;font-size:0.85rem;"></p>
     <label>Top-up Amount ($)</label>
     <input id="reinvestTopupAmount" type="number" placeholder="Enter amount" oninput="updateReinvestVoteDisplay()">
-<p id="reinvestVoteDisplay" style="color:#F0B90B;font-size:0.85rem;margin-top:4px;"></p>
-
+    <p id="reinvestVoteDisplay" style="color:#F0B90B;font-size:0.85rem;margin-top:4px;"></p>
     <label>Choose Representative</label>
     <select id="reinvestRepresentative">
       <option value="">Select Representative</option>
@@ -750,21 +464,16 @@ I HAVE PAID
       <option>Lincoln Hayes</option>
       <option>Amber Agrawal</option>
     </select>
-
-    <button class="deposit-btn" onclick="submitReinvestment()" style="margin-top:15px;">
-      Proceed
-    </button>
+    <button class="deposit-btn" onclick="submitReinvestment()" style="margin-top:15px;">Proceed</button>
   </div>
 </div>
 
 <!-- CARD APPLICATION POPUP -->
-
 <div class="popup-overlay" id="cardApplyPopup">
   <div class="popup-box">
     <div class="popup-close" onclick="closeCardApply()">✕</div>
     <h2 id="cardApplyTitle">Apply for GIAI Card</h2>
     <p id="cardApplySubtitle" style="color:#999;font-size:0.85rem;margin-bottom:10px;"></p>
-
     <label>Employment Status</label>
     <select id="cardEmployment">
       <option value="">Select status</option>
@@ -774,10 +483,8 @@ I HAVE PAID
       <option>Student</option>
       <option>Unemployed</option>
     </select>
-
     <label>Occupation / Job Title</label>
     <input id="cardOccupation" type="text" placeholder="e.g. Software Engineer">
-
     <label>Monthly Income</label>
     <select id="cardIncome">
       <option value="">Select income range</option>
@@ -790,49 +497,30 @@ I HAVE PAID
       <option>$75,000 - $100,000</option>
       <option>$100,000+</option>
     </select>
-
-    <label>Government-Issued ID (Passport / Driver's License / National ID)</label>
-    <p style="color:#888;font-size:0.78rem;margin:0 0 6px;">
-      Upload a clear photo or scan of a valid ID for verification.
-    </p>
+    <label>Government-Issued ID</label>
+    <p style="color:#888;font-size:0.78rem;margin:0 0 6px;">Upload a clear photo or scan of a valid ID for verification.</p>
     <input id="cardIdUpload" type="file" accept="image/*,.pdf">
-
-    <label style="margin-top:14px;">Proof of Funds (Bank Statement or Transaction History)</label>
-    <p style="color:#888;font-size:0.78rem;margin:0 0 6px;">
-      Upload a recent bank statement, transaction receipt, or screenshot showing your funds.
-    </p>
+    <label style="margin-top:14px;">Proof of Funds</label>
+    <p style="color:#888;font-size:0.78rem;margin:0 0 6px;">Upload a recent bank statement, transaction receipt, or screenshot showing your funds.</p>
     <input id="cardProofUpload" type="file" accept="image/*,.pdf">
-
     <div class="notif-row" style="margin-top:14px;">
-      <label style="margin:0;flex:1;">
-        I confirm my current investment balance may serve as collateral for this card.
-      </label>
+      <label style="margin:0;flex:1;">I confirm my current investment balance may serve as collateral for this card.</label>
       <input id="cardCollateralConfirm" type="checkbox">
     </div>
-
-    <button class="deposit-btn" onclick="submitCardApplication()" style="margin-top:18px;">
-      Submit Application
-    </button>
+    <button class="deposit-btn" onclick="submitCardApplication()" style="margin-top:18px;">Submit Application</button>
   </div>
 </div>
 
+<!-- USE BALANCE POPUP -->
 <div class="popup-overlay" id="useBalancePopup">
   <div class="popup-box">
     <div class="popup-close" onclick="document.getElementById('useBalancePopup').style.display='none'">✕</div>
     <h2>You Have Available Balance</h2>
     <p id="useBalanceInfo" style="color:#999;font-size:0.9rem;"></p>
-
-<button class="deposit-btn" onclick="
-  document.getElementById('useBalancePopup').style.display='none';
-  document.getElementById('balanceRepPopup').style.display='flex';
-" style="margin-top:10px;">
-  Invest This Balance
-</button>
-
-   <button class="withdraw-btn" onclick="
-      document.getElementById('useBalancePopup').style.display='none';
-      document.getElementById('depositPopup').style.display='flex';
-    " style="margin-top:10px;">
+    <button class="deposit-btn" onclick="document.getElementById('useBalancePopup').style.display='none';document.getElementById('balanceRepPopup').style.display='flex';" style="margin-top:10px;">
+      Invest This Balance
+    </button>
+    <button class="withdraw-btn" onclick="document.getElementById('useBalancePopup').style.display='none';document.getElementById('depositPopup').style.display='flex';" style="margin-top:10px;">
       Make a New Deposit Instead
     </button>
   </div>
@@ -843,39 +531,31 @@ I HAVE PAID
   <div class="popup-box">
     <div class="popup-close" onclick="closeProfilePopup()">✕</div>
     <h2>👤 My Profile</h2>
-
     <div style="display:flex;flex-direction:column;gap:14px;">
       <div>
         <label style="font-size:0.8rem;color:#aaa;display:block;margin-bottom:4px;">Full Name</label>
         <p id="profileName" style="font-size:1.1rem;font-weight:600;color:#fff;margin:0;">—</p>
       </div>
-
       <div>
         <label style="font-size:0.8rem;color:#aaa;display:block;margin-bottom:4px;">Email</label>
         <p id="profileEmail" style="font-size:1rem;color:#ccc;margin:0;">—</p>
       </div>
-
       <div>
         <label style="font-size:0.8rem;color:#aaa;display:block;margin-bottom:4px;">Current Plan</label>
         <p id="profilePlan" style="font-size:1rem;color:#F0B90B;font-weight:600;margin:0;">—</p>
       </div>
-
       <div>
         <label style="font-size:0.8rem;color:#aaa;display:block;margin-bottom:4px;">Investor Rank</label>
         <p id="profileRank" style="font-size:1rem;color:#F0B90B;font-weight:600;margin:0;">—</p>
       </div>
     </div>
-
-    <button class="withdraw-btn" onclick="logoutUser()" style="margin-top:20px;">
-      Log Out
-    </button>
+    <button class="withdraw-btn" onclick="logoutUser()" style="margin-top:20px;">Log Out</button>
   </div>
 </div>
 
 <!-- ============================================================
-     PASTE THIS SETTINGS POPUP anywhere before </body>
-     (right after the reinvest popup is a good spot)
-     ============================================================ -->
+     SETTINGS POPUP
+============================================================ -->
 
 <div class="popup-overlay" id="settingsPopup">
   <div class="popup-box settings-box">
@@ -885,104 +565,114 @@ I HAVE PAID
 
     <!-- TAB BUTTONS -->
     <div class="settings-tabs">
-      <button class="stab active" onclick="showSettingsTab('profile', this)">Profile</button>
-      <button class="stab" onclick="showSettingsTab('security', this)">Security</button>
-      <button class="stab" onclick="showSettingsTab('notifications', this)">Notifications</button>
-      <button class="stab" onclick="showSettingsTab('display', this)">Display</button>
+      <button class="stab active" onclick="showSettingsTab('profile', this)">
+        Profile
+      </button>
+
+      <button class="stab" onclick="showSettingsTab('security', this)">
+        Security
+      </button>
     </div>
 
     <!-- PROFILE TAB -->
     <div class="stab-content" id="stab-profile">
+
       <label>Full Name</label>
-      <input id="settingsName" type="text" placeholder="Your name">
+      <input
+        id="settingsName"
+        type="text"
+        placeholder="Your name">
 
       <label>Email (read-only)</label>
-      <input id="settingsEmail" type="email" disabled style="opacity:0.5;cursor:not-allowed;">
+      <input
+        id="settingsEmail"
+        type="email"
+        disabled
+        style="opacity:.5;cursor:not-allowed;">
+
     </div>
 
     <!-- SECURITY TAB -->
     <div class="stab-content" id="stab-security" style="display:none;">
+
       <label>Current Password</label>
-      <input id="settingsCurrentPassword" type="password" placeholder="Enter current password">
+      <input
+        id="settingsCurrentPassword"
+        type="password"
+        placeholder="Enter current password">
 
       <label>New Password</label>
-      <input id="settingsNewPassword" type="password" placeholder="At least 6 characters">
+      <input
+        id="settingsNewPassword"
+        type="password"
+        placeholder="At least 6 characters">
 
       <label>Confirm New Password</label>
-      <input id="settingsConfirmPassword" type="password" placeholder="Repeat new password">
+      <input
+        id="settingsConfirmPassword"
+        type="password"
+        placeholder="Repeat new password">
+
     </div>
 
-    <!-- NOTIFICATIONS TAB -->
-    <div class="stab-content" id="stab-notifications" style="display:none;">
-      <div class="notif-row">
-        <label>Deposit Confirmations</label>
-        <input id="notifDeposit" type="checkbox" checked>
-      </div>
-      <div class="notif-row">
-        <label>Withdrawal Updates</label>
-        <input id="notifWithdraw" type="checkbox" checked>
-      </div>
-      <div class="notif-row">
-        <label>Profit Milestones</label>
-        <input id="notifProfit" type="checkbox" checked>
-      </div>
-    </div>
-
-    <!-- DISPLAY TAB -->
-    <div class="stab-content" id="stab-display" style="display:none;">
-      <label>Theme</label>
-      <select id="themeSelect">
-        <option value="dark">Dark (Default)</option>
-        <option value="light">Light</option>
-        <option value="midnight">Midnight Blue</option>
-      </select>
-    </div>
-
-    <button class="deposit-btn" onclick="saveSettings()" style="margin-top:20px;">
+    <button
+      class="deposit-btn"
+      onclick="saveSettings()"
+      style="margin-top:20px;">
       Save Changes
     </button>
 
   </div>
 </div>
 
+<!-- Google Translate -->
 <div id="google_translate_element" style="display:none;"></div>
 
 <script>
 function googleTranslateElementInit() {
   new google.translate.TranslateElement(
-    { pageLanguage: 'en', autoDisplay: false },
-    'google_translate_element'
+    {
+      pageLanguage: "en",
+      autoDisplay: false
+    },
+    "google_translate_element"
   );
 }
 
-// Remember the language the user picked on index.html
-// and apply it automatically on this page
 function applyStoredLanguage() {
+
   const lang = localStorage.getItem("giai_language");
+
   if (!lang || lang === "en") return;
 
-  const trySet = setInterval(() => {
+  const timer = setInterval(() => {
+
     const select = document.querySelector(".goog-te-combo");
+
     if (select) {
       select.value = lang;
       select.dispatchEvent(new Event("change"));
-      clearInterval(trySet);
+      clearInterval(timer);
     }
+
   }, 300);
+
 }
 
-window.addEventListener("load", () => {
-  applyStoredLanguage();
-});
+window.addEventListener("load", applyStoredLanguage);
 </script>
 
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="dashboard.js"></script>
-<script src="portfolio.js"></script>
 
 <script src="https://s3.tradingview.com/tv.js"></script>
 
+<script src="portfolio.js"></script>
+
+<script src="dashboard.js"></script>
+
+<div id="toast"></div>
+
 </body>
 </html>
-

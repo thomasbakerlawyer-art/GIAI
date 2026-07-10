@@ -15,7 +15,7 @@ function toggleMute(button) {
 
 async function updateMarkets() {
   try {
-    const url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,solana,ripple,dogecoin,cardano,avalanche-2,chainlink,shiba-inu&vs_currencies=usd";
+    const url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,ripple,dogecoin,cardano,avalanche-2,chainlink,shiba-inu&vs_currencies=usd";
     const res = await fetch(url);
     const data = await res.json();
 
@@ -26,7 +26,6 @@ async function updateMarkets() {
 
     set("btc-price",  data.bitcoin?.usd);
     set("eth-price",  data.ethereum?.usd);
-    set("bnb-price",  data.binancecoin?.usd);
     set("sol-price",  data.solana?.usd);
     set("xrp-price",  data.ripple?.usd);
     set("doge-price", data.dogecoin?.usd);
@@ -40,8 +39,7 @@ async function updateMarkets() {
       ticker.textContent =
         `BTC $${Number(data.bitcoin?.usd).toLocaleString()} · ` +
         `ETH $${Number(data.ethereum?.usd).toLocaleString()} · ` +
-        `BNB $${Number(data.binancecoin?.usd).toLocaleString()} · ` +
-        `SOL $${Number(data.solana?.usd).toLocaleString()} · ` +
+       `SOL $${Number(data.solana?.usd).toLocaleString()} · ` +
         `XRP $${Number(data.ripple?.usd).toLocaleString()} · ` +
         `DOGE $${Number(data.dogecoin?.usd).toLocaleString()} · ` +
         `ADA $${Number(data.cardano?.usd).toLocaleString()} · ` +
@@ -342,7 +340,15 @@ window.addEventListener("DOMContentLoaded", () => {
 // NAVIGATION HELPERS
 // =========================
 
-function openDashboard() { window.location.href = "dashboard.html"; }
+function openDashboard() {
+    const user = localStorage.getItem("user");
+
+    if (user) {
+        window.location.href = "dashboard.html";
+    } else {
+        window.location.href = "signup.html";
+    }
+}
 
 function scrollToRankings() {
   const reps = document.querySelector(".representatives");
@@ -368,62 +374,6 @@ function closeAuth() {
 }
 
 // =========================
-// COUNTRY DROPDOWN
-// =========================
-
-const countryList = document.getElementById("countryList");
-const countrySearch = document.getElementById("countrySearch");
-
-const countryNames = [
-  "Afghanistan","Albania","Algeria","Andorra","Angola","Argentina","Armenia",
-  "Australia","Austria","Azerbaijan","Bahrain","Bangladesh","Belgium","Brazil",
-  "Bulgaria","Canada","China","Croatia","Cyprus","Czech Republic","Denmark",
-  "Egypt","Estonia","Finland","France","Germany","Ghana","Greece","Hong Kong",
-  "Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel",
-  "Italy","Japan","Jordan","Kazakhstan","Kenya","Kuwait","Latvia","Lebanon",
-  "Libya","Lithuania","Luxembourg","Malaysia","Mexico","Monaco","Morocco",
-  "Netherlands","New Zealand","Nigeria","Norway","Oman","Pakistan","Philippines",
-  "Poland","Portugal","Qatar","Romania","Russia","Saudi Arabia","Singapore",
-  "Slovakia","South Africa","South Korea","Spain","Sweden","Switzerland",
-  "Thailand","Tunisia","Turkey","UAE","Ukraine","United Kingdom","United States","Vietnam"
-];
-
-function loadCountries() {
-  if (!countryList) return;
-  countryList.innerHTML = "";
-  countryNames.sort().forEach(country => {
-    const div = document.createElement("div");
-    div.classList.add("country-item");
-    div.innerText = country;
-    div.onclick = () => {
-      if (countrySearch) countrySearch.value = country;
-      countryList.style.display = "none";
-    };
-    countryList.appendChild(div);
-  });
-}
-
-loadCountries();
-
-function toggleCountryList() {
-  if (countryList) countryList.style.display = "block";
-}
-
-function filterCountries() {
-  if (!countrySearch || !countryList) return;
-  const value = countrySearch.value.toLowerCase();
-  document.querySelectorAll(".country-item").forEach(item => {
-    item.style.display = item.innerText.toLowerCase().includes(value) ? "block" : "none";
-  });
-}
-
-document.addEventListener("click", (e) => {
-  if (!e.target.closest(".country-select-wrapper") && countryList) {
-    countryList.style.display = "none";
-  }
-});
-
-// =========================
 // CHAT
 // =========================
 
@@ -435,73 +385,7 @@ if (chatButton) chatButton.onclick = () => { chatWindow.style.display = "flex"; 
 if (closeChat)  closeChat.onclick  = () => { chatWindow.style.display = "none"; };
 
 async function sendMessage() {
-  const currentUser = JSON.parse(localStorage.getItem("user"));
-  if (!currentUser) { alert("Please login first"); return; }
-  const input   = document.getElementById("userMessage");
-  const message = input.value.trim();
-  if (!message) return;
-  input.value = "";
-  try {
-    await fetch("/chat/send", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: currentUser.email, name: currentUser.name, message })
-    });
-    await loadMessages();
-  } catch(err) {
-    document.getElementById("chatMessages").innerHTML += `<div class="bot-message">Message failed to send.</div>`;
-  }
-}
 
-async function loadMessages() {
-  const currentUser = JSON.parse(localStorage.getItem("user"));
-  if (!currentUser) return;
-  const response = await fetch(`/chat/messages/${currentUser.email}`);
-  const data     = await response.json();
-  const messages = document.getElementById("chatMessages");
-  messages.innerHTML = "";
-  data.messages.forEach(msg => {
-    messages.innerHTML += `<div class="${msg.sender === "user" ? "user-message" : msg.sender === "admin" ? "admin-message" : "bot-message"}">${msg.text}</div>`;
-  });
-  messages.scrollTop = messages.scrollHeight;
-}
-
-setInterval(loadMessages, 3000);
-
-// Enter key sends message
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Enter" && document.getElementById("userMessage") === document.activeElement) {
-    sendMessage();
-  }
-});
-
-// =========================
-// ANNOUNCEMENT BANNER
-// =========================
-const bannerStyle = document.createElement("style");
-bannerStyle.textContent = `
-#announcementBanner { display:none; position:fixed; top:0; left:0; width:100%; z-index:99998; padding:14px 50px 14px 20px; text-align:center; font-size:15px; font-weight:600; line-height:1.5; }
-#announcementBanner.type-info    { background:#1a3a5c; color:#7ec8ff; border-bottom:1px solid #2a5a8c; }
-#announcementBanner.type-success { background:#0d2e1a; color:#00d26a; border-bottom:1px solid #1a5a34; }
-#announcementBanner.type-warning { background:#2e2200; color:#f0b90b; border-bottom:1px solid #5a4400; }
-#announcementBanner.type-urgent  { background:#2e0a0a; color:#ff5555; border-bottom:1px solid #5a1a1a; }
-#announcementClose { position:absolute; right:16px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:20px; background:none; border:none; color:inherit; opacity:0.7; }
-#announcementClose:hover { opacity:1; }
-`;
-document.head.appendChild(bannerStyle);
-
-function updateNavPosition() {
-  const banner = document.getElementById("announcementBanner");
-  const nav = document.querySelector(".top-nav");
-  if (!nav) return;
-  if (banner && banner.style.display !== "none") {
-    nav.style.top = (45 + banner.offsetHeight) + "px";
-  } else {
-    nav.style.top = "45px";
-  }
-}
-
-async function sendMessage() {
   const currentUser = JSON.parse(localStorage.getItem("user"));
 
   if (!currentUser) {
@@ -516,38 +400,145 @@ async function sendMessage() {
 
   input.value = "";
 
+  const messages = document.getElementById("chatMessages");
+
+  messages.innerHTML += `
+      <div class="typing-indicator" id="typingIndicator">
+          <span></span>
+          <span></span>
+          <span></span>
+      </div>
+  `;
+
+  messages.scrollTop = messages.scrollHeight;
+
   try {
-    const response = await fetch("/chat/send", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
+
+    await fetch("/chat/send", {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
       },
-      body: JSON.stringify({
-        email: currentUser.email,
-        name: currentUser.name,
+      body:JSON.stringify({
+        email:currentUser.email,
+        name:currentUser.name,
         message
       })
     });
 
-    const data = await response.json();
+    setTimeout(async()=>{
 
-    console.log("Chat response:", data);
+      document.getElementById("typingIndicator")?.remove();
 
-    if (!data.success) {
-      alert("Server response: " + JSON.stringify(data));
-    }
+      await loadMessages();
 
-    await loadMessages();
+    },1500);
 
-  } catch (err) {
-    console.error("Chat error:", err);
+  } catch(err){
 
-    document.getElementById("chatMessages").innerHTML +=
-      `<div class="bot-message">Message failed to send.</div>`;
+    document.getElementById("typingIndicator")?.remove();
+
+    messages.innerHTML +=
+    `<div class="bot-message">Message failed to send.</div>`;
+
   }
+
 }
 
-loadSiteSettings();
+async function loadMessages() {
+  const currentUser = JSON.parse(localStorage.getItem("user"));
+  if (!currentUser) return;
+  const response = await fetch(`/chat/messages/${currentUser.email}`);
+  const data     = await response.json();
+
+const status = document.getElementById("supportStatus");
+
+if (status) {
+    status.textContent = data.online ? "🟢 Support Online" : "⚪ Support Offline";
+}
+
+  const messages = document.getElementById("chatMessages");
+  messages.innerHTML = "";
+if (data.typing) {
+
+    messages.innerHTML += `
+    <div class="bot-message typing-indicator">
+        <span></span>
+        <span></span>
+        <span></span>
+        <small style="display:block;margin-top:8px;color:#999;">
+            Support is typing...
+        </small>
+    </div>`;
+
+}
+  data.messages.forEach(msg => {
+   const cls =
+msg.sender === "user"
+? "user-message"
+: msg.sender === "admin"
+? "admin-message"
+: "bot-message";
+
+if (msg.sender === "user") {
+
+messages.innerHTML += `
+<div class="user-message">
+${msg.text}
+</div>
+`;
+
+} else {
+
+messages.innerHTML += `
+<div class="support-message">
+    <div class="support-avatar">
+        <img src="img/supportlogo.png" alt="Support">
+    </div>
+
+    <div class="bot-message">
+        ${msg.text}
+    </div>
+</div>
+`;
+
+}
+  });
+if (data.typing) {
+
+messages.innerHTML += `
+<div class="support-message typing-indicator">
+
+    <div class="support-avatar">
+        <img src="img/supportlogo.png" alt="Support">
+    </div>
+
+    <div class="bot-message">
+        <span></span>
+        <span></span>
+        <span></span>
+
+        <small style="display:block;margin-top:8px;color:#999;">
+            Support is typing...
+        </small>
+    </div>
+
+</div>
+`;
+
+}
+
+  messages.scrollTop = messages.scrollHeight;
+}
+
+setInterval(loadMessages, 3000);
+
+// Enter key sends message
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && document.getElementById("userMessage") === document.activeElement) {
+    sendMessage();
+  }
+});
 
 // =========================
 // LIVE COUNTERS
@@ -623,3 +614,56 @@ document.addEventListener("DOMContentLoaded", () => {
     video.play().catch(() => {});
   });
 });
+
+/* =========================
+   PASSWORD TOGGLE
+========================= */
+
+function togglePassword(inputId, button){
+
+    const input = document.getElementById(inputId);
+
+    const icon = button.querySelector("svg");
+
+    if(input.type === "password"){
+
+        input.type = "text";
+
+        icon.innerHTML = `
+            <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20C5 20 1 12 1 12a21.77 21.77 0 0 1 5.06-6.94"></path>
+            <path d="M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a21.31 21.31 0 0 1-2.16 3.19"></path>
+            <line x1="1" y1="1" x2="23" y2="23"></line>
+        `;
+
+    }else{
+
+        input.type = "password";
+
+        icon.innerHTML = `
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+        `;
+
+    }
+
+}
+
+function validateWallet(wallet, type) {
+  wallet = wallet.trim();
+
+  switch (type) {
+
+    case "btc":
+      return /^(bc1[a-zA-HJ-NP-Z0-9]{25,59}|[13][a-km-zA-HJ-NP-Z1-9]{25,34})$/.test(wallet);
+
+    case "eth":
+      return /^0x[a-fA-F0-9]{40}$/.test(wallet);
+
+    case "usdt":
+      return /^T[a-zA-Z0-9]{33}$/.test(wallet);
+
+    default:
+      return false;
+  }
+}
+

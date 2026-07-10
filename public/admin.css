@@ -1083,3 +1083,27 @@ body {
     font-size: 18px !important;
   }
 }
+
+.resolve-btn{
+
+    background:#22c55e;
+
+    color:white;
+
+    border:none;
+
+    padding:8px 14px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+}
+
+.resolve-btn:hover{
+
+    background:#16a34a;
+
+}

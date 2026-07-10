@@ -1857,3 +1857,156 @@ font-weight:bold;
 #depositPopup button:hover {
     background: #ffd54a;
 }
+.wallet-address{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    width:100%;
+}
+
+.wallet-address p{
+    flex:1;
+    margin:0;
+    overflow-wrap:anywhere;
+    word-break:break-word;
+}
+
+.copy-btn{
+    flex:0 0 40px;
+    background:none;
+    border:none;
+    cursor:pointer;
+    width:40px;
+    height:40px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#888;
+    transition:.25s;
+}
+
+#toast{
+    position:fixed;
+    bottom:30px;
+    right:30px;
+    background:#111;
+    color:#fff;
+    padding:14px 22px;
+    border-left:4px solid #f0b90b;
+    border-radius:14px;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+    opacity:0;
+    transform:translateY(25px);
+    transition:.35s;
+    pointer-events:none;
+    z-index:99999;
+}
+
+#toast.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+#toast.success{
+    border-left-color:#29d16a;
+}
+
+#toast.error{
+    border-left-color:#ff4d4d;
+}
+
+body{
+    visibility:hidden;
+}
+
+.rep-select-wrapper{
+    position:relative;
+    width:100%;
+}
+
+.rep-select-wrapper select{
+    width:100%;
+    padding-right:45px;
+    appearance:none;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+}
+
+.rep-select-arrow{
+    position:absolute;
+    right:15px;
+    top:50%;
+    transform:translateY(-50%);
+    pointer-events:none;
+    color:#f0b90b;
+}
+
+/* ===== Popup Color Fix ===== */
+
+.plans-box,
+.plans-box *{
+    color:#fff !important;
+}
+
+.plans-box h2,
+.plans-box h3{
+    color:#f0b90b !important;
+}
+
+.plans-box p,
+.popup-plan p{
+    color:#cfcfcf !important;
+}
+
+.popup-close{
+    color:#f0b90b !important;
+}
+
+.popup-plan input{
+    color:#fff !important;
+}
+
+.popup-plan input::placeholder{
+    color:#777 !important;
+}
+
+/* =========================
+   DEPOSIT POPUP TEXT FIX
+========================= */
+
+#depositPopup {
+    color: #fff;
+}
+
+#depositPopup h1,
+#depositPopup h2,
+#depositPopup h3,
+#depositPopup h4,
+#depositPopup h5,
+#depositPopup h6,
+#depositPopup p,
+#depositPopup label,
+#depositPopup span {
+    color: #fff !important;
+}
+
+#depositPopup select {
+    color: #fff !important;
+    background: #1a1a1a;
+}
+
+#depositPopup option {
+    color: #fff;
+    background: #1a1a1a;
+}
+
+#depositPopup input {
+    color: #fff;
+    background: #1a1a1a;
+}
+
+#depositPopup .popup-close {
+    color: #f0b90b !important;
+}

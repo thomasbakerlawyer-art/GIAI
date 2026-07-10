@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login • BINANCE GIAI</title>
+<title>Login GIAI</title>
 <style>
 
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -52,17 +52,22 @@ body {
   filter: drop-shadow(0 0 16px rgba(240,185,11,0.4));
 }
 
-.login-logo h1 {
-  font-size: 22px;
-  font-weight: 900;
-  color: #f0b90b;
-  letter-spacing: 2px;
+.login-logo h1{
+    font-size: 52px;
+    font-weight: 800;
+    color: #f0b90b;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
 }
 
-.login-logo p {
-  color: #555;
-  font-size: 13px;
-  margin-top: 5px;
+.login-logo p{
+    font-size: 18px;
+    font-weight: 500;
+    color: #cfcfcf;
+    margin-top: 8px;
+    line-height: 1.6;
+    letter-spacing: 0.5px;
 }
 
 .login-box {
@@ -314,7 +319,63 @@ body {
   .login-wrap { padding: 16px; }
   .forgot-box { padding: 30px 22px; }
 }
+.password-box{
+    position:relative !important;
+    width:100%;
+    display:block !important;
+}
 
+.password-box input{
+    width:100% !important;
+    padding-right:55px !important;
+    box-sizing:border-box !important;
+}
+
+.toggle-password{
+    position:absolute !important;
+    right:15px !important;
+    top:50% !important;
+    transform:translateY(-50%) !important;
+
+    width:22px !important;
+    height:22px !important;
+
+    border:none !important;
+    background:transparent !important;
+
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+
+    cursor:pointer;
+    padding:0 !important;
+    margin:0 !important;
+    color:#888;
+}
+
+.toggle-password:hover{
+    color:#f0b90b;
+}
+
+.toggle-password svg{
+    width:20px;
+    height:20px;
+    display:block;
+}
+
+.forgot-title{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+}
+
+.forgot-title svg{
+    width:22px;
+    height:22px;
+    color:#f0b90b;
+    flex-shrink:0;
+}
 </style>
 </head>
 <body>
@@ -323,15 +384,31 @@ body {
 
 <div class="login-wrap">
 
-  <div class="login-logo">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Binance_Logo.png" alt="Binance">
-    <h1>BINANCE • GIAI</h1>
+<div class="login-logo">
+  
+    <h1>GIAI</h1>
     <p>Global Investor Acquisition Initiative</p>
   </div>
 
   <div class="login-box">
 
-    <h2>Welcome Back 👋</h2>
+<h2>
+  Welcome Back
+  <svg xmlns="http://www.w3.org/2000/svg"
+     width="22"
+     height="22"
+     viewBox="0 0 24 24"
+     fill="none"
+     stroke="#FFC107"
+     stroke-width="2"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     style="vertical-align:middle; margin-left:6px;">
+  <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+  <path d="M10 17l5-5-5-5"/>
+  <path d="M15 12H3"/>
+</svg>
+</h2>
     <p class="welcome-sub">Sign in to access your investment dashboard.</p>
 
     <div class="input-group">
@@ -340,11 +417,42 @@ body {
         onkeydown="if(event.key==='Enter') login()">
     </div>
 
-    <div class="input-group">
-      <label>Password</label>
-      <input type="password" id="password" placeholder="Enter your password"
-        onkeydown="if(event.key==='Enter') login()">
-    </div>
+<div class="input-group">
+  <label>Password</label>
+
+  <div class="password-box">
+
+    <input
+      type="password"
+      id="password"
+      placeholder="Enter your password"
+      onkeydown="if(event.key==='Enter') login()">
+
+    <button
+      type="button"
+      class="toggle-password"
+      onclick="togglePassword('password', this)">
+
+      <svg xmlns="http://www.w3.org/2000/svg"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round">
+
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"></path>
+        <circle cx="12" cy="12" r="3"></circle>
+
+      </svg>
+
+    </button>
+
+  </div>
+
+</div>
 
     <div class="forgot-row">
       <span onclick="openForgot()">Forgot password?</span>
@@ -368,7 +476,7 @@ body {
   </div>
 
   <div class="security-badge">
-    🔒 Secured by Binance AI Infrastructure
+     Secured by GIAI AI Infrastructure
   </div>
 
 </div>
@@ -380,7 +488,24 @@ body {
 
     <!-- STEP 1: Enter Email -->
     <div class="forgot-step active" id="forgotStep1">
-      <h2>Reset Password 🔐</h2>
+<h2 class="forgot-title">
+  Reset Password
+
+  <svg xmlns="http://www.w3.org/2000/svg"
+       width="22"
+       height="22"
+       viewBox="0 0 24 24"
+       fill="none"
+       stroke="currentColor"
+       stroke-width="2"
+       stroke-linecap="round"
+       stroke-linejoin="round">
+
+    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+
+  </svg>
+</h2>
       <p>Enter the email address linked to your GIAI account.</p>
       <input type="email" id="forgotEmail" class="forgot-input"
         placeholder="name@example.com"
@@ -621,5 +746,6 @@ window.addEventListener("load", applyStoredLanguage);
 </script>
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
+<script src="script.js"></script>
 </body>
 </html>
