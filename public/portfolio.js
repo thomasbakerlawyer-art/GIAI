@@ -77,10 +77,11 @@ function initializePortfolioChart() {
 
                 },
 
-                y: {
-    beginAtZero: false,
+y: {
+    beginAtZero: true,
+    min: 0,
 
-    grace: "10%",
+    grace: "5%",
 
     grid: {
         color: "rgba(255,255,255,.05)"
@@ -90,7 +91,7 @@ function initializePortfolioChart() {
         color: "#666"
     }
 }
-            }
+           }
 
         }
 
