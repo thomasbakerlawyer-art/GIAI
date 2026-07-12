@@ -104,26 +104,30 @@ y: {
 ========================================== */
 
 function drawPortfolioHistory(history) {
-
     if (!portfolioChart) return;
-
     if (!history || history.length === 0) {
         portfolioChart.data.labels = [];
         portfolioChart.data.datasets[0].data = [];
         portfolioChart.update();
         return;
     }
-
     history.sort((a, b) => a.time - b.time);
 
-    portfolioChart.data.labels = history.map((_, i) => i + 1);
+    // Clamp all values to 0 minimum — never show negative
+    const clampedData = history.map(item => Math.max(0, Number(item.claimableProfit || 0)));
 
-    portfolioChart.data.datasets[0].data =
-        history.map(item => Number(item.claimableProfit || 0));
+    // Remove leading zeros so chart starts when profit actually begins
+    let startIndex = 0;
+    for (let i = 0; i < clampedData.length; i++) {
+        if (clampedData[i] > 0) { startIndex = i; break; }
+    }
+    const trimmedData = clampedData.slice(startIndex);
+    const trimmedLabels = history.slice(startIndex).map((_, i) => i + 1);
 
+    portfolioChart.data.labels = trimmedLabels.length > 0 ? trimmedLabels : [1];
+    portfolioChart.data.datasets[0].data = trimmedData.length > 0 ? trimmedData : [0];
     portfolioChart.update();
 }
-
 /* ==========================================
    LOAD HISTORY
 ========================================== */
