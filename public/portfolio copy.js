@@ -18,26 +18,8 @@ function initializePortfolioChart() {
             datasets: [{
                 label: "Profit",
                 data: [],
-                borderColor: function(context) {
-                    const chart = context.chart;
-                    const { ctx, chartArea } = chart;
-                    if (!chartArea) return "#f0b90b";
-                    const gradient = ctx.createLinearGradient(chartArea.left, 0, chartArea.right, 0);
-                    gradient.addColorStop(0, "rgba(240,185,11,0)");
-                    gradient.addColorStop(0.2, "rgba(240,185,11,0.4)");
-                    gradient.addColorStop(1, "#f0b90b");
-                    return gradient;
-                },
-                backgroundColor: function(context) {
-                    const chart = context.chart;
-                    const { ctx, chartArea } = chart;
-                    if (!chartArea) return "rgba(240,185,11,0.15)";
-                    const gradient = ctx.createLinearGradient(chartArea.left, 0, chartArea.right, 0);
-                    gradient.addColorStop(0, "rgba(240,185,11,0)");
-                    gradient.addColorStop(0.3, "rgba(240,185,11,0.08)");
-                    gradient.addColorStop(1, "rgba(240,185,11,0.25)");
-                    return gradient;
-                },
+                borderColor: "#f0b90b",
+                backgroundColor: "rgba(240,185,11,0.15)",
                 fill: true,
                 borderWidth: 2.5,
                 tension: 0.4,
@@ -102,7 +84,7 @@ function drawPortfolioHistory(history) {
     );
 
     // Take last 20 points for a smooth curve
-    const MAX_POINTS = 50;
+    const MAX_POINTS = 20;
     const recentData = clampedData.slice(-MAX_POINTS);
     const recentHistory = history.slice(-MAX_POINTS);
 
