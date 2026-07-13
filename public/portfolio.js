@@ -23,28 +23,18 @@ function initializePortfolioChart() {
 
             labels: [],
 
-            datasets: [{
-
-                label: "Profit",
-
-                data: [],
-
-                borderColor: "#f0b90b",
-
-                backgroundColor: "rgba(240,185,11,.15)",
-
-                fill: true,
-
-                borderWidth: 2.5,
-
-                tension: 0.5,
-
-                pointRadius: 0,
-
-                pointHoverRadius: 5
-
-            }]
-
+datasets: [{
+  label: "Profit",
+  data: [],
+  borderColor: "#f0b90b",
+  backgroundColor: "rgba(240,185,11,.15)",
+  fill: true,
+  borderWidth: 2.5,
+  tension: 0.4,
+  pointRadius: 0,
+  pointHoverRadius: 5,
+  cubicInterpolationMode: "monotone"
+}]
         },
 
         options: {
@@ -78,18 +68,13 @@ function initializePortfolioChart() {
                 },
 
 y: {
-    beginAtZero: true,
-    min: 0,
+  beginAtZero: false,
+  suggestedMin: 0,
+  grace: "10%",
+  grid: { color: "rgba(255,255,255,.05)" },
+  ticks: { color: "#666" }
+}
 
-    grace: "5%",
-
-    grid: {
-        color: "rgba(255,255,255,.05)"
-    },
-
-    ticks: {
-        color: "#666"
-    }
 }
            }
 
@@ -121,8 +106,13 @@ function drawPortfolioHistory(history) {
     for (let i = 0; i < clampedData.length; i++) {
         if (clampedData[i] > 0) { startIndex = i; break; }
     }
-    const trimmedData = clampedData.slice(startIndex);
-    const trimmedLabels = history.slice(startIndex).map((_, i) => i + 1);
+const MAX_POINTS = 29;
+const recentData = clampedData.slice(-MAX_POINTS);
+const recentLabels = history.slice(-MAX_POINTS).map((_, i) => i + 2);
+
+// Always start from 0 so chart shows growth from bottom
+const trimmedData = [0, ...recentData];
+const trimmedLabels = [1, ...recentLabels];
 
     portfolioChart.data.labels = trimmedLabels.length > 0 ? trimmedLabels : [1];
     portfolioChart.data.datasets[0].data = trimmedData.length > 0 ? trimmedData : [0];
