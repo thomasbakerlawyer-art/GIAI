@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard • BINANCE GIAI</title>
+<link rel="stylesheet" href="dashboard.css">
+<link rel="stylesheet" href="dashboard-lite.css">
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<div class="mobile-menu-toggle" onclick="toggleSidebar()">☰</div>
+
+<div class="dashboard-layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <h2 class="logo">BINANCE GIAI</h2>
+    <div class="sidebar-links">
+      <button class="dash-link active-tab" onclick="smoothScrollTo('topSection')">Dashboard</button>
+      <button class="dash-link" onclick="openDeposit()">Deposit</button>
+      <button class="dash-link" onclick="openWithdraw()">Withdraw</button>
+      <button class="dash-link" onclick="openPlans()">Plans</button>
+      <button class="dash-link" onclick="smoothScrollTo('chartSection')">Portfolio</button>
+      <button class="dash-link" onclick="smoothScrollTo('transactionsBox')">Transactions</button>
+      <button class="dash-link" onclick="openSettings()">Settings</button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="dashboard-main">
+
+    <!-- TOP -->
+    <div id="topSection" class="dashboard-top">
+      <div class="mobile-menu-toggle-inline" onclick="toggleSidebar()">☰</div>
+      <div style="flex:1;">
+        <p style="font-size:1rem;font-weight:600;color:#fff;margin:0 0 2px;">Welcome Back</p>
+        <h2 id="welcomeName" style="margin:0 0 2px;color:#f0b90b;font-size:1.2rem;"></h2>
+        <p style="color:#888;font-size:0.82rem;margin:0;">Global Investor Acquisition Initiative</p>
+      </div>
+      <div class="dashboard-user" onclick="openProfilePopup()" style="cursor:pointer;">
+        <div class="avatar-icon" style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#f0b90b,#f77f00);display:flex;align-items:center;justify-content:center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4"/>
+            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- BALANCE -->
+    <p class="balance-label">Total Portfolio Balance
+      <svg id="eyeIcon" onclick="toggleBalanceVisibility()" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer;vertical-align:middle;margin-left:6px;">
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+    </p>
+    <h1 id="portfolioBalance" class="balance-amount">$0.00</h1>
+
+    <!-- STATS BOX -->
+    <div class="portfolio-card">
+      <div class="portfolio-stats">
+        <div>
+          <span>Expected Profit</span>
+          <h3 id="expectedProfit">$0.00</h3>
+        </div>
+        <div>
+          <span>Claimable Profit</span>
+          <h3 id="claimableProfit" class="profit-green">$0.00</h3>
+        </div>
+        <div>
+          <span>Investment Amount</span>
+          <h3 id="investmentAmount">$0.00</h3>
+        </div>
+        <div>
+          <span>Days Remaining</span>
+          <h3 id="daysRemaining">0</h3>
+        </div>
+      </div>
+      <div class="progress-bar">
+        <div id="progressFill" class="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="portfolio-buttons">
+      <button class="deposit-btn" onclick="openDeposit()">Deposit</button>
+      <button class="withdraw-btn" onclick="openWithdraw()">Withdraw</button>
+    </div>
+
+    <!-- PROFIT CHART — directly under buttons, no rep section above it -->
+    <div id="chartSection" class="performance-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div style="font-size:1.1rem;font-weight:700;color:#fff;">Profit Growth</div>
+        <div style="font-size:0.8rem;color:#888;">Live Profit Tracking</div>
+      </div>
+      <div style="position:relative;height:220px;">
+        <canvas id="portfolioChart"></canvas>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:16px;">
+        <div>
+          <div style="color:#888;font-size:0.75rem;">Today's Profit</div>
+          <div id="todayProfit" style="color:#00d26a;font-size:1.1rem;font-weight:700;">$0.00</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="color:#888;font-size:0.75rem;">ROI</div>
+          <div id="roiPercent" style="color:#00d26a;font-size:1.1rem;font-weight:700;">0%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIVITY STATS -->
+    <div class="dashboard-stats">
+      <div class="dashboard-stat">
+        <h3>Pending Deposits</h3>
+        <h1 id="pendingDeposits">0</h1>
+      </div>
+      <div class="dashboard-stat">
+        <h3>Pending Withdrawals</h3>
+        <h1 id="pendingWithdrawals">0</h1>
+      </div>
+      <div class="dashboard-stat">
+        <h3>Reinvestment</h3>
+        <button id="reinvestBtn" disabled class="reinvest-locked" onclick="openReinvestPopup()">Locked</button>
+      </div>
+    </div>
+
+    <!-- TRANSACTIONS -->
+    <div class="transactions-box" id="transactionsBox">
+      <h2>Transaction History</h2>
+      <div id="transactionList">
+        <div class="transaction">No transactions yet</div>
+      </div>
+    </div>
+
+  </div><!-- end dashboard-main -->
+</div><!-- end dashboard-layout -->
+
+<!-- ── DEPOSIT POPUP ── -->
+<div class="popup-overlay" id="depositPopup">
+  <div class="popup-box">
+    <div class="popup-close" onclick="closeDeposit()">✕</div>
+    <h2>Deposit Funds</h2>
+    <p style="color:#999;font-size:0.85rem;margin-bottom:16px;">Select a plan and send payment to one of our wallets.</p>
+    <label>Investment Amount ($)</label>
+    <input id="depositAmount" type="number" placeholder="Enter amount">
+    <label>Select Plan</label>
+    <select id="depositPlan">
+      <option value="">Choose a plan</option>
+      <option value="Starter Plan">Starter Plan ($200 – $999)</option>
+      <option value="Standard Plan">Standard Plan ($1,000 – $2,999)</option>
+      <option value="Premium Plan">Premium Plan ($3,000 – $7,999)</option>
+      <option value="Contact Manager">Contact Manager ($8,000 – $14,999)</option>
+      <option value="Capital Boost">Capital Boost ($15,000 – $44,999)</option>
+      <option value="Rapid Return">Rapid Return ($45,000+)</option>
+    </select>
+    <button onclick="continueDeposit()">Continue to Payment</button>
+  </div>
+</div>
+
+<!-- ── WALLET POPUP ── -->
+<div class="popup-overlay" id="walletPopup">
+  <div class="popup-box">
+    <div class="popup-close" onclick="closeWalletPopup()">✕</div>
+    <h2>Complete Payment</h2>
+    <p style="color:#999;font-size:0.85rem;">Send payment to one of the addresses below then click I HAVE PAID.</p>
+    <div class="wallet-card">
+      <h3>BTC</h3>
+      <p id="btcAddress">bc1qa4g38u9mxn43td5mt67jh320sy6nne9tfaewg6</p>
+    </div>
+    <div class="wallet-card">
+      <h3>USDT TRC20</h3>
+      <p id="usdtAddress">TBkxc6SZkXSYTop9NPJLz3TvLayDSrPedQ</p>
+    </div>
+    <div class="wallet-card">
+      <h3>ETH</h3>
+      <p id="ethAddress">0x21b7f254a06F222a1bed905f9d7b13665B42Bb65</p>
+    </div>
+    <button class="deposit-btn" onclick="submitDeposit()">I HAVE PAID</button>
+  </div>
+</div>
+
+<!-- ── WITHDRAW POPUP ── -->
+<div class="popup-overlay" id="withdrawPopup">
+  <div class="popup-box">
+    <div class="popup-close" onclick="closeWithdraw()">✕</div>
+    <h2>Withdraw Funds</h2>
+    <label>Amount ($)</label>
+    <input id="withdrawAmount" type="number" placeholder="Enter amount">
+    <button class="withdraw-btn" onclick="submitWithdraw()">Submit Withdrawal</button>
+  </div>
+</div>
+
+<!-- ── PLANS POPUP ── -->
+<div class="plans-popup" id="plansPopup">
+  <div class="plans-box">
+    <div class="close-popup" onclick="closePlans()">✕</div>
+    <h2>Investment Plans</h2>
+    <div class="popup-plan">
+      <h3>Starter Plan</h3><p>$200 – $999 · 25% profit · 1 day</p>
+      <input id="starterAmt" type="number" placeholder="Enter amount">
+      <button onclick="selectPlan('Starter Plan',200,999,'starterAmt')">Select</button>
+    </div>
+    <div class="popup-plan">
+      <h3>Standard Plan</h3><p>$1,000 – $2,999 · 45% profit · 2 days</p>
+      <input id="standardAmt" type="number" placeholder="Enter amount">
+      <button onclick="selectPlan('Standard Plan',1000,2999,'standardAmt')">Select</button>
+    </div>
+    <div class="popup-plan">
+      <h3>Premium Plan</h3><p>$3,000 – $7,999 · 55% profit · 5 days</p>
+      <input id="premiumAmt" type="number" placeholder="Enter amount">
+      <button onclick="selectPlan('Premium Plan',3000,7999,'premiumAmt')">Select</button>
+    </div>
+    <div class="popup-plan">
+      <h3>Contact Manager</h3><p>$8,000 – $14,999 · 85% profit · 14 days</p>
+      <input id="managerAmt" type="number" placeholder="Enter amount">
+      <button onclick="selectPlan('Contact Manager',8000,14999,'managerAmt')">Select</button>
+    </div>
+    <div class="popup-plan">
+      <h3>Capital Boost</h3><p>$15,000 – $44,999 · 95% profit · 22 days</p>
+      <input id="capitalAmt" type="number" placeholder="Enter amount">
+      <button onclick="selectPlan('Capital Boost',15000,44999,'capitalAmt')">Select</button>
+    </div>
+    <div class="popup-plan">
+      <h3>Rapid Return</h3><p>$45,000+ · 100.15% profit · 35 days</p>
+      <input id="rapidAmt" type="number" placeholder="Enter amount">
+      <button onclick="selectPlan('Rapid Return',45000,999999999,'rapidAmt')">Select</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── REINVEST POPUP ── -->
+<div class="popup-overlay" id="reinvestPopup">
+  <div class="popup-box">
+    <div class="popup-close" onclick="closeReinvestPopup()">✕</div>
+    <h2>Reinvest</h2>
+    <p>Your cycle is complete. Top up to start a new cycle.</p>
+    <label>Top-up Amount ($)</label>
+    <input id="reinvestTopupAmount" type="number" placeholder="Enter top-up amount">
+    <button class="deposit-btn" onclick="submitReinvestment()" style="margin-top:15px;">Proceed</button>
+  </div>
+</div>
+
+<!-- ── SETTINGS POPUP ── -->
+<div class="popup-overlay" id="settingsPopup">
+  <div class="popup-box settings-box">
+    <div class="popup-close" onclick="closeSettings()">✕</div>
+    <h2>⚙️ Settings</h2>
+    <div class="settings-tabs">
+      <button class="stab active" onclick="showSettingsTab('profile',this)">Profile</button>
+      <button class="stab" onclick="showSettingsTab('security',this)">Security</button>
+    </div>
+    <div class="stab-content" id="stab-profile">
+      <label>Full Name</label>
+      <input id="settingsName" type="text" placeholder="Your name">
+      <label>Email (read-only)</label>
+      <input id="settingsEmail" type="email" disabled style="opacity:.5;cursor:not-allowed;">
+    </div>
+    <div class="stab-content" id="stab-security" style="display:none;">
+      <label>Current Password</label>
+      <input id="settingsCurrentPassword" type="password" placeholder="Current password">
+      <label>New Password</label>
+      <input id="settingsNewPassword" type="password" placeholder="At least 6 characters">
+      <label>Confirm New Password</label>
+      <input id="settingsConfirmPassword" type="password" placeholder="Repeat new password">
+    </div>
+    <button class="deposit-btn" onclick="saveSettings()" style="margin-top:20px;">Save Changes</button>
+    <button onclick="logoutUser()" style="margin-top:10px;width:100%;padding:12px;background:transparent;border:1px solid #333;color:#999;border-radius:10px;cursor:pointer;">Logout</button>
+  </div>
+</div>
+
+<!-- ── PROFILE POPUP ── -->
+<div class="popup-overlay" id="profilePopup">
+  <div class="popup-box">
+    <div class="popup-close" onclick="closeProfilePopup()">✕</div>
+    <h2>My Profile</h2>
+    <p><b>Name:</b> <span id="profileName">—</span></p>
+    <p><b>Email:</b> <span id="profileEmail">—</span></p>
+    <p><b>Plan:</b> <span id="profilePlan">—</span></p>
+    <p><b>Rank:</b> <span id="profileRank">—</span></p>
+    <button onclick="logoutUser()" style="margin-top:20px;width:100%;padding:14px;background:#ff4444;color:#fff;border:none;border-radius:10px;cursor:pointer;font-weight:700;">Logout</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" style="position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1a1a1a;color:#fff;padding:12px 24px;border-radius:10px;font-size:14px;opacity:0;transition:opacity .3s;z-index:99999;pointer-events:none;"></div>
+
+<div id="google_translate_element" style="display:none;"></div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="dashboard-lite.js"></script>
+<script src="portfolio.js"></script>
+</body>
+</html>

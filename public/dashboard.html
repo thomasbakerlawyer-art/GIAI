@@ -1,12 +1,10 @@
-Dashboard
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard GIAI</title>
+<title>Dashboard • BNCE GIAI</title>
 
 <script>
 const user = localStorage.getItem("user");
@@ -28,11 +26,18 @@ if (!user) {
 <!-- SIDEBAR -->
 <div class="sidebar">
 
-<h2 class="logo"> • GIAI</h2>
+<h2 class="logo">BNCE GIAI</h2>
 
 <div class="sidebar-links">
 
 <button class="dash-link active-tab">Dashboard</button>
+
+<button class="dash-link" onclick="openSavingsSwitch()">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px;">
+    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+  </svg>
+  Switch to Savings
+</button>
 
 <button class="dash-link" onclick="openDeposit()">Deposit</button>
 
@@ -144,6 +149,81 @@ if (!user) {
       <span>ROI</span>
       <h4 id="roiPercent">0%</h4>
     </div>
+  </div>
+</div>
+
+<!-- SAVINGS SWITCH POPUP -->
+<div id="savingsSwitchPopup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:99999;align-items:center;justify-content:center;padding:16px;">
+  <div style="background:#111;border:1px solid #222;border-radius:24px;width:100%;max-width:400px;overflow:hidden;box-sizing:border-box;">
+
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,#1a1200,#0d0d0d);padding:28px 24px 20px;border-bottom:1px solid #1a1a1a;position:relative;">
+      <button onclick="closeSavingsSwitch()" style="position:absolute;top:16px;right:16px;background:none;border:none;color:#555;font-size:20px;cursor:pointer;">✕</button>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+        <div style="width:40px;height:40px;border-radius:12px;background:#f0b90b;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;color:#000;">G</div>
+        <div>
+          <div style="font-size:16px;font-weight:700;color:#fff;">GIAI Savings</div>
+          <div style="font-size:12px;color:#666;">Joint savings account</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div style="display:flex;border-bottom:1px solid #1a1a1a;">
+      <button id="savingsTabLogin"  onclick="showSavingsTab('login')"
+        style="flex:1;padding:14px;background:transparent;border:none;color:#f0b90b;font-size:14px;font-weight:600;cursor:pointer;border-bottom:2px solid #f0b90b;">
+        Sign In
+      </button>
+      <button id="savingsTabCreate" onclick="showSavingsTab('create')"
+        style="flex:1;padding:14px;background:transparent;border:none;color:#555;font-size:14px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;">
+        Create Account
+      </button>
+    </div>
+
+    <!-- LOGIN TAB -->
+    <div id="savingsLoginTab" style="padding:24px;">
+      <p style="color:#888;font-size:13px;margin-bottom:18px;">Sign in to your joint savings account.</p>
+
+      <label style="display:block;font-size:12px;color:#888;margin-bottom:6px;">Your Email</label>
+      <input id="savingsLoginEmail" type="email" placeholder="your@email.com"
+        style="width:100%;padding:13px 15px;border:1px solid #222;border-radius:12px;background:#0b0b0b;color:#fff;font-size:14px;outline:none;margin-bottom:14px;box-sizing:border-box;">
+
+      <label style="display:block;font-size:12px;color:#888;margin-bottom:6px;">Savings Password</label>
+      <input id="savingsLoginPassword" type="password" placeholder="Enter savings password"
+        style="width:100%;padding:13px 15px;border:1px solid #222;border-radius:12px;background:#0b0b0b;color:#fff;font-size:14px;outline:none;margin-bottom:20px;box-sizing:border-box;">
+
+      <button onclick="submitSavingsLogin()"
+        style="width:100%;padding:14px;background:#f0b90b;color:#000;border:none;border-radius:12px;font-weight:700;font-size:15px;cursor:pointer;">
+        Open Savings
+      </button>
+    </div>
+
+    <!-- CREATE TAB -->
+    <div id="savingsCreateTab" style="padding:24px;display:none;">
+      <p style="color:#888;font-size:13px;margin-bottom:18px;">Create a joint savings account with a partner.</p>
+
+      <label style="display:block;font-size:12px;color:#888;margin-bottom:6px;">Account Nickname</label>
+      <input id="savingsNickname" type="text" placeholder="e.g. John & Sarah's Savings"
+        style="width:100%;padding:13px 15px;border:1px solid #222;border-radius:12px;background:#0b0b0b;color:#fff;font-size:14px;outline:none;margin-bottom:14px;box-sizing:border-box;">
+
+      <label style="display:block;font-size:12px;color:#888;margin-bottom:6px;">Your Email</label>
+      <input id="savingsEmail1" type="email" placeholder="your@email.com"
+        style="width:100%;padding:13px 15px;border:1px solid #222;border-radius:12px;background:#0b0b0b;color:#fff;font-size:14px;outline:none;margin-bottom:14px;box-sizing:border-box;">
+
+      <label style="display:block;font-size:12px;color:#888;margin-bottom:6px;">Partner's Email</label>
+      <input id="savingsEmail2" type="email" placeholder="partner@email.com"
+        style="width:100%;padding:13px 15px;border:1px solid #222;border-radius:12px;background:#0b0b0b;color:#fff;font-size:14px;outline:none;margin-bottom:14px;box-sizing:border-box;">
+
+      <label style="display:block;font-size:12px;color:#888;margin-bottom:6px;">Savings Password</label>
+      <input id="savingsPassword" type="password" placeholder="Create a password for this account"
+        style="width:100%;padding:13px 15px;border:1px solid #222;border-radius:12px;background:#0b0b0b;color:#fff;font-size:14px;outline:none;margin-bottom:20px;box-sizing:border-box;">
+
+      <button onclick="submitCreateSavings()"
+        style="width:100%;padding:14px;background:#f0b90b;color:#000;border:none;border-radius:12px;font-weight:700;font-size:15px;cursor:pointer;">
+        Create Joint Account
+      </button>
+    </div>
+
   </div>
 </div>
 
@@ -673,6 +753,103 @@ window.addEventListener("load", applyStoredLanguage);
 <script src="dashboard.js"></script>
 
 <div id="toast"></div>
+
+<script>
+function openSavingsSwitch() {
+  /* Pre-fill email from current logged-in user */
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (user) {
+    document.getElementById("savingsLoginEmail").value = user.email || "";
+    document.getElementById("savingsEmail1").value     = user.email || "";
+  }
+  document.getElementById("savingsSwitchPopup").style.display = "flex";
+}
+
+function closeSavingsSwitch() {
+  document.getElementById("savingsSwitchPopup").style.display = "none";
+}
+
+function showSavingsTab(tab) {
+  const loginTab   = document.getElementById("savingsLoginTab");
+  const createTab  = document.getElementById("savingsCreateTab");
+  const btnLogin   = document.getElementById("savingsTabLogin");
+  const btnCreate  = document.getElementById("savingsTabCreate");
+
+  if (tab === "login") {
+    loginTab.style.display  = "block";
+    createTab.style.display = "none";
+    btnLogin.style.color    = "#f0b90b";
+    btnLogin.style.borderBottomColor  = "#f0b90b";
+    btnCreate.style.color   = "#555";
+    btnCreate.style.borderBottomColor = "transparent";
+  } else {
+    loginTab.style.display  = "none";
+    createTab.style.display = "block";
+    btnCreate.style.color   = "#f0b90b";
+    btnCreate.style.borderBottomColor = "#f0b90b";
+    btnLogin.style.color    = "#555";
+    btnLogin.style.borderBottomColor  = "transparent";
+  }
+}
+
+async function submitSavingsLogin() {
+  const email    = document.getElementById("savingsLoginEmail").value.trim();
+  const password = document.getElementById("savingsLoginPassword").value;
+
+  if (!email || !password) { alert("Please fill in all fields."); return; }
+
+  const res  = await fetch("/savings-login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password })
+  });
+  const data = await res.json();
+
+  if (data.success) {
+    localStorage.setItem("savingsAccount", JSON.stringify(data.account));
+    closeSavingsSwitch();
+    window.location.href = "/dashboard-savings.html";
+  } else {
+    alert(data.message || "Login failed.");
+  }
+}
+
+async function submitCreateSavings() {
+  const nickname = document.getElementById("savingsNickname").value.trim();
+  const email1   = document.getElementById("savingsEmail1").value.trim();
+  const email2   = document.getElementById("savingsEmail2").value.trim();
+  const password = document.getElementById("savingsPassword").value;
+
+  if (!nickname || !email1 || !email2 || !password) {
+    alert("Please fill in all fields.");
+    return;
+  }
+  if (email1.toLowerCase() === email2.toLowerCase()) {
+    alert("Both emails must be different.");
+    return;
+  }
+  if (password.length < 6) {
+    alert("Password must be at least 6 characters.");
+    return;
+  }
+
+  const res  = await fetch("/create-savings-account", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ nickname, email1, email2, password })
+  });
+  const data = await res.json();
+
+  if (data.success) {
+    localStorage.setItem("savingsAccount", JSON.stringify(data.account));
+    alert("Joint savings account created! Redirecting to your savings dashboard.");
+    closeSavingsSwitch();
+    window.location.href = "/dashboard-savings.html";
+  } else {
+    alert(data.message || "Failed to create account.");
+  }
+}
+</script>
 
 </body>
 </html>

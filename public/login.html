@@ -1,3 +1,5 @@
+Login
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -375,6 +377,57 @@ body {
     height:22px;
     color:#f0b90b;
     flex-shrink:0;
+}
+
+/* ==========================================
+   HIDE GOOGLE TRANSLATE POPUPS & BANNERS
+========================================== */
+
+/* Top translate banner */
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+}
+
+/* Keep page from being pushed down */
+body {
+    top: 0 !important;
+}
+
+/* Google Translate tooltip */
+.goog-tooltip,
+.goog-tooltip:hover,
+#goog-gt-tt,
+.goog-te-balloon-frame,
+iframe.goog-te-balloon-frame {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Remove yellow text highlight */
+.goog-text-highlight {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Hide feedback / like-dislike popup */
+.goog-te-ftab,
+.goog-te-ftab-float,
+.goog-te-ftab-wrap,
+.goog-te-ftab-link,
+.goog-te-spinner-pos,
+.goog-te-spinner {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Hide Google logo and extra text */
+.goog-logo-link,
+.goog-te-gadget span {
+    display: none !important;
 }
 </style>
 </head>

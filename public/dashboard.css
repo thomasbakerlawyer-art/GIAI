@@ -2110,3 +2110,61 @@ body{
     margin-bottom: 16px !important;
   }
 }
+
+/* ==========================================
+   HIDE GOOGLE TRANSLATE UI
+========================================== */
+
+/* Google Translate top banner */
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame {
+    display: none !important;
+}
+
+/* Prevent page from being pushed down */
+body {
+    top: 0 !important;
+}
+
+/* Hide Google Translate tooltip */
+.goog-tooltip,
+.goog-tooltip:hover,
+.goog-text-highlight,
+#goog-gt-tt,
+.goog-te-balloon-frame,
+.goog-te-menu-frame,
+iframe.goog-te-menu-frame,
+iframe.goog-te-balloon-frame {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* Remove highlight Google adds */
+.goog-text-highlight {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* Hide translate gadget if it exists */
+.goog-te-gadget,
+.goog-te-gadget-simple,
+.goog-te-combo {
+    display: none !important;
+}
+
+/* Hide Google rating / feedback popup */
+.goog-te-spinner-pos,
+.goog-te-spinner,
+.goog-te-ftab,
+.goog-te-ftab-float,
+.goog-te-ftab-wrap,
+.goog-te-ftab-link {
+    display: none !important;
+}
+
+/* Hide Google Translate logo */
+.goog-logo-link,
+.goog-te-gadget span {
+    display: none !important;
+}

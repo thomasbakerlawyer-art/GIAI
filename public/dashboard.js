@@ -81,17 +81,30 @@ updateDashboard();
    UPDATE DASHBOARD
 ========================= */
 function updateDashboard() {
+  const isManual = currentUser.investmentMode === "manual";
+
   updatePortfolio();
-  updateRepresentative();
   updateTransactions();
   updateReinvestButton();
   updateCardsSection();
 
-  document.getElementById("pendingDeposits").innerText = currentUser.pendingDeposits || 0;
+  document.getElementById("pendingDeposits").innerText   = currentUser.pendingDeposits  || 0;
   document.getElementById("pendingWithdrawals").innerText = currentUser.pendingWithdrawals || 0;
-  document.getElementById("welcomeName").innerText = currentUser.name || "";
+  document.getElementById("welcomeName").innerText        = currentUser.name || "";
 
-  applyBalanceVisibility();   // re-hide numbers if the user had them hidden
+  // Rep section — completely removed from DOM in manual mode
+  const repSection = document.getElementById("repCardsContainer");
+  if (repSection) {
+    if (isManual) {
+      repSection.innerHTML = "";          // wipe any previously rendered cards
+      repSection.style.display = "none";  // take up zero space
+    } else {
+      repSection.style.display = "";
+      updateRepresentative();             // only render reps in representative mode
+    }
+  }
+
+  applyBalanceVisibility();
 }
 
 /* =========================
@@ -99,68 +112,83 @@ function updateDashboard() {
 ========================= */
 
 function updatePortfolio() {
- document.getElementById("portfolioBalance").textContent =
+  // ── Raw fields from server ──────────────────────────────────
+  const amount        = Number(currentUser.investmentAmount || 0);
+  const profitPercent = Number(currentUser.profitPercent    || 0);
+  const duration      = Number(currentUser.investmentDuration || 0);
+  const start         = Number(currentUser.investmentStart  || 0);
+  const now           = Date.now();
+
+  // ── Balance ─────────────────────────────────────────────────
+  document.getElementById("portfolioBalance").textContent =
     "$" + Number(currentUser.balance || 0).toLocaleString("en-US", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
+      minimumFractionDigits: 2, maximumFractionDigits: 2
     });
 
-
-  const amount = Number(currentUser.investmentAmount || 0);
-  const profitPercent = Number(currentUser.profitPercent || 0);
-  const duration = Number(currentUser.investmentDuration || 0);
-  const start = Number(currentUser.investmentStart || 0);
-
-document.getElementById("investmentAmount").textContent =
-    "$" + Number(currentUser.investmentAmount || 0).toLocaleString("en-US", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
+  // ── Investment Amount ────────────────────────────────────────
+  document.getElementById("investmentAmount").textContent =
+    "$" + amount.toLocaleString("en-US", {
+      minimumFractionDigits: 2, maximumFractionDigits: 2
     });
 
+  // ── No active investment → zero everything out ───────────────
   if (!duration || !start) {
-    document.getElementById("expectedProfit").innerText = "$0.00";
+    document.getElementById("expectedProfit").innerText  = "$0.00";
     document.getElementById("claimableProfit").innerText = "$0.00";
-    document.getElementById("daysRemaining").innerText = "0";
-    document.getElementById("progressFill").style.width = "0%";
+    document.getElementById("daysRemaining").innerText   = "0";
+    document.getElementById("progressFill").style.width  = "0%";
+    if (document.getElementById("todayProfit"))
+      document.getElementById("todayProfit").innerText   = "$0.00";
+    if (document.getElementById("roiPercent"))
+      document.getElementById("roiPercent").innerText    = "0.00%";
     return;
   }
 
-  const totalProfit = amount * (profitPercent / 100);
+  // ── THE ONE CALCULATION ─────────────────────────────────────
+  const endTime       = start + duration * 86400000;
+  const rawProgress   = (now - start) / (endTime - start);
+  const progress      = Math.min(Math.max(rawProgress, 0), 1);   // 0 → 1
 
+  const expectedProfit  = amount * (profitPercent / 100);         // total profit at 100%
+  const claimableProfit = expectedProfit * progress;              // earned so far
+  const todayProfit     = duration > 0 ? expectedProfit / duration : 0;
+  const roi             = amount > 0 ? (claimableProfit / amount) * 100 : 0;
+  const daysRemaining   = Math.max(0, Math.ceil((endTime - now) / 86400000));
+
+  // ── Render all stats from the SAME values ───────────────────
   document.getElementById("expectedProfit").innerText =
-    "$" + totalProfit.toLocaleString(undefined, { maximumFractionDigits: 2 });
-
-  const endTime = start + duration * 86400000;
-  const now = Date.now();
-  const progress = Math.min((now - start) / (endTime - start), 1);
-  const claimable = totalProfit * progress;
-
-// ROI
-const roi = amount > 0 ? (claimable / amount) * 100 : 0;
-
-// Today's Profit
-const todayProfit = duration > 0
-    ? totalProfit / duration
-    : 0;
+    "$" + expectedProfit.toLocaleString(undefined, { maximumFractionDigits: 2 });
 
   document.getElementById("claimableProfit").innerText =
-    "$" + claimable.toLocaleString(undefined, { maximumFractionDigits: 2 });
+    "$" + claimableProfit.toLocaleString(undefined, { maximumFractionDigits: 2 });
 
   document.getElementById("progressFill").style.width = progress * 100 + "%";
+  document.getElementById("daysRemaining").innerText  = daysRemaining;
 
-  const daysRemaining = Math.max(0, Math.ceil((endTime - now) / 86400000));
-  document.getElementById("daysRemaining").innerText = daysRemaining;
+  if (document.getElementById("todayProfit"))
+    document.getElementById("todayProfit").innerText =
+      "$" + todayProfit.toLocaleString(undefined, { maximumFractionDigits: 2 });
 
-loadPortfolioHistory();
+  if (document.getElementById("roiPercent"))
+    document.getElementById("roiPercent").innerText = roi.toFixed(2) + "%";
 
-document.getElementById("todayProfit").innerText =
-"$" + Number(currentUser.todayProfit || todayProfit).toLocaleString(undefined,{
-    maximumFractionDigits:2
-});
-
-document.getElementById("roiPercent").innerText =
-Number(currentUser.roi || roi).toFixed(2) + "%";
-
+  // ── Portfolio chart gets the SAME claimableProfit value ─────
+  // We do NOT call loadPortfolioHistory() here because the server
+  // already pushes a snapshot on every /get-user call.
+  // We just pass the current computed value to the chart directly
+  // so it always matches what is displayed on screen.
+  if (typeof drawPortfolioHistory === "function" && currentUser.portfolioHistory) {
+    // Inject the current computed claimableProfit into the last
+    // history point so the chart tip always matches the display
+    const history = currentUser.portfolioHistory.map((h, i) => {
+      // Replace the last point with the freshly computed value
+      if (i === currentUser.portfolioHistory.length - 1) {
+        return { ...h, claimableProfit };
+      }
+      return h;
+    });
+    drawPortfolioHistory(history);
+  }
 }
 
 /* =========================
@@ -171,11 +199,13 @@ function updateReinvestButton() {
   const btn = document.getElementById("reinvestBtn");
   if (!btn) return;
 
-  const start = Number(currentUser.investmentStart || 0);
-  const amount = Number(currentUser.investmentAmount || 0);
-  const cycleCompleted = currentUser.cycleCompleted === true;
+  const start           = Number(currentUser.investmentStart  || 0);
+  const amount          = Number(currentUser.investmentAmount || 0);
+  const cycleCompleted  = currentUser.cycleCompleted === true;
   const activeInvestment = start > 0 && amount > 0;
+  const isManual        = currentUser.investmentMode === "manual";
 
+  // Active investment — always locked regardless of mode
   if (activeInvestment) {
     btn.disabled = true;
     btn.classList.remove("reinvest-ready");
@@ -185,10 +215,30 @@ function updateReinvestButton() {
   }
 
   if (cycleCompleted) {
+    if (isManual) {
+      // Manual mode: only unlock if admin explicitly enabled reinvestment
+      if (currentUser.allowReinvestment === true) {
+        btn.disabled = false;
+        btn.classList.remove("reinvest-locked");
+        btn.classList.add("reinvest-ready");
+        btn.innerText = "Reinvest Now";
+        btn.onclick = () => openReinvestPopup();
+      } else {
+        btn.disabled = true;
+        btn.classList.remove("reinvest-ready");
+        btn.classList.add("reinvest-locked");
+        btn.innerText = "Contact Support";
+        btn.title = "Please contact support or wait for your administrator to activate another investment.";
+      }
+      return;
+    }
+
+    // Representative mode — existing logic unchanged
     btn.disabled = false;
     btn.classList.remove("reinvest-locked");
     btn.classList.add("reinvest-ready");
     btn.innerText = "Reinvest Now";
+    btn.onclick = () => openReinvestPopup();
     return;
   }
 
@@ -208,12 +258,12 @@ function updateRepresentative() {
 
   let reps = currentUser.representatives;
 
-  if (!reps || reps.length === 0) {
-    reps = [{
-      name: currentUser.representative || "No Representative Selected",
-      votes: currentUser.totalVotes || 0
-    }];
-  }
+ if (!reps || reps.length === 0) {
+  reps = [{
+    name: currentUser.representative || "No Representative Selected",
+    votes: currentUser.totalVotes || 0
+  }];
+}
 
   container.innerHTML = "";
 

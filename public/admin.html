@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,8 +20,10 @@
 <!-- SIDEBAR -->
 <div class="sidebar">
   <h2>GIAI ADMIN</h2>
+
   <button onclick="showSection('overview')">Overview</button>
   <button onclick="showSection('users')">Users</button>
+  <button onclick="showSection('savings')">Savings Accounts</button>
   <button onclick="showSection('deposits')">Deposits</button>
   <button onclick="showSection('withdrawals')">Withdrawals</button>
   <button onclick="showSection('representatives')">Representatives</button>
@@ -46,6 +49,13 @@
       <div class="stat-box"><h3>Total Withdrawals</h3><p id="totalWithdrawals">0</p></div>
     </div>
   </div>
+
+<div id="savingsSection" style="display:none;">
+  <h2>Savings Accounts</h2>
+  <div id="savingsAccountList"></div>
+  <h2 style="margin-top:32px;">Savings Withdrawals</h2>
+  <div id="savingsWithdrawalList"></div>
+</div>
 
   <!-- USERS -->
   <div id="usersSection" style="display:none;">

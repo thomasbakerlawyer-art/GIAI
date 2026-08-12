@@ -983,7 +983,8 @@ app.post("/get-portfolio-history", async (req, res) => {
 /* --- DEPOSIT --- */
 app.post("/request-deposit", async (req, res) => {
   const { email, amount, plan, representative } = req.body;
-  await Deposit.create({ id: Date.now(), email, amount, plan, representative, status: "PENDING", date: new Date() });
+  await Deposit.create({ id: Date.now(), email, amount, plan, representative, accountType: accountType || "main",
+ status: "PENDING", date: new Date() });
   res.json({ success: true, message: "Deposit request submitted" });
 });
 
@@ -1022,16 +1023,23 @@ app.post("/approve-deposit", async (req, res) => {
       else if (newInvestment >= 1000)  { plan = "Standard Plan";   profitPercent = 45;     investmentDuration = 2;  }
       else                             { plan = "Starter Plan";    profitPercent = 25;     investmentDuration = 1;  }
 
-      const updates = {
-        balance: newBalance,
-        investmentAmount: newInvestment,
-        investmentStart: Date.now(),
-        cycleCompleted: false,
-        balanceBeforeInvestment: newBalance,
-        rank, plan, profitPercent, investmentDuration
-      };
+const isSavings = deposit.accountType === "savings";
 
-      if (deposit.representative) {
+const updates = isSavings ? {
+  savingsBalance: Number(user.savingsBalance || 0) + amount,
+  savingsTotalDeposited: Number(user.savingsTotalDeposited || 0) + amount,
+  savingsInterestRate: 0.05
+} : {
+  balance: newBalance,
+  investmentAmount: newInvestment,
+  investmentStart: Date.now(),
+  cycleCompleted: false,
+  balanceBeforeInvestment: newBalance,
+  rank, plan, profitPercent, investmentDuration
+};
+
+
+     if (deposit.representative && !isSavings) {
         const votes = Math.floor(amount / 500);
         await Representative.findOneAndUpdate(
           { name: deposit.representative },
@@ -1046,9 +1054,13 @@ app.post("/approve-deposit", async (req, res) => {
         updates.totalVotes = reps.reduce((s, r) => s + r.votes, 0);
       }
 
-      const txns = user.transactions || [];
-      txns.unshift({ type: "DEPOSIT APPROVED", amount, date: new Date() });
-      updates.transactions = txns;
+const txns = user.transactions || [];
+txns.unshift({
+  type: isSavings ? "SAVINGS DEPOSIT APPROVED" : "DEPOSIT APPROVED",
+  amount,
+  date: new Date()
+});
+updates.transactions = txns;
 
       await User.findOneAndUpdate({ _id: user._id }, { $set: updates });
       console.log("✅ Deposit approved — balance:", newBalance, "plan:", plan);
@@ -1312,10 +1324,24 @@ app.post("/admin-deactivate-investment", async (req, res) => {
     if (Number(user.investmentAmount || 0) <= 0) return res.json({ success: false, message: "No active investment." });
     const txns = user.transactions || [];
     txns.unshift({ type: "INVESTMENT DEACTIVATED BY ADMIN", amount: 0, date: new Date() });
-    await User.findOneAndUpdate(
-      { _id: user._id },
-      { $set: { investmentAmount: 0, profitPercent: 0, investmentDuration: 0, investmentStart: 0, cycleCompleted: false, plan: "None", transactions: txns } }
-    );
+
+   await User.findOneAndUpdate(
+  { _id: user._id },
+  {
+$set: {
+    investmentAmount: 0,
+    profitPercent: 0,
+    investmentDuration: 0,
+    investmentStart: 0,
+    cycleCompleted: false,
+    plan: "None",
+    claimableProfit: 0,
+    expectedProfit: 0,
+    portfolioHistory: [],
+    transactions: txns
+}
+ }
+);
     res.json({ success: true, message: "Investment deactivated." });
   } catch (err) {
     res.json({ success: false, message: err.message });
@@ -1865,6 +1891,582 @@ app.post("/admin-resume-shipment", async (req, res) => {
   shipment.pausedProgress = null;
   await shipment.save();
   res.json({ success: true });
+});
+
+/* --- ADMIN: Activate Manual Investment --- */
+app.post("/admin-manual-investment", async (req, res) => {
+  try {
+    const { email, investmentAmount, expectedProfit, investmentDuration, durationUnit, allowReinvestment } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) return res.json({ success: false, message: "User not found." });
+
+    // Convert duration to days
+    const durationDays = durationUnit === "hours"
+      ? Number(investmentDuration) / 24
+      : Number(investmentDuration);
+
+    const amount   = Number(investmentAmount);
+    const profit   = Number(expectedProfit);
+
+    if (!amount || !profit || !durationDays) {
+      return res.json({ success: false, message: "Please fill in all fields." });
+    }
+
+    // profitPercent is derived from expectedProfit / investmentAmount * 100
+    // so the existing profit engine calculates correctly
+    const profitPercent = (profit / amount) * 100;
+
+    const txns = user.transactions || [];
+    txns.unshift({
+      type: "MANUAL INVESTMENT ACTIVATED",
+      amount,
+      date: new Date()
+    });
+
+    await User.findOneAndUpdate(
+      { _id: user._id },
+      {
+        $set: {
+          investmentMode:     "manual",
+          investmentAmount:   amount,
+          balance:            amount,
+          profitPercent,
+          investmentDuration: durationDays,
+          investmentStart:    Date.now(),
+          cycleCompleted:     false,
+          allowReinvestment:  !!allowReinvestment,
+          portfolioHistory:   [],
+          plan:               "Manual Investment",
+          transactions:       txns
+        }
+      }
+    );
+
+    res.json({ success: true, message: "Manual investment activated." });
+  } catch (err) {
+    console.error("❌ admin-manual-investment:", err.message);
+    res.json({ success: false, message: err.message });
+  }
+});
+
+/* --- ADMIN: Enable Reinvestment for Manual Investment --- */
+app.post("/admin-enable-manual-reinvestment", async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.json({ success: false, message: "User not found." });
+    await User.findOneAndUpdate(
+      { _id: user._id },
+      { $set: { allowReinvestment: true } }
+    );
+    res.json({ success: true, message: "Reinvestment enabled." });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+app.post("/request-savings-card", async (req, res) => {
+  try {
+    const { email, employment, occupation, income } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.json({ success: false, message: "User not found." });
+    if (user.savingsCardStatus === "pending" || user.savingsCardStatus === "active") {
+      return res.json({ success: false, message: "Application already submitted." });
+    }
+    await User.findOneAndUpdate({ _id: user._id }, { $set: { savingsCardStatus: "pending" } });
+    res.json({ success: true, message: "Card application submitted. Admin will review shortly." });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+/* ── Savings Account Schema ── */
+const savingsSchema = new mongoose.Schema({}, { strict: false });
+const SavingsAccount = mongoose.model("SavingsAccount", savingsSchema);
+
+/* ── Interest Engine ──
+   Runs every hour. For each savings account with a
+   balance > 0 and an interestRate set by admin,
+   calculates interest accrued since last credit
+   and adds it to the balance.
+   Admin sets interestRate (% per month) per account.
+   Formula: dailyRate = monthlyRate / 30
+            interest  = balance * dailyRate / 100
+================================================= */
+setInterval(async () => {
+  try {
+    const accounts = await SavingsAccount.find({
+      interestRate: { $gt: 0 },
+      balance:      { $gt: 0 }
+    });
+
+    for (const acc of accounts) {
+      const now          = Date.now();
+      const lastTick     = acc.lastInterestTick || acc.createdAt || now;
+      const hoursElapsed = (now - new Date(lastTick).getTime()) / 3600000;
+      if (hoursElapsed < 1) continue;
+
+      const monthlyRate = Number(acc.interestRate || 0);
+      const hourlyRate  = monthlyRate / 30 / 24 / 100;
+      const balance     = Number(acc.balance || 0);
+      const interest    = parseFloat((balance * hourlyRate).toFixed(6));
+      if (interest <= 0) continue;
+
+      const history = acc.profitHistory || [];
+      history.push({ time: now, balance: balance + interest, interest });
+      if (history.length > 200) history.shift();
+
+      await SavingsAccount.findOneAndUpdate(
+        { _id: acc._id },
+        { $set: {
+          balance:          balance + interest,
+          totalInterest:    Number(acc.totalInterest || 0) + interest,
+          lastInterestTick: now,
+          profitHistory:    history
+        }}
+      );
+    }
+  } catch (e) {
+    console.error("Interest engine error:", e.message);
+  }
+}, 3600000);
+
+/* ─────────────────────────────────────────────
+   CREATE JOINT SAVINGS ACCOUNT
+   Called from the "Switch to Savings" popup
+───────────────────────────────────────────── */
+app.post("/create-savings-account", async (req, res) => {
+  try {
+    const { nickname, email1, email2, password } = req.body;
+
+    if (!nickname || !email1 || !email2 || !password) {
+      return res.json({ success: false, message: "All fields are required." });
+    }
+
+    if (email1.toLowerCase() === email2.toLowerCase()) {
+      return res.json({ success: false, message: "Both emails must be different." });
+    }
+
+    /* Check not already in a savings account */
+    const existing = await SavingsAccount.findOne({
+      $or: [{ email1: email1.toLowerCase() }, { email2: email1.toLowerCase() }]
+    });
+    if (existing) {
+      return res.json({ success: false, message: "You already have a savings account." });
+    }
+
+    /* Derive display names from GIAI user records if they exist,
+       otherwise just use the part before @ */
+    const user1 = await User.findOne({ email: email1.toLowerCase() });
+    const user2 = await User.findOne({ email: email2.toLowerCase() });
+
+    const name1 = user1 ? (user1.name || "").split(" ")[0] : email1.split("@")[0];
+    const name2 = user2 ? (user2.name || "").split(" ")[0] : email2.split("@")[0];
+
+    const accountId = "SAV-" + Date.now().toString().slice(-8);
+
+    const account = await SavingsAccount.create({
+      accountId,
+      nickname,
+      jointName:    name1 + " & " + name2,
+      email1:       email1.toLowerCase(),
+      email2:       email2.toLowerCase(),
+      name1,
+      name2,
+      password,          /* plain for now — same pattern as GIAI main */
+      balance:      0,
+      interestRate: 0,   /* admin sets this later */
+      totalInterest:0,
+      status:       "ACTIVE",
+      createdAt:    new Date(),
+      transactions: [],
+      profitHistory:[]
+    });
+
+    res.json({
+      success: true,
+      message: "Joint savings account created.",
+      account: {
+        accountId:  account.accountId,
+        jointName:  account.jointName,
+        email1:     account.email1,
+        email2:     account.email2,
+        balance:    0
+      }
+    });
+
+  } catch (err) {
+    console.error("create-savings-account:", err.message);
+    res.json({ success: false, message: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   SAVINGS LOGIN — used when switching to savings
+───────────────────────────────────────────── */
+app.post("/savings-login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const account = await SavingsAccount.findOne({
+      $or: [{ email1: email.toLowerCase() }, { email2: email.toLowerCase() }],
+      password
+    });
+
+    if (!account) {
+      return res.json({ success: false, message: "No savings account found or wrong password." });
+    }
+    if (account.status === "SUSPENDED") {
+      return res.json({ success: false, message: "This savings account has been suspended." });
+    }
+
+    res.json({
+      success: true,
+      account: {
+        accountId:    account.accountId,
+        jointName:    account.jointName,
+        nickname:     account.nickname,
+        email1:       account.email1,
+        email2:       account.email2,
+        name1:        account.name1,
+        name2:        account.name2,
+        balance:      account.balance,
+        totalInterest:account.totalInterest || 0,
+        interestRate: account.interestRate  || 0,
+        status:       account.status,
+        createdAt:    account.createdAt
+      }
+    });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   GET SAVINGS ACCOUNT — called on every refresh
+───────────────────────────────────────────── */
+app.post("/get-savings-account", async (req, res) => {
+  try {
+    const { email } = req.body;
+    const account = await SavingsAccount.findOne({
+      $or: [{ email1: email.toLowerCase() }, { email2: email.toLowerCase() }]
+    });
+
+    if (!account) return res.json({ success: false, message: "Account not found." });
+
+    const pendingDeposits    = await Deposit.countDocuments({
+      savingsAccountId: account.accountId, status: "PENDING"
+    });
+    const pendingWithdrawals = await Withdrawal.countDocuments({
+      savingsAccountId: account.accountId, status: "PENDING"
+    });
+
+    res.json({
+      success: true,
+      account: {
+        accountId:       account.accountId,
+        jointName:       account.jointName,
+        nickname:        account.nickname,
+        email1:          account.email1,
+        email2:          account.email2,
+        name1:           account.name1,
+        name2:           account.name2,
+        balance:         account.balance,
+        totalInterest:   account.totalInterest  || 0,
+        interestRate:    account.interestRate   || 0,
+        transactions:    account.transactions   || [],
+        profitHistory:   account.profitHistory  || [],
+        lastInterestTick:account.lastInterestTick,
+        status:          account.status,
+        createdAt:       account.createdAt,
+        pendingDeposits,
+        pendingWithdrawals
+      }
+    });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   SAVINGS DEPOSIT REQUEST
+───────────────────────────────────────────── */
+app.post("/request-savings-deposit", async (req, res) => {
+  try {
+    const { email, amount, asset } = req.body;
+    const account = await SavingsAccount.findOne({
+      $or: [{ email1: email.toLowerCase() }, { email2: email.toLowerCase() }]
+    });
+    if (!account) return res.json({ success: false, message: "Account not found." });
+    if (!amount || Number(amount) <= 0) {
+      return res.json({ success: false, message: "Invalid amount." });
+    }
+
+    await Deposit.create({
+      id:               Date.now(),
+      savingsAccountId: account.accountId,
+      jointName:        account.jointName,
+      email:            email.toLowerCase(),
+      amount:           Number(amount),
+      asset:            asset || "USDT",
+      plan:             "Savings Deposit",
+      representative:   null,
+      status:           "PENDING",
+      date:             new Date()
+    });
+
+    res.json({ success: true, message: "Deposit submitted. Awaiting admin confirmation." });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   SAVINGS WITHDRAWAL REQUEST
+   Both holders must approve before admin processes.
+   When requester submits → status = "AWAITING_PARTNER"
+   When partner approves → status = "PENDING" (admin sees it)
+───────────────────────────────────────────── */
+app.post("/request-savings-withdrawal", async (req, res) => {
+  try {
+    const { email, amount, asset, destinationWallet } = req.body;
+    const account = await SavingsAccount.findOne({
+      $or: [{ email1: email.toLowerCase() }, { email2: email.toLowerCase() }]
+    });
+    if (!account) return res.json({ success: false, message: "Account not found." });
+    if (!amount || Number(amount) <= 0) {
+      return res.json({ success: false, message: "Invalid amount." });
+    }
+    if (Number(amount) > Number(account.balance || 0)) {
+      return res.json({ success: false, message: "Insufficient balance." });
+    }
+    if (!destinationWallet) {
+      return res.json({ success: false, message: "Please provide a destination wallet address." });
+    }
+
+    const partnerEmail = account.email1.toLowerCase() === email.toLowerCase()
+      ? account.email2
+      : account.email1;
+
+    await Withdrawal.create({
+      id:               Date.now(),
+      savingsAccountId: account.accountId,
+      jointName:        account.jointName,
+      email:            email.toLowerCase(),
+      partnerEmail,
+      amount:           Number(amount),
+      asset:            asset || "USDT",
+      destinationWallet,
+      status:           "AWAITING_PARTNER",  /* partner must approve first */
+      partnerApproved:  false,
+      date:             new Date()
+    });
+
+    res.json({
+      success: true,
+      message: "Withdrawal submitted. Your partner must approve before it is processed."
+    });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   PARTNER APPROVES WITHDRAWAL
+   Partner clicks Approve on their dashboard.
+   Status changes to PENDING — admin now sees it.
+───────────────────────────────────────────── */
+app.post("/partner-approve-withdrawal", async (req, res) => {
+  try {
+    const { email, withdrawalId } = req.body;
+    const withdrawal = await Withdrawal.findOne({ id: Number(withdrawalId) });
+
+    if (!withdrawal) return res.json({ success: false, message: "Withdrawal not found." });
+    if (withdrawal.partnerEmail.toLowerCase() !== email.toLowerCase()) {
+      return res.json({ success: false, message: "You are not the partner for this withdrawal." });
+    }
+    if (withdrawal.status !== "AWAITING_PARTNER") {
+      return res.json({ success: false, message: "This withdrawal is no longer awaiting approval." });
+    }
+
+    await Withdrawal.findOneAndUpdate(
+      { _id: withdrawal._id },
+      { $set: { status: "PENDING", partnerApproved: true, partnerApprovedAt: new Date() } }
+    );
+
+    res.json({ success: true, message: "Withdrawal approved. Admin will process it shortly." });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   PARTNER REJECTS WITHDRAWAL
+───────────────────────────────────────────── */
+app.post("/partner-reject-withdrawal", async (req, res) => {
+  try {
+    const { email, withdrawalId } = req.body;
+    const withdrawal = await Withdrawal.findOne({ id: Number(withdrawalId) });
+
+    if (!withdrawal) return res.json({ success: false, message: "Not found." });
+    if (withdrawal.partnerEmail.toLowerCase() !== email.toLowerCase()) {
+      return res.json({ success: false, message: "Not authorized." });
+    }
+
+    await Withdrawal.findOneAndUpdate(
+      { _id: withdrawal._id },
+      { $set: { status: "REJECTED_BY_PARTNER" } }
+    );
+
+    res.json({ success: true, message: "Withdrawal rejected." });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   ADMIN: APPROVE SAVINGS DEPOSIT
+   Updates the savings account balance
+───────────────────────────────────────────── */
+app.post("/approve-savings-deposit", async (req, res) => {
+  try {
+    const { id } = req.body;
+    const deposit = await Deposit.findOne({ $or: [{ _id: id }, { id: Number(id) }] });
+    if (!deposit) return res.json({ success: false, message: "Deposit not found." });
+    if (deposit.status === "APPROVED") return res.json({ success: false, message: "Already approved." });
+
+    const account = await SavingsAccount.findOne({ accountId: deposit.savingsAccountId });
+    if (!account) return res.json({ success: false, message: "Savings account not found." });
+
+    const amount     = Number(deposit.amount);
+    const newBalance = Number(account.balance || 0) + amount;
+
+    const history = account.profitHistory || [];
+    history.push({ time: Date.now(), balance: newBalance, interest: 0 });
+    if (history.length > 200) history.shift();
+
+    const txns = account.transactions || [];
+    txns.unshift({
+      type:   "DEPOSIT APPROVED",
+      amount,
+      asset:  deposit.asset || "USDT",
+      date:   new Date()
+    });
+
+    await SavingsAccount.findOneAndUpdate(
+      { _id: account._id },
+      { $set: {
+        balance:       newBalance,
+        profitHistory: history,
+        transactions:  txns,
+        totalDeposited: Number(account.totalDeposited || 0) + amount
+      }}
+    );
+
+    await Deposit.findOneAndUpdate({ _id: deposit._id }, { $set: { status: "APPROVED" } });
+
+    res.json({ success: true, message: "Savings deposit approved. Balance updated." });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   ADMIN: APPROVE SAVINGS WITHDRAWAL
+───────────────────────────────────────────── */
+app.post("/approve-savings-withdrawal", async (req, res) => {
+  try {
+    const { id } = req.body;
+    const withdrawal = await Withdrawal.findOne({ $or: [{ _id: id }, { id: Number(id) }] });
+    if (!withdrawal) return res.json({ success: false, message: "Withdrawal not found." });
+    if (withdrawal.status === "APPROVED") return res.json({ success: false, message: "Already approved." });
+
+    const account = await SavingsAccount.findOne({ accountId: withdrawal.savingsAccountId });
+    if (!account) return res.json({ success: false, message: "Account not found." });
+
+    const amount = Number(withdrawal.amount);
+    if (amount > Number(account.balance || 0)) {
+      return res.json({ success: false, message: "Insufficient balance." });
+    }
+
+const start        = Number(account.interestStartTime || 0);
+const msPerMonth   = 30 * 24 * 60 * 60 * 1000;
+const monthlyRate  = Number(account.interestRate || 0) / 100;
+const elapsed      = Date.now() - start;
+const interestEarned = start
+  ? Number(account.balance) * monthlyRate * (elapsed / msPerMonth)
+  : 0;
+
+const totalPayout  = amount + interestEarned;
+const newBalance   = Math.max(0, Number(account.balance) - amount);
+const newInterestStart = newBalance > 0 ? Date.now() : 0;   const txns = account.transactions || [];
+    txns.unshift({
+      type:   "WITHDRAWAL APPROVED",
+      amount,
+      asset:  withdrawal.asset || "USDT",
+      date:   new Date()
+    });
+
+    await SavingsAccount.findOneAndUpdate(
+      { _id: account._id },
+      { $set: { balance: newBalance, transactions: txns } }
+    );
+
+    await Withdrawal.findOneAndUpdate(
+      { _id: withdrawal._id },
+      { $set: { status: "APPROVED" } }
+    );
+
+    res.json({ success: true, message: "Savings withdrawal approved." });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   ADMIN: SET INTEREST RATE for a savings account
+───────────────────────────────────────────── */
+
+app.post("/admin-set-savings-interest", async (req, res) => {
+  try {
+    const { accountId, interestRate } = req.body;
+    await SavingsAccount.findOneAndUpdate(
+      { accountId },
+      { $set: { interestRate: Number(interestRate) } }
+    );
+    res.json({ success: true, message: "Interest rate updated." });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   ADMIN: GET ALL SAVINGS ACCOUNTS
+───────────────────────────────────────────── */
+app.get("/admin-savings-accounts", async (req, res) => {
+  try {
+    const accounts = await SavingsAccount.find({});
+    res.json({ success: true, accounts });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+/* ─────────────────────────────────────────────
+   GET PENDING WITHDRAWAL APPROVALS
+   For the partner to see what they need to approve
+───────────────────────────────────────────── */
+app.post("/get-savings-pending-approvals", async (req, res) => {
+  try {
+    const { email } = req.body;
+    const pending = await Withdrawal.find({
+      partnerEmail: email.toLowerCase(),
+      status:       "AWAITING_PARTNER"
+    });
+    res.json({ success: true, pending });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
 });
 
 const PORT = process.env.PORT || 3000;

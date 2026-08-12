@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GIAI Savings</title>
+<style>
+/* ══════════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --gold:      #f0b90b;
+  --gold-dim:  rgba(240,185,11,0.12);
+  --gold-glow: rgba(240,185,11,0.06);
+  --green:     #00d26a;
+  --red:       #ff5c5c;
+  --bg:        #060608;
+  --surface:   #0e0e12;
+  --surface2:  #141418;
+  --border:    rgba(255,255,255,0.07);
+  --text:      #ffffff;
+  --text-muted:#6b6b7a;
+  --text-dim:  #3a3a45;
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+               "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════════════════════
+   APP SHELL — mobile-first, max-width centred
+══════════════════════════════════════════════ */
+.app {
+  max-width: 430px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* ══════════════════════════════════════════════
+   STATUS BAR SPACER
+══════════════════════════════════════════════ */
+.status-bar { height: env(safe-area-inset-top, 0px); }
+
+/* ══════════════════════════════════════════════
+   TOP BAR
+══════════════════════════════════════════════ */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px 12px;
+}
+
+.top-bar-left { display: flex; align-items: center; gap: 10px; }
+
+.top-bar-avatar {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), #f77f00);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; flex-shrink: 0;
+}
+
+.top-bar-greeting { font-size: 13px; color: var(--text-muted); }
+.top-bar-name     { font-size: 15px; font-weight: 700; color: var(--text); margin-top: 1px; }
+
+.top-bar-right { display: flex; align-items: center; gap: 12px; }
+
+.icon-btn {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; position: relative;
+  transition: background .2s;
+}
+.icon-btn:hover { background: var(--surface); }
+
+.notif-dot {
+  position: absolute; top: 6px; right: 6px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid var(--bg);
+}
+
+/* ══════════════════════════════════════════════
+   SCROLLABLE CONTENT
+══════════════════════════════════════════════ */
+.scroll-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 20px 120px;
+  scrollbar-width: none;
+}
+.scroll-content::-webkit-scrollbar { display: none; }
+
+/* ══════════════════════════════════════════════
+   BALANCE CARD
+══════════════════════════════════════════════ */
+.balance-card {
+  background: linear-gradient(145deg, #1a1400 0%, #0e0c00 60%, #0a0a0e 100%);
+  border: 1px solid rgba(240,185,11,0.18);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px 24px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.balance-card::before {
+  content: "";
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240,185,11,0.1) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.balance-card::after {
+  content: "";
+  position: absolute;
+  bottom: -40px; left: -40px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240,185,11,0.05) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.balance-account-name {
+  font-size: 13px;
+  color: rgba(240,185,11,0.7);
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  margin-bottom: 4px;
+}
+
+.balance-type {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.balance-label-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.balance-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.balance-amount {
+  font-size: 46px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -1.5px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.balance-interest {
+  font-size: 13px;
+  color: var(--green);
+  font-weight: 500;
+  margin-bottom: 22px;
+}
+
+.balance-divider {
+  height: 1px;
+  background: var(--border);
+  margin-bottom: 18px;
+}
+
+.balance-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+.balance-meta-item { }
+.balance-meta-item + .balance-meta-item {
+  padding-left: 20px;
+  border-left: 1px solid var(--border);
+  margin-left: 20px;
+}
+
+.bm-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+.bm-value { font-size: 15px; font-weight: 700; color: var(--text); }
+.bm-value.green { color: var(--green); }
+
+/* ══════════════════════════════════════════════
+   ACTION BUTTONS
+══════════════════════════════════════════════ */
+.actions-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.action-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+.action-card:hover { border-color: var(--gold); background: var(--gold-glow); }
+.action-card:active { transform: scale(0.98); }
+
+.action-icon-wrap {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.action-icon-wrap.deposit  { background: rgba(240,185,11,0.12); }
+.action-icon-wrap.withdraw { background: rgba(255,92,92,0.1); }
+
+.action-title { font-size: 14px; font-weight: 700; color: var(--text); }
+.action-sub   { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+
+/* ══════════════════════════════════════════════
+   SECTION HEADER
+══════════════════════════════════════════════ */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.section-title { font-size: 16px; font-weight: 700; color: var(--text); }
+.section-link  {
+  font-size: 13px; color: var(--gold); cursor: pointer;
+  background: none; border: none; font-family: inherit;
+}
+
+/* ══════════════════════════════════════════════
+   PROFIT GRAPH CARD
+══════════════════════════════════════════════ */
+.graph-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.graph-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.graph-title { font-size: 14px; font-weight: 700; color: var(--text); }
+.graph-sub   { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+.graph-period-pill {
+  font-size: 11px;
+  color: var(--gold);
+  background: var(--gold-dim);
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-weight: 600;
+}
+
+.graph-wrap { height: 160px; position: relative; margin-bottom: 16px; }
+
+.graph-stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+.graph-stat { text-align: center; }
+.graph-stat + .graph-stat { border-left: 1px solid var(--border); }
+.gs-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+.gs-val   { font-size: 14px; font-weight: 700; color: var(--text); }
+.gs-val.green { color: var(--green); }
+
+/* ══════════════════════════════════════════════
+   SAVINGS CARD (bank card visual)
+══════════════════════════════════════════════ */
+.savings-card-wrap { margin-bottom: 24px; }
+
+.savings-card {
+  border-radius: 20px;
+  padding: 26px 24px;
+  background: linear-gradient(135deg, #1c1400 0%, #2d2000 40%, #1a1200 100%);
+  border: 1px solid rgba(240,185,11,0.2);
+  position: relative;
+  overflow: hidden;
+  min-height: 200px;
+}
+
+.savings-card::before {
+  content: "";
+  position: absolute;
+  top: -50px; right: -50px;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240,185,11,0.15) 0%, transparent 60%);
+}
+
+.savings-card::after {
+  content: "";
+  position: absolute;
+  bottom: -30px; left: 20px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240,185,11,0.06) 0%, transparent 60%);
+}
+
+.sc-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+  position: relative; z-index: 1;
+}
+.sc-brand { font-size: 18px; font-weight: 900; color: var(--gold); letter-spacing: 1px; }
+.sc-type  { font-size: 11px; color: rgba(240,185,11,0.5); font-weight: 600; letter-spacing: 3px; margin-top: 2px; }
+
+.sc-chip {
+  width: 36px; height: 28px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #b8860b, var(--gold));
+  margin-bottom: 20px;
+  position: relative; z-index: 1;
+}
+
+.sc-joint-name {
+  font-size: 20px;
+  font-weight: 800;
+  color: rgba(255,255,255,0.9);
+  letter-spacing: 0.3px;
+  margin-bottom: 6px;
+  position: relative; z-index: 1;
+}
+
+.sc-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: relative; z-index: 1;
+}
+
+.sc-field-label { font-size: 9px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 1px; }
+.sc-field-value { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.7); margin-top: 3px; letter-spacing: 0.5px; }
+
+/* Card shimmer */
+.sc-shimmer {
+  position: absolute; inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.03) 50%, transparent 60%);
+  border-radius: 20px;
+}
+
+/* Members pills */
+.members-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+.member-pill {
+  flex: 1;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.member-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--gold-dim);
+  border: 1px solid rgba(240,185,11,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: var(--gold);
+  flex-shrink: 0;
+}
+.member-name  { font-size: 13px; font-weight: 600; color: var(--text); }
+.member-label { font-size: 11px; color: var(--text-muted); }
+
+/* ══════════════════════════════════════════════
+   TRANSACTIONS
+══════════════════════════════════════════════ */
+.txn-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.txn-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 20px;
+  cursor: pointer;
+  user-select: none;
+}
+.txn-toggle-title { font-size: 15px; font-weight: 700; color: var(--text); }
+.txn-toggle-arrow {
+  transition: transform .3s;
+  color: var(--text-muted);
+}
+.txn-toggle-arrow.open { transform: rotate(180deg); }
+
+.txn-body { display: none; }
+.txn-body.open { display: block; }
+
+.txn-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+  transition: background .15s;
+}
+.txn-row:hover { background: var(--surface2); }
+
+.txn-icon {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.txn-icon.dep  { background: rgba(240,185,11,0.1); }
+.txn-icon.wd   { background: rgba(255,92,92,0.1); }
+.txn-icon.int  { background: rgba(0,210,106,0.1); }
+
+.txn-info { flex: 1; min-width: 0; }
+.txn-type { font-size: 14px; font-weight: 600; color: var(--text); }
+.txn-date { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.txn-status {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 6px;
+  margin-top: 4px;
+}
+.txn-status.pending  { background: rgba(240,185,11,0.15); color: var(--gold); }
+.txn-status.approved { background: rgba(0,210,106,0.12); color: var(--green); }
+.txn-status.rejected { background: rgba(255,92,92,0.12); color: var(--red); }
+
+.txn-amount { font-size: 15px; font-weight: 700; flex-shrink: 0; }
+.txn-amount.pos { color: var(--green); }
+.txn-amount.neg { color: var(--red); }
+
+.txn-empty {
+  padding: 32px 20px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+  border-top: 1px solid var(--border);
+}
+
+/* ══════════════════════════════════════════════
+   PENDING APPROVALS BANNER
+══════════════════════════════════════════════ */
+.approval-banner {
+  background: rgba(240,185,11,0.08);
+  border: 1px solid rgba(240,185,11,0.25);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  margin-bottom: 16px;
+  display: none;
+}
+.approval-banner.visible { display: block; }
+.approval-banner-title { font-size: 14px; font-weight: 700; color: var(--gold); margin-bottom: 12px; }
+
+.approval-item {
+  background: var(--surface2);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 8px;
+}
+.approval-item:last-child { margin-bottom: 0; }
+.approval-item-desc { font-size: 13px; color: var(--text); margin-bottom: 10px; }
+.approval-item-btns { display: flex; gap: 8px; }
+.approval-item-btns button {
+  flex: 1; padding: 9px;
+  border: none; border-radius: 9px;
+  font-weight: 700; font-size: 13px; cursor: pointer;
+}
+.btn-approve { background: var(--green); color: #000; }
+.btn-reject  { background: var(--surface); border: 1px solid var(--border) !important; color: var(--red); }
+
+/* ══════════════════════════════════════════════
+   CRYPTO PRICE TICKER
+══════════════════════════════════════════════ */
+.price-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+.price-row::-webkit-scrollbar { display: none; }
+
+.price-pill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  flex-shrink: 0;
+  min-width: 110px;
+}
+.price-symbol { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; font-weight: 600; }
+.price-value  { font-size: 15px; font-weight: 700; color: var(--text); }
+.price-change { font-size: 12px; margin-top: 2px; }
+.price-change.up   { color: var(--green); }
+.price-change.down { color: var(--red); }
+
+/* ══════════════════════════════════════════════
+   BOTTOM NAV
+══════════════════════════════════════════════ */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 100%; max-width: 430px;
+  background: rgba(6,6,8,0.95);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  padding: 10px 0 calc(10px + env(safe-area-inset-bottom, 0px));
+  z-index: 100;
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: opacity .2s;
+}
+.nav-item:hover { opacity: .8; }
+
+.nav-icon { color: var(--text-muted); transition: color .2s; }
+.nav-label { font-size: 10px; color: var(--text-muted); font-weight: 500; transition: color .2s; }
+.nav-item.active .nav-icon,
+.nav-item.active .nav-label { color: var(--gold); }
+
+/* ══════════════════════════════════════════════
+   OVERLAYS / POPUPS
+══════════════════════════════════════════════ */
+.overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 200;
+  align-items: flex-end;
+  justify-content: center;
+}
+.overlay.open { display: flex; }
+
+.sheet {
+  background: var(--surface);
+  border-radius: 28px 28px 0 0;
+  width: 100%; max-width: 430px;
+  padding: 8px 24px 40px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.sheet-handle {
+  width: 40px; height: 4px;
+  background: var(--text-dim);
+  border-radius: 4px;
+  margin: 12px auto 24px;
+}
+
+.sheet-title { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.sheet-sub   { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; }
+
+.sheet label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sheet input,
+.sheet select {
+  width: 100%;
+  padding: 15px 16px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 16px;
+  outline: none;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+  font-family: inherit;
+  transition: border-color .2s;
+}
+.sheet input:focus,
+.sheet select:focus { border-color: var(--gold); }
+.sheet input::placeholder { color: var(--text-dim); }
+.sheet select option { background: #111; }
+
+.sheet-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--gold);
+  color: #000;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: 8px;
+  transition: opacity .2s;
+}
+.sheet-btn:hover    { opacity: .88; }
+.sheet-btn:active   { opacity: .75; }
+.sheet-btn.danger   { background: var(--red); color: #fff; }
+.sheet-btn.ghost    { background: var(--surface2); color: var(--text); border: 1px solid var(--border); margin-top: 10px; }
+
+/* Asset selector */
+.asset-selector { display: flex; gap: 8px; margin-bottom: 18px; }
+.asset-btn {
+  flex: 1; padding: 12px 8px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text-muted);
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; text-align: center;
+  transition: .2s;
+}
+.asset-btn.active {
+  border-color: var(--gold);
+  background: var(--gold-dim);
+  color: var(--gold);
+}
+
+/* Wallet address display */
+.wallet-display {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-bottom: 18px;
+}
+.wallet-display-label { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+.wallet-display-addr  { font-size: 13px; color: var(--text); word-break: break-all; line-height: 1.5; }
+.wallet-copy-btn {
+  margin-top: 10px; width: 100%; padding: 10px;
+  background: var(--gold-dim);
+  border: 1px solid rgba(240,185,11,0.2);
+  border-radius: 9px;
+  color: var(--gold); font-size: 13px; font-weight: 600;
+  cursor: pointer; font-family: inherit;
+}
+
+/* ══════════════════════════════════════════════
+   SWITCH BACK BUTTON
+══════════════════════════════════════════════ */
+.switch-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 7px 14px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: .2s;
+}
+.switch-back-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ══════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════ */
+#toast {
+  position: fixed;
+  bottom: 100px; left: 50%;
+  transform: translateX(-50%);
+  background: #1a1a1a;
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 20px;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity .3s;
+  z-index: 999;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════════
+   DESKTOP — centre + keep narrow
+══════════════════════════════════════════════ */
+@media(min-width: 431px) {
+  body { background: #030304; }
+  .app {
+    border-left:  1px solid var(--border);
+    border-right: 1px solid var(--border);
+    min-height: 100vh;
+  }
+  .bottom-nav { border-radius: 0; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="status-bar"></div>
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="top-bar-left">
+      <div class="top-bar-avatar" onclick="openProfileSheet()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+        </svg>
+      </div>
+      <div>
+        <div class="top-bar-greeting">Good day,</div>
+        <div id="topBarName" class="top-bar-name">Loading…</div>
+      </div>
+    </div>
+    <div class="top-bar-right">
+      <button class="switch-back-btn" onclick="switchBackToMain()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        Main Dashboard
+      </button>
+      <div class="icon-btn" onclick="toggleNotifications()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <div id="notifDot" class="notif-dot" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCROLLABLE -->
+  <div class="scroll-content">
+
+    <!-- PARTNER APPROVAL BANNER -->
+    <div id="approvalBanner" class="approval-banner">
+      <div class="approval-banner-title">Withdrawal Approval Required</div>
+      <div id="approvalList"></div>
+    </div>
+
+    <!-- BALANCE CARD -->
+    <div class="balance-card">
+      <div id="jointNameDisplay" class="balance-account-name">Joint Savings</div>
+      <div class="balance-type">Joint Savings Account</div>
+      <div class="balance-label-row">
+        <span class="balance-label">Total Balance</span>
+        <svg id="eyeIcon" onclick="toggleBalanceVisibility()" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b6b7a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer;flex-shrink:0;">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+        </svg>
+      </div>
+      <div id="savingsBalance" class="balance-amount">$0.00</div>
+      <div id="interestLine" class="balance-interest">+$0.00 interest earned</div>
+      <div class="balance-divider"></div>
+      <div class="balance-meta">
+        <div class="balance-meta-item">
+          <div class="bm-label">Monthly Rate</div>
+          <div id="interestRateDisplay" class="bm-value green">0.00%</div>
+        </div>
+        <div class="balance-meta-item">
+          <div class="bm-label">Total Deposited</div>
+          <div id="totalDepositedDisplay" class="bm-value">$0.00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="actions-row">
+      <div class="action-card" onclick="openDepositSheet()">
+        <div class="action-icon-wrap deposit">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f0b90b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
+          </svg>
+        </div>
+        <div>
+          <div class="action-title">Deposit</div>
+          <div class="action-sub">Add to savings</div>
+        </div>
+      </div>
+      <div class="action-card" onclick="openWithdrawSheet()">
+        <div class="action-icon-wrap withdraw">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff5c5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
+          </svg>
+        </div>
+        <div>
+          <div class="action-title">Withdraw</div>
+          <div class="action-sub">Request funds</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SAVINGS GROWTH CHART -->
+    <div class="graph-card">
+      <div class="graph-header">
+        <div>
+          <div class="graph-title">Savings Growth</div>
+          <div class="graph-sub">Balance + interest over time</div>
+        </div>
+        <div class="graph-period-pill">Live</div>
+      </div>
+      <div class="graph-wrap">
+        <canvas id="savingsChart"></canvas>
+      </div>
+      <div class="graph-stats-row">
+        <div class="graph-stat">
+          <div class="gs-label">Deposited</div>
+          <div id="gsDeposited" class="gs-val">$0</div>
+        </div>
+        <div class="graph-stat">
+          <div class="gs-label">Interest</div>
+          <div id="gsInterest" class="gs-val green">$0</div>
+        </div>
+        <div class="graph-stat">
+          <div class="gs-label">Growth</div>
+          <div id="gsGrowth" class="gs-val green">0%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JOINT ACCOUNT CARD -->
+    <div class="savings-card-wrap">
+      <div class="section-header">
+        <span class="section-title">Account Card</span>
+      </div>
+      <div class="savings-card">
+        <div class="sc-shimmer"></div>
+        <div class="sc-top">
+          <div>
+            <div class="sc-brand">GIAI</div>
+            <div class="sc-type">JOINT SAVINGS</div>
+          </div>
+          <svg width="44" height="28" viewBox="0 0 44 28">
+            <circle cx="16" cy="14" r="13" fill="#f0b90b" opacity="0.9"/>
+            <circle cx="28" cy="14" r="13" fill="#f77f00" opacity="0.65"/>
+          </svg>
+        </div>
+        <div class="sc-chip"></div>
+        <div id="cardJointName" class="sc-joint-name">— & —</div>
+        <div class="sc-bottom">
+          <div>
+            <div class="sc-field-label">Account ID</div>
+            <div id="cardAccountId" class="sc-field-value">—</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="sc-field-label">Since</div>
+            <div id="cardSince" class="sc-field-value">—</div>
+          </div>
+        </div>
+      </div>
+      <!-- Members -->
+      <div class="members-row">
+        <div class="member-pill">
+          <div id="member1Avatar" class="member-avatar">?</div>
+          <div>
+            <div id="member1Name" class="member-name">—</div>
+            <div class="member-label">Account Holder 1</div>
+          </div>
+        </div>
+        <div class="member-pill">
+          <div id="member2Avatar" class="member-avatar">?</div>
+          <div>
+            <div id="member2Name" class="member-name">—</div>
+            <div class="member-label">Account Holder 2</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CRYPTO PRICES -->
+    <div class="section-header">
+      <span class="section-title">Market</span>
+    </div>
+    <div class="price-row">
+      <div class="price-pill">
+        <div class="price-symbol">BTC</div>
+        <div id="priceBTC" class="price-value">—</div>
+        <div id="changeBTC" class="price-change">—</div>
+      </div>
+      <div class="price-pill">
+        <div class="price-symbol">ETH</div>
+        <div id="priceETH" class="price-value">—</div>
+        <div id="changeETH" class="price-change">—</div>
+      </div>
+      <div class="price-pill">
+        <div class="price-symbol">USDT</div>
+        <div id="priceUSDT" class="price-value">$1.00</div>
+        <div class="price-change up">+0.00%</div>
+      </div>
+      <div class="price-pill">
+        <div class="price-symbol">BNB</div>
+        <div id="priceBNB" class="price-value">—</div>
+        <div id="changeBNB" class="price-change">—</div>
+      </div>
+    </div>
+
+    <!-- TRANSACTIONS -->
+    <div class="txn-card">
+      <div class="txn-toggle" onclick="toggleTransactions()">
+        <span class="txn-toggle-title">Transaction History</span>
+        <svg id="txnArrow" class="txn-toggle-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
+      <div id="txnBody" class="txn-body">
+        <div id="transactionList" class="txn-empty">No transactions yet</div>
+      </div>
+    </div>
+
+  </div><!-- end scroll-content -->
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <div class="nav-item active" onclick="scrollTop()">
+      <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      <span class="nav-label">Home</span>
+    </div>
+    <div class="nav-item" onclick="openDepositSheet()">
+      <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
+      </svg>
+      <span class="nav-label">Deposit</span>
+    </div>
+    <div class="nav-item" onclick="openWithdrawSheet()">
+      <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
+      </svg>
+      <span class="nav-label">Withdraw</span>
+    </div>
+    <div class="nav-item" onclick="toggleTransactions(); document.querySelector('.txn-card').scrollIntoView({behavior:'smooth'})">
+      <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/>
+        <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+      </svg>
+      <span class="nav-label">History</span>
+    </div>
+    <div class="nav-item" onclick="openProfileSheet()">
+      <svg class="nav-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+      </svg>
+      <span class="nav-label">Profile</span>
+    </div>
+  </nav>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     DEPOSIT SHEET
+══════════════════════════════════════════════ -->
+<div id="depositOverlay" class="overlay">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Deposit Funds</div>
+    <div class="sheet-sub">Select your asset and send to the address below.</div>
+
+    <label>Select Asset</label>
+    <div class="asset-selector">
+      <button class="asset-btn active" onclick="selectAsset('BTC',this)">BTC</button>
+      <button class="asset-btn"        onclick="selectAsset('ETH',this)">ETH</button>
+      <button class="asset-btn"        onclick="selectAsset('USDT',this)">USDT</button>
+    </div>
+
+    <div class="wallet-display">
+      <div class="wallet-display-label" id="depositAssetLabel">BTC Network</div>
+      <div class="wallet-display-addr"  id="depositWalletAddr">bc1qa4g38u9mxn43td5mt67jh320sy6nne9tfaewg6</div>
+      <button class="wallet-copy-btn" onclick="copyWalletAddr()">Copy Address</button>
+    </div>
+
+    <label>Amount (USD equivalent)</label>
+    <input id="depositAmount" type="number" placeholder="0.00">
+
+    <button class="sheet-btn" onclick="submitDeposit()">I Have Sent Payment</button>
+    <button class="sheet-btn ghost" onclick="closeDepositSheet()">Cancel</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     WITHDRAW SHEET
+══════════════════════════════════════════════ -->
+<div id="withdrawOverlay" class="overlay">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Withdraw Funds</div>
+    <div class="sheet-sub">Your partner must approve before admin processes the withdrawal.</div>
+
+    <label>Select Asset</label>
+    <div class="asset-selector">
+      <button class="asset-btn active" onclick="selectWithdrawAsset('BTC',this)">BTC</button>
+      <button class="asset-btn"        onclick="selectWithdrawAsset('ETH',this)">ETH</button>
+      <button class="asset-btn"        onclick="selectWithdrawAsset('USDT',this)">USDT</button>
+    </div>
+
+    <label>Amount ($)</label>
+    <input id="withdrawAmount" type="number" placeholder="0.00">
+
+    <label>Destination Wallet Address</label>
+    <input id="withdrawWallet" type="text" placeholder="Your wallet address">
+
+    <button class="sheet-btn danger" onclick="submitWithdraw()">Request Withdrawal</button>
+    <button class="sheet-btn ghost" onclick="closeWithdrawSheet()">Cancel</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PROFILE SHEET
+══════════════════════════════════════════════ -->
+<div id="profileOverlay" class="overlay">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">My Profile</div>
+    <div id="profileContent" style="margin-bottom:20px;"></div>
+    <button class="sheet-btn ghost" onclick="switchBackToMain()">Switch to Main Dashboard</button>
+    <button class="sheet-btn" style="background:#ff4444;color:#fff;margin-top:10px;" onclick="logoutSavings()">Logout</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="dashboard-savings.js"></script>
+</body>
+</html>

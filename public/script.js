@@ -344,8 +344,12 @@ function openDashboard() {
     const user = localStorage.getItem("user");
 
     if (user) {
-        window.location.href = "dashboard.html";
-    } else {
+const mode = data.user.dashboardMode || "representative";
+if (mode === "lite")    window.location.href = "/dashboard-lite.html";
+else if (mode === "savings") window.location.href = "/dashboard-savings.html";
+else window.location.href = "/dashboard.html";
+
+   } else {
         window.location.href = "signup.html";
     }
 }

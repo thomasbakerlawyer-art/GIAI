@@ -137,8 +137,17 @@ async function loadPortfolioHistory() {
         const data = await response.json();
         if (!data.success) return;
 
-        fullHistory = data.history || [];
-        drawPortfolioHistory(fullHistory);
+       fullHistory = data.history || [];
+
+// If there is no active investment, clear the graph completely
+if (
+    Number(currentUser.investmentAmount || 0) <= 0 ||
+    Number(currentUser.investmentDuration || 0) <= 0
+) {
+    fullHistory = [];
+}
+
+drawPortfolioHistory(fullHistory);
 
     } catch (err) {
         console.error("Portfolio history error:", err);

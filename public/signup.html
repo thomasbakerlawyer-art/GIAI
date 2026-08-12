@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> • GIAI</title>
+<title>Create Account • GIAI</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
 
@@ -19,9 +19,9 @@ body{
 
 .container{
   width:100%;
-  max-width:520px;
+  max-width:480px;
   background:#101010;
-  padding:40px 36px;
+  padding:36px 32px;
   border-radius:24px;
   border:1px solid rgba(240,185,11,0.15);
   box-shadow:0 0 60px rgba(0,0,0,0.6);
@@ -29,7 +29,7 @@ body{
 
 .logo{
   text-align:center;
-  font-size:34px;
+  font-size:30px;
   font-weight:bold;
   color:#f0b90b;
   letter-spacing:1px;
@@ -38,38 +38,35 @@ body{
 
 .subtitle{
   text-align:center;
-  color:#777;
-  font-size:13.5px;
-  margin-bottom:30px;
+  color:#666;
+  font-size:13px;
+  margin-bottom:28px;
   line-height:1.6;
 }
 
-/* ── Section divider ── */
 .section-label{
-  font-size:11px;
+  font-size:10.5px;
   font-weight:bold;
   letter-spacing:1.5px;
   text-transform:uppercase;
   color:#f0b90b;
   opacity:0.7;
-  margin:22px 0 12px;
+  margin:20px 0 10px;
 }
 
-/* ── Input group ── */
-.input-group{margin-bottom:14px;position:relative;}
+.input-group{margin-bottom:12px;position:relative;}
 
 .input-group label{
   display:block;
-  margin-bottom:7px;
+  margin-bottom:6px;
   font-size:13px;
   color:#aaa;
 }
 
 .input-group input,
-.input-group select,
-.input-group textarea{
+.input-group select{
   width:100%;
-  padding:14px 16px;
+  padding:13px 15px;
   border:1px solid #222;
   border-radius:12px;
   background:#0b0b0b;
@@ -80,21 +77,20 @@ body{
 }
 
 .input-group input:focus,
-.input-group select:focus,
-.input-group textarea:focus{
+.input-group select:focus{
   border-color:#f0b90b;
-  box-shadow:0 0 0 3px rgba(240,185,11,0.12);
+  box-shadow:0 0 0 3px rgba(240,185,11,0.1);
 }
 
-.input-group input::placeholder,
-.input-group textarea::placeholder{color:#444;}
+.input-group input::placeholder{color:#444;}
+.input-group select option{background:#111;}
 
-/* ── Country search ── */
+/* ── Country ── */
 .country-wrapper{position:relative;}
 
 #countryDisplay{
   width:100%;
-  padding:14px 16px;
+  padding:13px 15px;
   border:1px solid #222;
   border-radius:12px;
   background:#0b0b0b;
@@ -109,16 +105,9 @@ body{
 }
 
 #countryDisplay:hover,
-#countryDisplay.open{
-  border-color:#f0b90b;
-}
+#countryDisplay.open{border-color:#f0b90b;}
 
-#countryDisplay .arrow{
-  font-size:10px;
-  color:#666;
-  transition:transform .2s;
-}
-
+#countryDisplay .arrow{font-size:10px;color:#555;transition:transform .2s;}
 #countryDisplay.open .arrow{transform:rotate(180deg);}
 
 .country-dropdown{
@@ -133,12 +122,11 @@ body{
   overflow:hidden;
   box-shadow:0 8px 30px rgba(0,0,0,0.5);
 }
-
 .country-dropdown.open{display:block;}
 
 #countrySearch{
   width:100%;
-  padding:12px 16px;
+  padding:11px 15px;
   border:none;
   border-bottom:1px solid #1e1e1e;
   background:#0d0d0d;
@@ -146,40 +134,32 @@ body{
   font-size:14px;
   outline:none;
 }
-
 #countrySearch::placeholder{color:#444;}
 
 .country-list{
-  max-height:200px;
+  max-height:190px;
   overflow-y:auto;
   scrollbar-width:thin;
   scrollbar-color:#2a2a2a transparent;
 }
-
 .country-list::-webkit-scrollbar{width:4px;}
 .country-list::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:4px;}
 
 .country-item{
-  padding:11px 16px;
+  padding:10px 15px;
   font-size:14px;
   cursor:pointer;
   color:#ccc;
   transition:background .15s;
 }
-
 .country-item:hover,.country-item.selected{
   background:rgba(240,185,11,0.1);
   color:#f0b90b;
 }
+.no-results{padding:12px 15px;font-size:13px;color:#555;text-align:center;}
 
-.no-results{padding:12px 16px;font-size:13px;color:#555;text-align:center;}
-
-/* ── Wallet section ── */
-.wallet-tabs{
-  display:flex;
-  gap:8px;
-  margin-bottom:12px;
-}
+/* ── Wallet tabs ── */
+.wallet-tabs{display:flex;gap:8px;margin-bottom:12px;}
 
 .wallet-tab{
   flex:1;
@@ -187,16 +167,14 @@ body{
   border:1px solid #2a2a2a;
   border-radius:10px;
   background:#0b0b0b;
-  color:#777;
+  color:#666;
   font-size:12px;
   font-weight:bold;
   cursor:pointer;
   text-align:center;
   transition:.2s;
 }
-
 .wallet-tab:hover{border-color:#f0b90b;color:#f0b90b;}
-
 .wallet-tab.active{
   border-color:#f0b90b;
   background:rgba(240,185,11,0.08);
@@ -206,10 +184,10 @@ body{
 .wallet-input-area{display:none;}
 .wallet-input-area.active{display:block;}
 
-/* ── Submit button ── */
+/* ── Button ── */
 .signup-btn{
   width:100%;
-  padding:16px;
+  padding:15px;
   border:none;
   border-radius:12px;
   background:#f0b90b;
@@ -217,114 +195,41 @@ body{
   font-weight:bold;
   font-size:15px;
   cursor:pointer;
-  margin-top:8px;
+  margin-top:10px;
   transition:opacity .2s,transform .15s;
-  letter-spacing:.3px;
 }
-
 .signup-btn:hover{opacity:.9;transform:scale(1.01);}
 .signup-btn:active{transform:scale(0.99);}
 
 .bottom-text{
   text-align:center;
-  margin-top:22px;
+  margin-top:20px;
   color:#666;
-  font-size:13.5px;
+  font-size:13px;
 }
-
 .bottom-text a{color:#f0b90b;text-decoration:none;font-weight:bold;}
 .bottom-text a:hover{text-decoration:underline;}
 
-/* ── Error / helper text ── */
-.field-error{
-  font-size:12px;
-  color:#ff5c5c;
-  margin-top:5px;
-  display:none;
-}
+.field-error{font-size:12px;color:#ff5c5c;margin-top:5px;display:none;}
 
-@media(max-width:520px){
-  .container{padding:30px 20px;}
-  .logo{font-size:27px;}
+@media(max-width:480px){
+  .container{padding:28px 18px;}
+  .logo{font-size:24px;}
   .wallet-tab{font-size:11px;padding:9px 4px;}
 }
-.password-box{
-    position:relative !important;
-    width:100%;
-    display:block !important;
-}
-
-.password-box input{
-    width:100% !important;
-    padding-right:55px !important;
-    box-sizing:border-box !important;
-}
-
-.toggle-password{
-    position:absolute !important;
-    right:15px !important;
-    top:50% !important;
-    transform:translateY(-50%) !important;
-
-    width:22px !important;
-    height:22px !important;
-
-    border:none !important;
-    background:transparent !important;
-
-    display:flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-
-    cursor:pointer;
-    padding:0 !important;
-    margin:0 !important;
-    color:#888;
-}
-
-.toggle-password:hover{
-    color:#f0b90b;
-}
-
-.toggle-password svg{
-    width:20px;
-    height:20px;
-    display:block;
-}
 </style>
-
 </head>
 <body>
 
 <div class="container">
 
-<button class="signup-close" onclick="window.location.href='index.html'" aria-label="Close">
-  <svg xmlns="http://www.w3.org/2000/svg"
-       viewBox="0 0 24 24"
-       fill="none"
-       stroke="#f0b90b"
-       stroke-width="2.8"
-       stroke-linecap="round"
-       stroke-linejoin="round"
-       width="18"
-       height="18">
-    <line x1="18" y1="6" x2="6" y2="18"/>
-    <line x1="6" y1="6" x2="18" y2="18"/>
-  </svg>
-</button>
-
-<div class="logo">• GIAI</div>
-  <div class="subtitle">Create your investor account and gain access to our AI‑powered global investment infrastructure.</div>
+  <div class="logo">BINANCE • GIAI</div>
+  <div class="subtitle">Create your investor account to get started.</div>
 
   <form id="signupForm" novalidate>
 
-    <!-- ── Personal Info ── -->
+    <!-- Personal Info -->
     <div class="section-label">Personal Information</div>
-
-    <div class="input-group">
-      <label>Username</label>
-      <input type="text" id="username" placeholder="Enter a unique username" required>
-    </div>
 
     <div class="input-group">
       <label>Full Name</label>
@@ -336,93 +241,43 @@ body{
       <input type="email" id="email" placeholder="name@example.com" required>
     </div>
 
-    <div class="input-group">
-      <label>Phone Number</label>
-      <input type="tel" id="phone" placeholder="+1 234 567 890" required>
-    </div>
-
-    <!-- ── Security ── -->
+    <!-- Security -->
     <div class="section-label">Security</div>
 
-<div class="input-group">
-  <label>Password</label>
+    <div class="input-group">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Create a strong password" required>
+    </div>
 
-  <div class="password-box">
+    <div class="input-group">
+      <label>Confirm Password</label>
+      <input type="password" id="confirmPassword" placeholder="Re-enter your password" required>
+      <div class="field-error" id="passwordError">Passwords do not match.</div>
+    </div>
 
-    <input
-      type="password"
-      id="password"
-      placeholder="Create a strong password"
-      required>
+    <!-- Password Recovery -->
+    <div class="section-label">Password Recovery</div>
 
-    <button
-      type="button"
-      class="toggle-password"
-      onclick="togglePassword('password', this)">
+    <div class="input-group">
+      <label>Security Question</label>
+      <select id="secretQuestion" required>
+        <option value="">Choose a question</option>
+        <option value="pet">What was the name of your first pet?</option>
+        <option value="mother">What is your mother's maiden name?</option>
+        <option value="city">What city were you born in?</option>
+        <option value="school">What was the name of your primary school?</option>
+        <option value="food">What is your favourite food?</option>
+        <option value="car">What was your first car?</option>
+        <option value="friend">What is the name of your childhood best friend?</option>
+      </select>
+    </div>
 
-      <svg xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round">
+    <div class="input-group">
+      <label>Your Answer</label>
+      <input type="text" id="secretAnswer" placeholder="Enter your answer" required>
+    </div>
 
-        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"></path>
-        <circle cx="12" cy="12" r="3"></circle>
-
-      </svg>
-
-    </button>
-
-  </div>
-
-</div>
-
-<div class="input-group">
-  <label>Confirm Password</label>
-
-  <div class="password-box">
-
-    <input
-      type="password"
-      id="confirmPassword"
-      placeholder="Re-enter your password"
-      required>
-
-    <button
-      type="button"
-      class="toggle-password"
-      onclick="togglePassword('confirmPassword', this)">
-
-      <svg xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round">
-
-        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"></path>
-        <circle cx="12" cy="12" r="3"></circle>
-
-      </svg>
-
-    </button>
-
-  </div>
-
-  <div class="field-error" id="passwordError">
-    Passwords do not match.
-  </div>
-
-</div>
-
-    <!-- ── Location ── -->
+    <!-- Location -->
     <div class="section-label">Location</div>
 
     <div class="input-group">
@@ -440,7 +295,7 @@ body{
       </div>
     </div>
 
-    <!-- ── Wallet ── -->
+    <!-- Wallet -->
     <div class="section-label">Wallet Address</div>
 
     <div class="wallet-tabs">
@@ -467,33 +322,15 @@ body{
       </div>
     </div>
 
-<!-- ── Security Question ── -->
-<div class="section-label">Security Question</div>
-
-<div class="input-group">
-  <label>Select a Security Question</label>
-  <select id="secretQuestion" required>
-    <option value="">Choose a question...</option>
-    <option value="pet">What was the name of your first pet?</option>
-    <option value="mother">What is your mother's maiden name?</option>
-    <option value="city">What city were you born in?</option>
-    <option value="school">What was the name of your primary school?</option>
-    <option value="food">What is your favourite food?</option>
-    <option value="car">What was your first car?</option>
-    <option value="friend">What is the name of your childhood best friend?</option>
-  </select>
-</div>
-
-<div class="input-group">
-  <label>Your Answer</label>
-  <input type="text" id="secretAnswer" placeholder="Your answer (you'll need this to reset your password)" required>
-</div>
-
-    <!-- ── Referral ── -->
-    <div class="section-label">Referral <span style="font-size:10px;color:#555;font-weight:normal;text-transform:none;letter-spacing:0">(Optional)</span></div>
+    <!-- Referral -->
+    <div class="section-label">
+      Referral
+      <span style="font-size:10px;color:#555;font-weight:normal;
+        text-transform:none;letter-spacing:0;margin-left:4px;">(Optional)</span>
+    </div>
 
     <div class="input-group">
-      <input type="text" id="referrer" placeholder="Enter referrer ID if you have one">
+      <input type="text" id="referrer" placeholder="Referrer ID if you have one">
     </div>
 
     <button type="submit" class="signup-btn">Create Account</button>
@@ -507,9 +344,7 @@ body{
 </div>
 
 <script>
-// ==============================
-// COUNTRY LIST — all ~195 countries, generated via JS (no manual list in HTML)
-// ==============================
+/* ── Countries ── */
 const ALL_COUNTRIES = [
   "Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda",
   "Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain",
@@ -545,32 +380,34 @@ const ALL_COUNTRIES = [
 
 let selectedCountry = "";
 
-const countryList    = document.getElementById("countryList");
-const countrySearch  = document.getElementById("countrySearch");
-const countryDisplay = document.getElementById("countryDisplay");
-const countryDropdown= document.getElementById("countryDropdown");
+const countryList        = document.getElementById("countryList");
+const countrySearch      = document.getElementById("countrySearch");
+const countryDisplay     = document.getElementById("countryDisplay");
+const countryDropdown    = document.getElementById("countryDropdown");
 const countryDisplayText = document.getElementById("countryDisplayText");
-const countryHidden  = document.getElementById("country");
+const countryHidden      = document.getElementById("country");
 
-function renderCountries(filter=""){
-  countryList.innerHTML="";
-  const filtered = ALL_COUNTRIES.filter(c=>c.toLowerCase().includes(filter.toLowerCase()));
-  if(filtered.length===0){
-    countryList.innerHTML='<div class="no-results">No country found</div>';
+function renderCountries(filter = "") {
+  countryList.innerHTML = "";
+  const filtered = ALL_COUNTRIES.filter(c =>
+    c.toLowerCase().includes(filter.toLowerCase())
+  );
+  if (filtered.length === 0) {
+    countryList.innerHTML = '<div class="no-results">No country found</div>';
     return;
   }
-  filtered.forEach(country=>{
-    const div=document.createElement("div");
-    div.className="country-item"+(country===selectedCountry?" selected":"");
-    div.textContent=country;
-    div.onclick=()=>{
-      selectedCountry=country;
-      countryDisplayText.textContent=country;
-      countryDisplayText.style.color="white";
-      countryHidden.value=country;
+  filtered.forEach(country => {
+    const div = document.createElement("div");
+    div.className = "country-item" + (country === selectedCountry ? " selected" : "");
+    div.textContent = country;
+    div.onclick = () => {
+      selectedCountry = country;
+      countryDisplayText.textContent = country;
+      countryDisplayText.style.color = "white";
+      countryHidden.value = country;
       countryDropdown.classList.remove("open");
       countryDisplay.classList.remove("open");
-      countrySearch.value="";
+      countrySearch.value = "";
       renderCountries();
     };
     countryList.appendChild(div);
@@ -579,174 +416,90 @@ function renderCountries(filter=""){
 
 renderCountries();
 
-countryDisplay.addEventListener("click",()=>{
-  const isOpen=countryDropdown.classList.contains("open");
+countryDisplay.addEventListener("click", () => {
+  const isOpen = countryDropdown.classList.contains("open");
   countryDropdown.classList.toggle("open");
   countryDisplay.classList.toggle("open");
-  if(!isOpen) setTimeout(()=>countrySearch.focus(),50);
+  if (!isOpen) setTimeout(() => countrySearch.focus(), 50);
 });
 
-countrySearch.addEventListener("input",()=>renderCountries(countrySearch.value));
+countrySearch.addEventListener("input", () => renderCountries(countrySearch.value));
 
-document.addEventListener("click",(e)=>{
-  if(!e.target.closest(".country-wrapper")){
+document.addEventListener("click", e => {
+  if (!e.target.closest(".country-wrapper")) {
     countryDropdown.classList.remove("open");
     countryDisplay.classList.remove("open");
   }
 });
 
-// ==============================
-// WALLET TAB SWITCHER
-// ==============================
+/* ── Wallet tabs ── */
 let activeWallet = "btc";
 
-function selectWallet(type){
-  document.querySelectorAll(".wallet-tab").forEach(t=>t.classList.remove("active"));
-  document.querySelectorAll(".wallet-input-area").forEach(a=>a.classList.remove("active"));
+function selectWallet(type) {
+  document.querySelectorAll(".wallet-tab").forEach(t => t.classList.remove("active"));
+  document.querySelectorAll(".wallet-input-area").forEach(a => a.classList.remove("active"));
   document.querySelector(`[data-wallet="${type}"]`).classList.add("active");
   document.getElementById(`wallet-${type}`).classList.add("active");
   activeWallet = type;
 }
 
-// ==============================
-// FORM SUBMISSION
-// ==============================
+/* ── Submit ── */
 document.getElementById("signupForm").addEventListener("submit", async function(e) {
   e.preventDefault();
 
-  const username        = document.getElementById("username").value.trim();
-  const name            = document.getElementById("name").value.trim();
-  const email           = document.getElementById("email").value.trim();
-  const phone           = document.getElementById("phone").value.trim();
-  const password        = document.getElementById("password").value;
-  const confirmPassword = document.getElementById("confirmPassword").value;
-  const country         = document.getElementById("country").value;
-  const referrer        = document.getElementById("referrer").value.trim();
-  const walletBTC       = document.getElementById("walletBTC").value.trim();
-  const walletETH       = document.getElementById("walletETH").value.trim();
-  const walletUSDT      = document.getElementById("walletUSDT").value.trim();
+  const name           = document.getElementById("name").value.trim();
+  const email          = document.getElementById("email").value.trim();
+  const password       = document.getElementById("password").value;
+  const confirmPwd     = document.getElementById("confirmPassword").value;
+  const secretQuestion = document.getElementById("secretQuestion").value;
+  const secretAnswer   = document.getElementById("secretAnswer").value.trim();
+  const country        = document.getElementById("country").value;
+  const referrer       = document.getElementById("referrer").value.trim();
+  const walletBTC      = document.getElementById("walletBTC").value.trim();
+  const walletETH      = document.getElementById("walletETH").value.trim();
+  const walletUSDT     = document.getElementById("walletUSDT").value.trim();
 
-  if (password !== confirmPassword) {
+  /* Validation */
+  if (!name)  { alert("Please enter your full name."); return; }
+  if (!email) { alert("Please enter your email address."); return; }
+
+  if (password !== confirmPwd) {
     document.getElementById("passwordError").style.display = "block";
     document.getElementById("confirmPassword").focus();
     return;
   }
   document.getElementById("passwordError").style.display = "none";
 
-  if (!country) {
-    alert("Please select your country.");
-    return;
-  }
-
+  if (!secretQuestion) { alert("Please choose a security question."); return; }
+  if (!secretAnswer)   { alert("Please provide an answer to your security question."); return; }
+  if (!country)        { alert("Please select your country."); return; }
   if (!walletBTC && !walletETH && !walletUSDT) {
     alert("Please enter at least one wallet address.");
     return;
   }
 
-  const secretQuestion = document.getElementById("secretQuestion").value;
-  const secretAnswer   = document.getElementById("secretAnswer").value.trim();
-
-  if (!secretQuestion) {
-    alert("Please select a security question.");
-    return;
-  }
-
-  if (!secretAnswer) {
-    alert("Please enter an answer to your security question.");
-    return;
-  }
-
-// User must enter at least one wallet
-if (!walletBTC && !walletETH && !walletUSDT) {
-  alert("Please enter at least one wallet address.");
-  return;
-}
-
-// Prevent the same wallet address from being used twice
-const enteredWallets = [walletBTC, walletETH, walletUSDT]
-  .map(w => w.trim())
-  .filter(w => w !== "");
-
-if (new Set(enteredWallets).size !== enteredWallets.length) {
-  alert("The same wallet address cannot be used for multiple wallet types.");
-  return;
-}
-
-// Validate each wallet if it was entered
-if (
-  (walletBTC && !validateWallet(walletBTC, "btc")) ||
-  (walletETH && !validateWallet(walletETH, "eth")) ||
-  (walletUSDT && !validateWallet(walletUSDT, "usdt"))
-) {
-  alert("Please enter a valid wallet address.");
-  return;
-}
-
- const payload = {
-    username, name, email, phone,
-    password, country, referrer,
-    secretQuestion,
-    secretAnswer,
-    wallet: { btc: walletBTC, eth: walletETH, usdt_trc20: walletUSDT }
-  };
-
   try {
-    const response = await fetch("/signup", {
+    const res = await fetch("/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
+      body: JSON.stringify({
+        name, email, password, country, referrer,
+        secretQuestion, secretAnswer,
+        wallet: { btc: walletBTC, eth: walletETH, usdt_trc20: walletUSDT }
+      })
     });
 
-    const data = await response.json();
+    const data = await res.json();
     alert(data.message);
 
     if (data.success) {
       localStorage.setItem("user", JSON.stringify(data.user));
       window.location.href = "/dashboard.html";
     }
-
-  } catch(err) {
+  } catch {
     alert("Something went wrong. Please try again.");
-    console.error(err);
   }
-
-});
-
-</script>
-
-<div id="google_translate_element" style="display:none;"></div>
-
-<script>
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement(
-    { pageLanguage: 'en', autoDisplay: false },
-    'google_translate_element'
-  );
-}
-
-// Remember the language the user picked on index.html
-// and apply it automatically on this page
-function applyStoredLanguage() {
-  const lang = localStorage.getItem("giai_language");
-  if (!lang || lang === "en") return;
-
-  const trySet = setInterval(() => {
-    const select = document.querySelector(".goog-te-combo");
-    if (select) {
-      select.value = lang;
-      select.dispatchEvent(new Event("change"));
-      clearInterval(trySet);
-    }
-  }, 300);
-}
-
-window.addEventListener("load", () => {
-  applyStoredLanguage();
 });
 </script>
-
-<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
-<script src="script.js"></script>
 </body>
 </html>
