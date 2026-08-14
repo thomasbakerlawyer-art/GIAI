@@ -132,6 +132,7 @@ function renderUsers() {
             <option>Robert Rachel</option>
             <option>Lincoln Hayes</option>
             <option>Amber Agrawal</option>
+            <option>Aaliyah Kathe</option>
           </select>
           <button onclick="assignRep('${user.email}')">Assign Rep</button>
         </div>
@@ -828,6 +829,7 @@ async function loadSiteControls() {
     "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
     "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
     "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"]
+    "Aaliyah Kathe": ["Norway","Sweden","Denmark","UAE","Qatar"]
   };
   Object.entries(repConfig).forEach(([name, countries]) => {
     countries.forEach(country => {
@@ -848,6 +850,7 @@ async function saveSiteControls() {
     "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
     "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
     "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"]
+    "Aaliyah Kathe": ["Norway","Sweden","Denmark","UAE","Qatar"]
   };
   const representatives = {};
   Object.entries(repConfig).forEach(([name, countries]) => {
@@ -874,6 +877,7 @@ const repCountryConfig = {
   "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
   "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
   "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"]
+  "Aaliyah Kathe": ["Norway","Sweden","Denmark","UAE","Qatar"]
 };
 let counterPollInterval = null;
 async function loadCounterControls() {

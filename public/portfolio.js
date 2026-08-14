@@ -124,34 +124,34 @@ function drawPortfolioHistory(history) {
    LOAD HISTORY
 ========================================== */
 async function loadPortfolioHistory() {
-    const savedUser = JSON.parse(localStorage.getItem("user"));
-    if (!savedUser) return;
+  const savedUser = JSON.parse(localStorage.getItem("user"));
+  if (!savedUser) return;
+  try {
+    const response = await fetch("/get-portfolio-history", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: savedUser.email })
+    });
+    const data = await response.json();
+    if (!data.success) return;
+    fullHistory = data.history || [];
 
-    try {
-        const response = await fetch("/get-portfolio-history", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: savedUser.email })
-        });
-
-        const data = await response.json();
-        if (!data.success) return;
-
-       fullHistory = data.history || [];
-
-// If there is no active investment, clear the graph completely
-if (
-    Number(currentUser.investmentAmount || 0) <= 0 ||
-    Number(currentUser.investmentDuration || 0) <= 0
-) {
-    fullHistory = [];
-}
-
-drawPortfolioHistory(fullHistory);
-
-    } catch (err) {
-        console.error("Portfolio history error:", err);
+    // Wait for currentUser to be available
+    if (!currentUser) {
+      console.log("Portfolio history: currentUser not ready, skipping graph clear check");
+    } else {
+      if (
+        Number(currentUser.investmentAmount || 0) <= 0 ||
+        Number(currentUser.investmentDuration || 0) <= 0
+      ) {
+        fullHistory = [];
+      }
     }
+
+    drawPortfolioHistory(fullHistory);
+  } catch (err) {
+    console.error("Portfolio history error:", err);
+  }
 }
 
 /* ==========================================

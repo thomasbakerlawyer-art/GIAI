@@ -12,7 +12,7 @@ const app = express();
 ========================= */
 
 const MONGODB_URI =
-"mongodb+srv://chikwadojesse97_db_user:2X1UMd7xs68DjowL@cluster0.kduyuld.mongodb.net/giai?retryWrites=true&w=majority&appName=Cluster0";
+"mongodb+srv://chikwadojesse97_db_user:Clements77@cluster0.kduyuld.mongodb.net/?appName=Cluster0";
 
 mongoose.connect(MONGODB_URI)
   .then(() => console.log("✅ Connected to MongoDB Atlas"))
@@ -86,7 +86,8 @@ async function getSiteSettings() {
         "Robert Rachel":  { "Tunisia": 0, "Algeria": 0, "Norway": 0, "Germany": 0, "France": 0 },
         "Michael Scott":  { "Tunisia": 0, "UK": 0, "Italy": 0, "Spain": 0, "Belgium": 0 },
         "Lincoln Hayes":  { "Tunisia": 0, "Brazil": 0, "Japan": 0, "Singapore": 0, "Dubai": 0 },
-        "Amber Agrawal":  { "Tunisia": 0, "Australia": 0, "Malaysia": 0, "Thailand": 0, "Indonesia": 0 }
+        "Amber Agrawal":  { "Tunisia": 0, "Australia": 0, "Malaysia": 0, "Thailand": 0, "Indonesia": 0 },
+        "Aaliyah Kathe":  { "Norway": 0, "Sweden": 0, "Denmark": 0, "UAE": 0, "Qatar": 0 }
       },
       counters: {}
     });
@@ -109,7 +110,8 @@ const repCountryMap = {
   "Robert Rachel":  ["Tunisia","Algeria","Norway","Germany","France"],
   "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
   "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
-  "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"]
+  "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"],
+  "Aaliyah Kathe":  ["Norway","Sweden","Denmark","UAE","Qatar"]
 };
 
 setInterval(async () => {
@@ -874,6 +876,25 @@ app.post("/get-user", async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) return res.json({ success: false, message: "User not found" });
 
+// If wallet is completely empty, representatives must be empty.
+// This also cleans up any old/stale representative data.
+if (Number(user.balance || 0) <= 0 && Array.isArray(user.representatives) && user.representatives.length > 0) {
+  user.representatives = [];
+  user.representative = null;
+  user.totalVotes = 0;
+
+  await User.findOneAndUpdate(
+    { _id: user._id },
+    {
+      $set: {
+        representatives: [],
+        representative: null,
+        totalVotes: 0
+      }
+    }
+  );
+}
+
     const now = Date.now();
     const historyAmount = Number(user.investmentAmount || 0);
     const historyPercent = Number(user.profitPercent || 0);
@@ -982,7 +1003,7 @@ app.post("/get-portfolio-history", async (req, res) => {
 
 /* --- DEPOSIT --- */
 app.post("/request-deposit", async (req, res) => {
-  const { email, amount, plan, representative } = req.body;
+const { email, amount, plan, representative, accountType } = req.body;
   await Deposit.create({ id: Date.now(), email, amount, plan, representative, accountType: accountType || "main",
  status: "PENDING", date: new Date() });
   res.json({ success: true, message: "Deposit request submitted" });
@@ -1038,21 +1059,43 @@ const updates = isSavings ? {
   rank, plan, profitPercent, investmentDuration
 };
 
+if (deposit.representative && !isSavings) {
+  const votes = Math.floor(amount / 500);
 
-     if (deposit.representative && !isSavings) {
-        const votes = Math.floor(amount / 500);
-        await Representative.findOneAndUpdate(
-          { name: deposit.representative },
-          { $inc: { votes } }
-        );
-        const reps = user.representatives || [];
-        const entry = reps.find(r => r.name === deposit.representative);
-        if (entry) entry.votes += votes;
-        else reps.push({ name: deposit.representative, votes });
-        updates.representatives = reps;
-        updates.representative = deposit.representative;
-        updates.totalVotes = reps.reduce((s, r) => s + r.votes, 0);
-      }
+  // Update global representative vote count
+  await Representative.findOneAndUpdate(
+    { name: deposit.representative },
+    { $inc: { votes } }
+  );
+
+  // Start from the user's CURRENT representative list.
+  // If there is no balance, this is a completely fresh cycle.
+  let reps = Number(user.balance || 0) > 0
+    ? (Array.isArray(user.representatives)
+        ? [...user.representatives]
+        : [])
+    : [];
+
+  const entry = reps.find(
+    r => r.name === deposit.representative
+  );
+
+  if (entry) {
+    entry.votes = Number(entry.votes || 0) + votes;
+  } else {
+    reps.push({
+      name: deposit.representative,
+      votes
+    });
+  }
+
+  updates.representatives = reps;
+  updates.representative = deposit.representative;
+  updates.totalVotes = reps.reduce(
+    (sum, r) => sum + Number(r.votes || 0),
+    0
+  );
+}
 
 const txns = user.transactions || [];
 txns.unshift({
@@ -1060,6 +1103,7 @@ txns.unshift({
   amount,
   date: new Date()
 });
+
 updates.transactions = txns;
 
       await User.findOneAndUpdate({ _id: user._id }, { $set: updates });
@@ -1130,16 +1174,21 @@ app.post("/approve-withdrawal", async (req, res) => {
     txns.unshift({ type: "WITHDRAWAL APPROVED", amount, date: new Date() });
 
     const updates = { balance: newBalance, totalVotes: newVotes, rank, transactions: txns };
-    if (newBalance <= 0) {
-      updates.plan = "None";
-      updates.investmentAmount = 0;
-      updates.investmentStart = 0;
-      updates.profitPercent = 0;
-      updates.investmentDuration = 0;
-    }
 
-    await User.findOneAndUpdate({ _id: user._id }, { $set: updates });
-    await Withdrawal.findOneAndUpdate({ _id: withdrawal._id }, { $set: { status: "APPROVED" } });
+if (newBalance <= 0) {
+  updates.plan = "None";
+  updates.investmentAmount = 0;
+  updates.investmentStart = 0;
+  updates.profitPercent = 0;
+  updates.investmentDuration = 0;
+  updates.representative = null;
+  updates.totalVotes = 0;
+  updates.representatives = [];
+}
+
+await User.findOneAndUpdate({ _id: user._id }, { $set: updates });
+
+   await Withdrawal.findOneAndUpdate({ _id: withdrawal._id }, { $set: { status: "APPROVED" } });
 
     res.json({ success: true, message: "Withdrawal approved" });
   } catch (err) {
@@ -2467,6 +2516,28 @@ app.post("/get-savings-pending-approvals", async (req, res) => {
   } catch (err) {
     res.json({ success: false, message: err.message });
   }
+});
+
+app.post("/patch-savings-account", async (req, res) => {
+  try {
+    const { accountId, interestStartTime } = req.body;
+    await SavingsAccount.findOneAndUpdate(
+      { accountId },
+      { $set: { interestStartTime } }
+    );
+    res.json({ success: true });
+  } catch (err) {
+    res.json({ success: false });
+  }
+});
+
+app.post("/fix-investment-mode", async (req, res) => {
+  const { email } = req.body;
+  await User.findOneAndUpdate(
+    { email },
+    { $set: { investmentMode: "representative", dashboardMode: "representative" } }
+  );
+  res.json({ success: true });
 });
 
 const PORT = process.env.PORT || 3000;

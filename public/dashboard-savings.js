@@ -36,7 +36,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 async function loadAccount() {
   const saved = JSON.parse(localStorage.getItem("savingsAccount"));
   if (!saved) { window.location.replace("/dashboard.html"); return; }
-
   try {
     const res  = await fetch("/get-savings-account", {
       method: "POST",
@@ -45,8 +44,21 @@ async function loadAccount() {
     });
     const data = await res.json();
     if (!data.success) return;
-
     currentAccount = data.account;
+
+    // Set interestStartTime if missing
+    if (currentAccount.balance > 0 && !currentAccount.interestStartTime) {
+      await fetch("/patch-savings-account", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          accountId: currentAccount.accountId,
+          interestStartTime: Date.now()
+        })
+      });
+      currentAccount.interestStartTime = Date.now();
+    }
+
     localStorage.setItem("savingsAccount", JSON.stringify(currentAccount));
     render();
     await loadPendingApprovals();
@@ -136,13 +148,13 @@ function startLiveInterest() {
     const rate    = Number(acc.interestRate || 0);
     const start   = Number(acc.interestStartTime || 0);
 
-    if (!balance || !rate || !start) return;
+if (!balance || !rate) return;
+const effectiveStart = start || Date.now();
 
-    const now          = Date.now();
-    const elapsed      = now - start;                      // ms since deposit approved
-    const msPerMonth   = 30 * 24 * 60 * 60 * 1000;        // ms in 30 days
-    const monthlyRate  = rate / 100;                       // e.g. 5% → 0.05
-    const liveInterest = balance * monthlyRate * (elapsed / msPerMonth);
+const elapsed      = now - effectiveStart;
+const msPerMonth   = 30 * 24 * 60 * 60 * 1000;
+const monthlyRate  = rate / 100;
+const liveInterest = balance * monthlyRate * (elapsed / msPerMonth);
 
     /* Update interest line */
     document.getElementById("interestLine").textContent =
@@ -223,32 +235,34 @@ function initChart() {
 
 function updateChart() {
   if (!savingsChart || !currentAccount) return;
+  const balance  = Number(currentAccount.balance || 0);
+  const start    = Number(currentAccount.interestStartTime || Date.now());
+  const rate     = Number(currentAccount.interestRate || 0);
+  const now      = Date.now();
 
-  const history = currentAccount.profitHistory || [];
-  const balance = Number(currentAccount.balance || 0);
+  // Build 10 points from start to now
+  const points   = 10;
+  const labels   = [];
+  const values   = [];
+  const msPerMonth = 30 * 24 * 60 * 60 * 1000;
 
-  if (history.length === 0) {
-    savingsChart.data.labels  = ["Start", "Now"];
-    savingsChart.data.datasets[0].data = [0, balance];
-    savingsChart.update();
-    return;
+  for (let i = 0; i <= points; i++) {
+    const t       = start + ((now - start) * (i / points));
+    const elapsed = t - start;
+    const interest = balance * (rate / 100) * (elapsed / msPerMonth);
+    values.push(parseFloat((balance + interest).toFixed(2)));
+
+    const diff = Math.floor((now - t) / 60000);
+    if (diff < 60)        labels.push(diff + "m ago");
+    else if (diff < 1440) labels.push(Math.floor(diff / 60) + "h ago");
+    else                  labels.push(Math.floor(diff / 1440) + "d ago");
   }
 
-  const MAX    = 30;
-  const recent = history.slice(-MAX);
+  // Last label is always "Now"
+  labels[labels.length - 1] = "Now";
 
-  const labels = recent.map(h => {
-    const diff = Math.floor((Date.now() - h.time) / 60000);
-    if (diff < 60)   return diff + "m";
-    if (diff < 1440) return Math.floor(diff / 60) + "h";
-    return Math.floor(diff / 1440) + "d";
-  });
-
-  const values = recent.map(h => Math.max(0, Number(h.balance || 0)));
-  if (values.length) values[values.length - 1] = balance;
-
-  savingsChart.data.labels  = labels;
-  savingsChart.data.datasets[0].data = values;
+  savingsChart.data.labels             = labels;
+  savingsChart.data.datasets[0].data   = values;
   savingsChart.update();
 }
 

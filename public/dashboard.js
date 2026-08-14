@@ -6,14 +6,16 @@ const repPictures = {
   "Michael Scott": "img/IMG_michealscott.PNG",
   "Robert Rachel": "img/IMG_robertrachel.PNG",
   "Lincoln Hayes": "img/IMG_lincolnhayes.PNG",
-  "Amber Agrawal": "img/amberagrawal.PNG"
+  "Amber Agrawal": "img/amberagrawal.PNG",
+  "Aaliyah Kathe": "img/Aaliyah_kathe.PNG"
 };
 
 const repDivisions = {
   "Michael Scott": "Europe Division",
   "Robert Rachel": "North African Division",
   "Lincoln Hayes": "Global Expansion",
-  "Amber Agrawal": "Asia-Pacific Division"
+  "Amber Agrawal": "Asia-Pacific Division",
+  "Aaliyah Kathe": "Nordic & Middle East Division" 
 };
 
 let currentUser = null;
@@ -81,7 +83,8 @@ updateDashboard();
    UPDATE DASHBOARD
 ========================= */
 function updateDashboard() {
-  const isManual = currentUser.investmentMode === "manual";
+  const isManual = currentUser.investmentMode === "manual" && 
+                 currentUser.dashboardMode !== "representative";
 
   updatePortfolio();
   updateTransactions();
@@ -256,38 +259,59 @@ function updateRepresentative() {
   const container = document.getElementById("repCardsContainer");
   if (!container) return;
 
-  let reps = currentUser.representatives;
+  const reps = Array.isArray(currentUser.representatives)
+    ? currentUser.representatives
+    : [];
 
- if (!reps || reps.length === 0) {
-  reps = [{
-    name: currentUser.representative || "No Representative Selected",
-    votes: currentUser.totalVotes || 0
-  }];
-}
+  // No representatives yet — show the default empty card
+  if (reps.length === 0) {
+    container.innerHTML = `
+      <div class="rep-card">
+        <div class="rep-avatar">
+          <!-- No representative picture -->
+        </div>
 
+        <div class="rep-info">
+          <h2>No Representative Selected</h2>
+          <p>No Division Assigned</p>
+          <p>0 Votes Contributed</p>
+          <p>No Active Plan</p>
+          <p style="color:#f3ba2f;font-weight:bold;">
+            ${currentUser.rank || "Starter Investor"}
+          </p>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  // Representatives exist — show their cards
   container.innerHTML = "";
 
   reps.forEach(rep => {
     const name = rep.name;
     const division = repDivisions[name] || "No Division Assigned";
-   const img = repPictures[name?.trim()];
+    const img = repPictures[name?.trim()];
 
-   container.innerHTML += `
+    container.innerHTML += `
       <div class="rep-card">
         <div class="rep-avatar">
           ${img ? `<img src="${img}" alt="${name}">` : ""}
         </div>
+
         <div class="rep-info">
           <h2>${name}</h2>
           <p>${division}</p>
-          <p>${rep.votes} Votes Contributed</p>
+          <p>${Number(rep.votes || 0)} Votes Contributed</p>
           <p>${currentUser.plan || "No Active Plan"}</p>
-          <p style="color:#f3ba2f;font-weight:bold;">${currentUser.rank || "Starter Investor"}</p>
+          <p style="color:#f3ba2f;font-weight:bold;">
+            ${currentUser.rank || "Starter Investor"}
+          </p>
         </div>
-      </div>`;
+      </div>
+    `;
   });
 }
-
 /* =========================
    TRANSACTIONS
 ========================= */
