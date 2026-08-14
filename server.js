@@ -12,7 +12,7 @@ const app = express();
 ========================= */
 
 const MONGODB_URI =
-"mongodb+srv://chikwadojesse97_db_user:Clements77@cluster0.kduyuld.mongodb.net/?appName=Cluster0";
+"mongodb+srv://chikwadojesse97_db_user:Clements77@cluster0.kduyuld.mongodb.net/giai?appName=Cluster0";
 
 mongoose.connect(MONGODB_URI)
   .then(() => console.log("✅ Connected to MongoDB Atlas"))

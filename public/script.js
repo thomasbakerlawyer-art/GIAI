@@ -341,17 +341,22 @@ window.addEventListener("DOMContentLoaded", () => {
 // =========================
 
 function openDashboard() {
-    const user = localStorage.getItem("user");
+  const user = localStorage.getItem("user");
 
-    if (user) {
-const mode = data.user.dashboardMode || "representative";
-if (mode === "lite")    window.location.href = "/dashboard-lite.html";
-else if (mode === "savings") window.location.href = "/dashboard-savings.html";
-else window.location.href = "/dashboard.html";
+  if (user) {
+    const userData = JSON.parse(user);
+    const mode = userData.dashboardMode || "representative";
 
-   } else {
-        window.location.href = "signup.html";
+    if (mode === "lite") {
+      window.location.href = "/dashboard-lite.html";
+    } else if (mode === "savings") {
+      window.location.href = "/dashboard-savings.html";
+    } else {
+      window.location.href = "/dashboard.html";
     }
+  } else {
+    window.location.href = "signup.html";
+  }
 }
 
 function scrollToRankings() {
@@ -552,7 +557,7 @@ const repCountryMap = {
   "Robert Rachel":  ["Tunisia","Algeria","Norway","Germany","France"],
   "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
   "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
-  "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"]
+  "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"],
   "Aaliyah Kathe": ["Norway","Sweden","Denmark","UAE","Qatar"]
 };
 

@@ -828,7 +828,7 @@ async function loadSiteControls() {
     "Robert Rachel":  ["Tunisia","Algeria","Norway","Germany","France"],
     "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
     "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
-    "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"]
+    "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"],
     "Aaliyah Kathe": ["Norway","Sweden","Denmark","UAE","Qatar"]
   };
   Object.entries(repConfig).forEach(([name, countries]) => {
@@ -849,7 +849,7 @@ async function saveSiteControls() {
     "Robert Rachel":  ["Tunisia","Algeria","Norway","Germany","France"],
     "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
     "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
-    "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"]
+    "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"],
     "Aaliyah Kathe": ["Norway","Sweden","Denmark","UAE","Qatar"]
   };
   const representatives = {};
@@ -876,7 +876,7 @@ const repCountryConfig = {
   "Robert Rachel":  ["Tunisia","Algeria","Norway","Germany","France"],
   "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
   "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
-  "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"]
+  "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"],
   "Aaliyah Kathe": ["Norway","Sweden","Denmark","UAE","Qatar"]
 };
 let counterPollInterval = null;
