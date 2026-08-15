@@ -31,6 +31,55 @@ if (!savedUser) {
 }
 
 /* =========================
+   LIVE MARKET PRICES
+========================= */
+
+const marketCoinIds = {
+  bitcoin: "BTC",
+  ethereum: "ETH",
+  binancecoin: "BNB"
+};
+
+async function updateMarketPrices() {
+  try {
+    const ids = Object.keys(marketCoinIds).join(",");
+    const res = await fetch(
+      "https://api.coingecko.com/api/v3/simple/price?ids=" + ids +
+      "&vs_currencies=usd&include_24hr_change=true"
+    );
+    if (!res.ok) return;
+
+    const data = await res.json();
+
+    Object.entries(marketCoinIds).forEach(([id, symbol]) => {
+      const info = data[id];
+      if (!info) return;
+
+      const priceEl  = document.getElementById("price" + symbol);
+      const changeEl = document.getElementById("change" + symbol);
+      if (!priceEl) return;
+
+      const price  = Number(info.usd || 0);
+      const change = Number(info.usd_24h_change || 0);
+
+      priceEl.textContent = "$" + price.toLocaleString("en-US", {
+        minimumFractionDigits: price < 1 ? 4 : 2,
+        maximumFractionDigits: price < 1 ? 4 : 2
+      });
+
+      if (changeEl) {
+        changeEl.textContent = (change >= 0 ? "+" : "") + change.toFixed(2) + "%";
+        changeEl.classList.remove("up", "down");
+        changeEl.classList.add(change >= 0 ? "up" : "down");
+      }
+    });
+  } catch (err) {
+    /* Network hiccup or rate limit — leave last known values on screen,
+       the next interval tick will retry automatically. */
+  }
+}
+
+/* =========================
    PAGE LOAD
 ========================= */
 
@@ -46,6 +95,9 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   await loadUser();
   setInterval(loadUser, 3000);
+
+  updateMarketPrices();
+  setInterval(updateMarketPrices, 30000);
 });
 
 /* =========================
@@ -319,21 +371,74 @@ function updateRepresentative() {
 function updateTransactions() {
   const container = document.getElementById("transactionList");
   if (!container) return;
-
   container.innerHTML = "";
   const txs = currentUser.transactions || [];
 
-  if (txs.length === 0) {
-    container.innerHTML = `<div class="transaction">No transactions yet</div>`;
+  // Only show user-relevant transactions
+  const allowed = [
+    "DEPOSIT APPROVED",
+    "WITHDRAWAL APPROVED",
+    "PROFIT CREDITED",
+    "INVESTMENT CYCLE COMPLETED",
+    "PROFIT REINVESTED",
+    "REINVESTMENT APPROVED",
+    "BALANCE INVESTED",
+    "PLAN ACTIVATED",
+    "GOLD CARD ACTIVATED",
+    "BLACK CARD ACTIVATED",
+    "SAVINGS DEPOSIT APPROVED",
+    "ADMIN NOTE"  // custom admin messages
+  ];
+
+  const visible = txs.filter(tx =>
+    allowed.some(a => (tx.type || "").toUpperCase().includes(a))
+  );
+
+  if (visible.length === 0) {
+    container.innerHTML = `<div class="txn-empty">No transactions yet</div>`;
     return;
   }
 
-  txs.forEach(tx => {
+  visible.forEach(tx => {
+    const type = (tx.type || "").toUpperCase();
+    let color = "#888";
+    let sign  = "";
+    let icon  = "";
+
+    if (
+      type.includes("DEPOSIT") ||
+      type.includes("PROFIT") ||
+      type.includes("COMPLETED") ||
+      type.includes("REINVEST") ||
+      type.includes("BALANCE INVESTED")
+    ) {
+      color = "#00d26a"; sign = "+";
+      icon = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#00d26a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px;"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>`;
+    } else if (type.includes("WITHDRAWAL")) {
+      color = "#ff5c5c"; sign = "−";
+      icon = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ff5c5c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px;"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>`;
+    } else if (type.includes("CARD") || type.includes("PLAN")) {
+      color = "#f0b90b"; sign = "";
+      icon = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#f0b90b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+    } else if (type.includes("ADMIN NOTE")) {
+      color = "#888"; sign = "";
+      icon = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:5px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+    }
+
+    const amount = Number(tx.amount || 0);
+    const amountStr = amount > 0 ? `${sign}$${amount.toLocaleString()}` : "";
+    const note = tx.note ? `<div style="font-size:12px;color:#666;margin-top:3px;font-style:italic;">${tx.note}</div>` : "";
+
     container.innerHTML += `
-      <div class="transaction">
-        <b>${tx.type}</b><br>
-        $${Number(tx.amount || 0).toLocaleString()}<br>
-        <small>${new Date(tx.date).toLocaleString()}</small>
+      <div class="transaction" style="border-left:3px solid ${color};padding-left:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+          <div style="flex:1;min-width:0;">
+            <div style="color:${color};font-size:13px;font-weight:600;">${icon}${tx.type}</div>
+            ${note}
+            <div style="font-size:11px;color:#444;margin-top:4px;">${new Date(tx.date).toLocaleString()}</div>
+          </div>
+          ${amountStr ? `<div style="color:${color};font-weight:700;font-size:15px;flex-shrink:0;">${amountStr}</div>` : ""}
+        </div>
       </div>`;
   });
 }
@@ -839,7 +944,11 @@ function setupCard(type, eligible, status) {
       it as "locked" — the actual gate happens inside openCardApply().
     */
     btn.disabled = false;
-    btn.innerText = eligible ? "Get Black Card" : "🔒 Get Black Card";
+if (eligible) {
+  btn.innerHTML = "Get Black Card";
+} else {
+  btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Get Black Card`;
+}
     btn.classList.toggle("card-btn-locked", !eligible);
     btn.onclick = () => openCardApply("black");
   }
@@ -1382,3 +1491,9 @@ window.addEventListener("load", () => {
     document.body.style.visibility = "visible";
 });
 
+function openSavingsSwitch() {
+  document.getElementById("savingsSwitchPopup").style.display = "flex";
+}
+function closeSavingsSwitch() {
+  document.getElementById("savingsSwitchPopup").style.display = "none";
+}

@@ -1,451 +1,492 @@
-/* =========================
-   DASHBOARD LITE — dashboard-lite.js
-   Pure investment dashboard. No representatives.
-   Shares the same backend profit engine as the
-   representative dashboard.
-========================= */
-
 let currentUser = null;
-let balanceHidden = localStorage.getItem("balanceHidden") === "true";
+let balanceHidden = localStorage.getItem("liteBalanceHidden") === "true";
 
-/* ── Auth Guard ── */
-const savedUser = JSON.parse(localStorage.getItem("user"));
-if (!savedUser) {
-  window.location.replace("/signup.html");
+let selectedPlan = null;
+let selectedAsset = "BTC";
+
+const WALLETS = {
+  BTC:  "bc1qa4g38u9mxn43td5mt67jh320sy6nne9tfaewg6",
+  ETH:  "0x4B0897b0513fdBeEc7C469D9aF4fA6C0752aBea7",
+  USDT: "TXo9nGyk3JZqjSSMhh6ZWLDLzXqNZDTt6y"
+};
+
+let savedUser = null;
+try {
+  savedUser = JSON.parse(localStorage.getItem("user"));
+} catch {
+  savedUser = null;
 }
+if (!savedUser) window.location.replace("/signup.html");
 
-/* ── Page Load ── */
+// This script tag sits at the end of <body>, so the DOM is already
+// ready by the time this file runs. Reveal the page immediately instead
+// of waiting for window "load", which blocks on every resource
+// (including the Chart.js CDN) and can hang the page hidden indefinitely
+// if that request is slow, blocked, or offline.
+document.body.style.visibility = "visible";
+
 window.addEventListener("DOMContentLoaded", async () => {
+  setupOverlayBackdropClose();
+  resetDepositForm();
   await loadUser();
   setInterval(loadUser, 5000);
 });
 
-/* ── Load User ── */
+/* ── Load / render user data ── */
 async function loadUser() {
   const saved = JSON.parse(localStorage.getItem("user"));
   if (!saved) { window.location.replace("/signup.html"); return; }
 
-  const res = await fetch("/get-user", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email: saved.email })
-  });
+  try {
+    const res = await fetch("/get-lite-user", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: saved.email })
+    });
 
-  const data = await res.json();
-  if (!data.success) {
-    if (data.message?.includes("suspended")) {
-      alert(data.message);
-      localStorage.removeItem("user");
-      window.location.href = "index.html";
-    }
-    return;
+    const data = await res.json();
+    if (!data.success) return;
+
+    currentUser = data.user;
+    updateDashboard();
+  } catch {
+    /* network hiccup - keep last known state, next interval will retry */
   }
-
-  currentUser = data.user;
-  updateDashboard();
 }
 
-/* ── Update Dashboard ── */
 function updateDashboard() {
+  setVal("welcomeName", currentUser.name || "");
+  setVal("pendingDeposits", currentUser.pendingDeposits || 0);
+  setVal("pendingWithdrawals", currentUser.pendingWithdrawals || 0);
   updatePortfolio();
   updateTransactions();
   updateReinvestButton();
-
-  document.getElementById("pendingDeposits").innerText   = currentUser.pendingDeposits  || 0;
-  document.getElementById("pendingWithdrawals").innerText = currentUser.pendingWithdrawals || 0;
-  document.getElementById("welcomeName").innerText        = currentUser.name || "";
-
   applyBalanceVisibility();
 }
 
-/* ── Portfolio — ONE calculation, shared by all displays and chart ── */
 function updatePortfolio() {
-  const amount        = Number(currentUser.investmentAmount || 0);
-  const profitPercent = Number(currentUser.profitPercent    || 0);
-  const duration      = Number(currentUser.investmentDuration || 0);
-  const start         = Number(currentUser.investmentStart  || 0);
-  const now           = Date.now();
+  const balance   = Number(currentUser.liteBalance || 0);
+  const amount    = Number(currentUser.liteInvestmentAmount || 0);
+  const expected  = Number(currentUser.expectedProfit || 0);
+  const claimable = Number(currentUser.claimableProfit || 0);
+  const today     = Number(currentUser.todayProfit || 0);
+  const roi       = Number(currentUser.roi || 0);
+  const days      = Number(currentUser.daysRemaining || 0);
+  const progress  = Number(currentUser.progress || 0);
 
-  document.getElementById("portfolioBalance").textContent =
-    "$" + Number(currentUser.balance || 0).toLocaleString("en-US", {
-      minimumFractionDigits: 2, maximumFractionDigits: 2
-    });
+  const fmt = (n) => "$" + n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-  document.getElementById("investmentAmount").textContent =
-    "$" + amount.toLocaleString("en-US", {
-      minimumFractionDigits: 2, maximumFractionDigits: 2
-    });
+  setVal("portfolioBalance", fmt(balance));
+  setVal("investmentAmount", fmt(amount));
+  setVal("expectedProfit",   fmt(expected));
+  setVal("claimableProfit",  fmt(claimable));
+  setVal("todayProfit",      fmt(today));
+  setVal("roiPercent",       roi.toFixed(2) + "%");
+  setVal("daysRemaining",    days);
 
-  if (!duration || !start) {
-    document.getElementById("expectedProfit").innerText  = "$0.00";
-    document.getElementById("claimableProfit").innerText = "$0.00";
-    document.getElementById("daysRemaining").innerText   = "0";
-    document.getElementById("progressFill").style.width  = "0%";
-    document.getElementById("todayProfit").innerText     = "$0.00";
-    document.getElementById("roiPercent").innerText      = "0.00%";
-    return;
-  }
+  const bar = document.getElementById("progressFill");
+  if (bar) bar.style.width = Math.max(0, Math.min(100, progress * 100)) + "%";
 
-  const endTime        = start + duration * 86400000;
-  const progress       = Math.min(Math.max((now - start) / (endTime - start), 0), 1);
-  const expectedProfit = amount * (profitPercent / 100);
-  const claimable      = expectedProfit * progress;
-  const todayProfit    = duration > 0 ? expectedProfit / duration : 0;
-  const roi            = amount > 0 ? (claimable / amount) * 100 : 0;
-  const daysRemaining  = Math.max(0, Math.ceil((endTime - now) / 86400000));
-
-  document.getElementById("expectedProfit").innerText  =
-    "$" + expectedProfit.toLocaleString(undefined, { maximumFractionDigits: 2 });
-  document.getElementById("claimableProfit").innerText =
-    "$" + claimable.toLocaleString(undefined, { maximumFractionDigits: 2 });
-  document.getElementById("progressFill").style.width  = progress * 100 + "%";
-  document.getElementById("daysRemaining").innerText   = daysRemaining;
-  document.getElementById("todayProfit").innerText     =
-    "$" + todayProfit.toLocaleString(undefined, { maximumFractionDigits: 2 });
-  document.getElementById("roiPercent").innerText      = roi.toFixed(2) + "%";
-
-  /* Sync chart with computed claimable — same value, no drift */
-  if (typeof drawPortfolioHistory === "function" && currentUser.portfolioHistory) {
-    const history = currentUser.portfolioHistory.map((h, i) => {
-      if (i === currentUser.portfolioHistory.length - 1) {
-        return { ...h, claimableProfit: claimable };
-      }
-      return h;
-    });
-    drawPortfolioHistory(history);
-  }
+  updateLiteChart(currentUser.litePortfolioHistory || []);
 }
 
-/* ── Reinvest Button ── */
+function setVal(id, val) {
+  const el = document.getElementById(id);
+  if (el) { el.dataset.real = val; el.innerText = val; }
+}
+
 function updateReinvestButton() {
   const btn = document.getElementById("reinvestBtn");
   if (!btn) return;
+  const start  = Number(currentUser.liteInvestmentStart  || 0);
+  const amount = Number(currentUser.liteInvestmentAmount || 0);
+  const done   = currentUser.liteCycleCompleted === true;
 
-  const start          = Number(currentUser.investmentStart  || 0);
-  const amount         = Number(currentUser.investmentAmount || 0);
-  const cycleCompleted = currentUser.cycleCompleted === true;
-  const activeInv      = start > 0 && amount > 0;
-
-  if (activeInv) {
+  if (start > 0 && amount > 0) {
     btn.disabled = true;
-    btn.classList.add("reinvest-locked");
-    btn.classList.remove("reinvest-ready");
+    btn.className = "reinvest-locked";
     btn.innerText = "Locked";
+    btn.onclick = null;
     return;
   }
-
-  if (cycleCompleted) {
-    if (currentUser.allowReinvestment === true) {
-      btn.disabled = false;
-      btn.classList.remove("reinvest-locked");
-      btn.classList.add("reinvest-ready");
-      btn.innerText = "Reinvest Now";
-    } else {
-      btn.disabled = true;
-      btn.classList.add("reinvest-locked");
-      btn.classList.remove("reinvest-ready");
-      btn.innerText = "Contact Support";
-      btn.title = "Please contact support for your next investment.";
-    }
+  if (done) {
+    btn.disabled = false;
+    btn.className = "reinvest-ready";
+    btn.innerText = "Reinvest Now";
+    btn.onclick = openReinvest;
     return;
   }
-
   btn.disabled = true;
-  btn.classList.add("reinvest-locked");
-  btn.classList.remove("reinvest-ready");
+  btn.className = "reinvest-locked";
   btn.innerText = "Locked";
+  btn.onclick = null;
 }
 
-/* ── Transactions ── */
+/* ── Transaction history ── */
 function updateTransactions() {
   const container = document.getElementById("transactionList");
   if (!container) return;
-  container.innerHTML = "";
-  const txs = currentUser.transactions || [];
+
+  const txs = currentUser.liteTransactions || [];
   if (txs.length === 0) {
-    container.innerHTML = `<div class="transaction">No transactions yet</div>`;
+    container.className = "txn-empty";
+    container.textContent = "No transactions yet";
     return;
   }
-  txs.forEach(tx => {
-    container.innerHTML += `
-      <div class="transaction">
-        <b>${tx.type}</b><br>
-        $${Number(tx.amount || 0).toLocaleString()}<br>
-        <small>${new Date(tx.date).toLocaleString()}</small>
-      </div>`;
+
+  container.className = "";
+  container.innerHTML = "";
+
+  txs.slice().reverse().forEach(tx => {
+    const type = String(tx.type || "").toLowerCase();
+    const isWithdraw = type.includes("withdraw");
+    const isDeposit  = type.includes("deposit");
+    const iconClass  = isDeposit ? "dep" : isWithdraw ? "wd" : "int";
+    const amountClass = isWithdraw ? "neg" : "pos";
+    const sign = isWithdraw ? "-" : "+";
+
+    const row = document.createElement("div");
+    row.className = "txn-row";
+
+    const icon = document.createElement("div");
+    icon.className = "txn-icon " + iconClass;
+    icon.innerHTML = txnIconSvg(iconClass);
+
+    const info = document.createElement("div");
+    info.className = "txn-info";
+    const typeEl = document.createElement("div");
+    typeEl.className = "txn-type";
+    typeEl.textContent = tx.type || "Transaction";
+    const dateEl = document.createElement("div");
+    dateEl.className = "txn-date";
+    dateEl.textContent = tx.date ? new Date(tx.date).toLocaleString() : "";
+    info.appendChild(typeEl);
+    info.appendChild(dateEl);
+
+    const amountEl = document.createElement("div");
+    amountEl.className = "txn-amount " + amountClass;
+    amountEl.textContent = sign + "$" + Number(tx.amount || 0).toLocaleString();
+
+    row.appendChild(icon);
+    row.appendChild(info);
+    row.appendChild(amountEl);
+    container.appendChild(row);
+  });
+}
+
+function txnIconSvg(kind) {
+  if (kind === "dep") {
+    return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f0b90b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>';
+  }
+  if (kind === "wd") {
+    return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff5c5c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>';
+  }
+  return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00d26a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>';
+}
+
+function toggleTransactions() {
+  const body  = document.getElementById("txnBody");
+  const arrow = document.getElementById("txnArrow");
+  if (!body) return;
+  body.classList.toggle("open");
+  if (arrow) arrow.classList.toggle("open");
+}
+
+/* ── Chart ── */
+let liteChart = null;
+
+function updateLiteChart(history) {
+  const canvas = document.getElementById("portfolioChart");
+  if (!canvas || typeof Chart === "undefined") return;
+
+  const balance = Number(currentUser.liteBalance || 0);
+
+  if (!liteChart) {
+    liteChart = new Chart(canvas, {
+      type: "line",
+      data: {
+        labels: [],
+        datasets: [{
+          data: [],
+          borderColor: "#f0b90b",
+          backgroundColor: "rgba(240,185,11,0.08)",
+          fill: true,
+          borderWidth: 2,
+          tension: 0.4,
+          pointRadius: 0,
+          pointHoverRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { display: false },
+          y: {
+            beginAtZero: false,
+            grid: { color: "rgba(255,255,255,0.04)" },
+            ticks: {
+              color: "#555",
+              maxTicksLimit: 4,
+              callback: v => v >= 1000 ? "$" + (v / 1000).toFixed(1) + "k" : "$" + v.toFixed(0)
+            }
+          }
+        }
+      }
+    });
+  }
+
+  if (!history || history.length === 0) {
+    liteChart.data.labels = ["Start", "Now"];
+    liteChart.data.datasets[0].data = [0, balance];
+    liteChart.update();
+    return;
+  }
+
+  const MAX = 30;
+  const recent = history.slice(-MAX);
+  const labels = recent.map(h => {
+    const diff = Math.floor((Date.now() - h.time) / 60000);
+    if (diff < 60) return diff + "m";
+    if (diff < 1440) return Math.floor(diff / 60) + "h";
+    return Math.floor(diff / 1440) + "d";
+  });
+  const values = recent.map(h => Math.max(0, Number(h.claimableProfit || 0)));
+  if (values.length) values[values.length - 1] = Number(currentUser.claimableProfit || 0);
+
+  liteChart.data.labels = labels;
+  liteChart.data.datasets[0].data = values;
+  liteChart.update();
+}
+
+/* ── Overlay helpers ── */
+function openOverlay(id) {
+  const ov = document.getElementById(id);
+  if (ov) ov.classList.add("open");
+}
+function closeOverlay(id) {
+  const ov = document.getElementById(id);
+  if (ov) ov.classList.remove("open");
+}
+function setupOverlayBackdropClose() {
+  document.querySelectorAll(".overlay").forEach(ov => {
+    ov.addEventListener("click", (e) => {
+      if (e.target === ov) ov.classList.remove("open");
+    });
   });
 }
 
 /* ── Deposit ── */
 function openDeposit() {
-  document.getElementById("depositPopup").style.display = "flex";
+  openOverlay("depositOverlay");
 }
+
 function closeDeposit() {
-  document.getElementById("depositPopup").style.display = "none";
+  closeOverlay("depositOverlay");
+  resetDepositForm();
 }
 
-function continueDeposit() {
-  const amount = Number(document.getElementById("depositAmount").value);
-  const plan   = document.getElementById("depositPlan").value;
+function resetDepositForm() {
+  selectedPlan = null;
+  selectedAsset = "BTC";
 
-  if (!plan)   { alert("Please select a plan."); return; }
-  if (!amount || amount <= 0) { alert("Please enter a valid amount."); return; }
+  const amt = document.getElementById("depositAmount");
+  if (amt) amt.value = "";
 
-  /* Validate amount matches plan range */
-  const ranges = {
-    "Starter Plan":    [200,   999],
-    "Standard Plan":   [1000,  2999],
-    "Premium Plan":    [3000,  7999],
-    "Contact Manager": [8000,  14999],
-    "Capital Boost":   [15000, 44999],
-    "Rapid Return":    [45000, Infinity]
-  };
-  const [min, max] = ranges[plan] || [0, Infinity];
-  if (amount < min) { alert("Minimum for " + plan + " is $" + min.toLocaleString()); return; }
-  if (amount > max) { alert("Maximum for " + plan + " is $" + max.toLocaleString()); return; }
+  document.querySelectorAll(".plan-option").forEach(p => p.classList.remove("selected"));
+  document.querySelectorAll(".asset-btn").forEach((b, i) => b.classList.toggle("active", i === 0));
 
-  localStorage.setItem("litePendingPlan",   plan);
-  localStorage.setItem("litePendingAmount", amount);
-  closeDeposit();
-  showWallets();
+  const label = document.getElementById("depositAssetLabel");
+  const addr  = document.getElementById("depositWalletAddr");
+  if (label) label.textContent = "BTC Network";
+  if (addr)  addr.textContent  = WALLETS.BTC;
 }
 
-function showWallets() {
-  document.getElementById("walletPopup").style.display = "flex";
+function selectPlanOption(name, min, max, el) {
+  selectedPlan = { name, min, max };
+  document.querySelectorAll(".plan-option").forEach(p => p.classList.remove("selected"));
+  if (el) el.classList.add("selected");
 }
-function closeWalletPopup() {
-  document.getElementById("walletPopup").style.display = "none";
+
+function selectAsset(asset, el) {
+  selectedAsset = asset;
+  document.querySelectorAll(".asset-btn").forEach(b => b.classList.remove("active"));
+  if (el) el.classList.add("active");
+
+  const label = document.getElementById("depositAssetLabel");
+  const addr  = document.getElementById("depositWalletAddr");
+  if (label) label.textContent = asset + " Network";
+  if (addr)  addr.textContent  = WALLETS[asset] || "";
+}
+
+function copyWalletAddr() {
+  const addr = document.getElementById("depositWalletAddr");
+  if (!addr || !addr.textContent) return;
+  navigator.clipboard.writeText(addr.textContent)
+    .then(() => showToast("Address copied"))
+    .catch(() => showToast("Could not copy address", "error"));
 }
 
 async function submitDeposit() {
-  const plan   = localStorage.getItem("litePendingPlan");
-  const amount = localStorage.getItem("litePendingAmount");
-  if (!plan || !amount) { alert("No plan selected."); return; }
+  if (!selectedPlan) { showToast("Please select a plan.", "error"); return; }
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  const amountInput = document.getElementById("depositAmount");
+  const amount = Number(amountInput ? amountInput.value : 0);
+  if (!amount || amount <= 0) { showToast("Enter a valid amount.", "error"); return; }
+  if (amount < selectedPlan.min) { showToast(`Minimum for ${selectedPlan.name} is $${selectedPlan.min.toLocaleString()}`, "error"); return; }
+  if (amount > selectedPlan.max) { showToast(`Maximum for ${selectedPlan.name} is $${selectedPlan.max.toLocaleString()}`, "error"); return; }
+
+  const email = getUserEmail();
+  if (!email) { showToast("Session expired. Please log in again.", "error"); return; }
 
   try {
-    const res = await fetch("/request-deposit", {
+    const res = await fetch("/request-lite-deposit", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: user.email,
-        amount,
-        plan,
-        representative: null   /* lite mode — no representative */
-      })
+      body: JSON.stringify({ email, amount, plan: selectedPlan.name, asset: selectedAsset })
     });
     const data = await res.json();
     if (data.success) {
-      alert("Deposit submitted. Admin will confirm shortly.");
-      localStorage.removeItem("litePendingPlan");
-      localStorage.removeItem("litePendingAmount");
-      closeWalletPopup();
+      showToast("Deposit submitted. Admin will confirm shortly.");
+      closeDeposit();
+      await loadUser();
     } else {
-      alert(data.message || "Deposit failed.");
+      showToast(data.message || "Deposit failed.", "error");
     }
   } catch {
-    alert("Something went wrong. Please try again.");
+    showToast("Something went wrong.", "error");
   }
 }
 
 /* ── Withdraw ── */
 function openWithdraw() {
-  document.getElementById("withdrawPopup").style.display = "flex";
+  openOverlay("withdrawOverlay");
 }
+
 function closeWithdraw() {
-  document.getElementById("withdrawPopup").style.display = "none";
+  closeOverlay("withdrawOverlay");
+  const el = document.getElementById("withdrawAmount");
+  if (el) el.value = "";
 }
 
 async function submitWithdraw() {
-  const amount = Number(document.getElementById("withdrawAmount").value);
-  if (!amount || amount <= 0) { alert("Please enter a valid amount."); return; }
+  const amountInput = document.getElementById("withdrawAmount");
+  const amount = Number(amountInput ? amountInput.value : 0);
+  if (!amount || amount <= 0) { showToast("Enter a valid amount.", "error"); return; }
 
-  const btn = document.querySelector("#withdrawPopup .withdraw-btn");
-  if (btn) { btn.disabled = true; btn.innerText = "Submitting..."; }
+  const email = getUserEmail();
+  if (!email) { showToast("Session expired. Please log in again.", "error"); return; }
 
   try {
-    const res = await fetch("/request-withdrawal", {
+    const res = await fetch("/request-lite-withdrawal", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: currentUser.email, amount })
+      body: JSON.stringify({ email, amount })
     });
     const data = await res.json();
-    alert(data.message || "Withdrawal submitted.");
-    document.getElementById("withdrawAmount").value = "";
-    closeWithdraw();
+    if (data.success) {
+      showToast(data.message || "Withdrawal submitted.");
+      closeWithdraw();
+      await loadUser();
+    } else {
+      showToast(data.message || "Withdrawal failed.", "error");
+    }
   } catch {
-    alert("Something went wrong.");
-  } finally {
-    if (btn) { btn.disabled = false; btn.innerText = "Submit Withdrawal"; }
+    showToast("Something went wrong.", "error");
   }
 }
 
-/* ── Plans popup (info + select) ── */
-function openPlans() {
-  document.getElementById("plansPopup").style.display = "flex";
-}
-function closePlans() {
-  document.getElementById("plansPopup").style.display = "none";
-}
-
-function selectPlan(plan, min, max, inputId) {
-  const amount = Number(document.getElementById(inputId).value);
-  if (!amount)        { alert("Enter an amount."); return; }
-  if (amount < min)   { alert("Minimum is $" + min.toLocaleString()); return; }
-  if (amount > max)   { alert("Maximum is $" + max.toLocaleString()); return; }
-
-  localStorage.setItem("litePendingPlan",   plan);
-  localStorage.setItem("litePendingAmount", amount);
-  closePlans();
-  showWallets();
-}
-
 /* ── Reinvest ── */
-function openReinvestPopup() {
-  document.getElementById("reinvestPopup").style.display = "flex";
+function openReinvest() {
+  openOverlay("reinvestOverlay");
 }
-function closeReinvestPopup() {
-  document.getElementById("reinvestPopup").style.display = "none";
+
+function closeReinvest() {
+  closeOverlay("reinvestOverlay");
+  const el = document.getElementById("reinvestTopupAmount");
+  if (el) el.value = "";
 }
 
 async function submitReinvestment() {
-  const topup = Number(document.getElementById("reinvestTopupAmount").value || 0);
-  if (!topup || topup <= 0) { alert("Please enter a top-up amount."); return; }
+  const topupInput = document.getElementById("reinvestTopupAmount");
+  const topup = Number(topupInput ? topupInput.value : 0);
+  if (!topup || topup <= 0) { showToast("Enter a top-up amount.", "error"); return; }
+
+  const email = getUserEmail();
+  if (!email) { showToast("Session expired. Please log in again.", "error"); return; }
 
   try {
     const res = await fetch("/request-reinvestment", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: currentUser.email,
-        topup,
-        representative: null  /* lite mode */
-      })
+      body: JSON.stringify({ email, topup })
     });
     const data = await res.json();
     if (data.success) {
-      alert("Reinvestment request submitted. Admin will confirm shortly.");
-      closeReinvestPopup();
-    } else {
-      alert(data.message || "Failed.");
-    }
-  } catch {
-    alert("Something went wrong.");
-  }
-}
-
-/* ── Settings ── */
-function openSettings() {
-  if (currentUser) {
-    document.getElementById("settingsName").value  = currentUser.name  || "";
-    document.getElementById("settingsEmail").value = currentUser.email || "";
-  }
-  showSettingsTab("profile");
-  document.getElementById("settingsPopup").style.display = "flex";
-}
-function closeSettings() {
-  document.getElementById("settingsPopup").style.display = "none";
-}
-function showSettingsTab(tabName, button) {
-  document.querySelectorAll(".stab-content").forEach(t => t.style.display = "none");
-  document.querySelectorAll(".stab").forEach(b => b.classList.remove("active"));
-  const el = document.getElementById("stab-" + tabName);
-  if (el) el.style.display = "block";
-  if (button) button.classList.add("active");
-  else {
-    const first = document.querySelector('.stab[onclick*="' + tabName + '"]');
-    if (first) first.classList.add("active");
-  }
-}
-async function saveSettings() {
-  const name            = document.getElementById("settingsName").value.trim();
-  const currentPassword = document.getElementById("settingsCurrentPassword").value;
-  const newPassword     = document.getElementById("settingsNewPassword").value;
-  const confirmPassword = document.getElementById("settingsConfirmPassword").value;
-
-  if (newPassword || currentPassword) {
-    if (!currentPassword) { alert("Enter your current password."); return; }
-    if (newPassword.length < 6) { alert("New password must be at least 6 characters."); return; }
-    if (newPassword !== confirmPassword) { alert("Passwords do not match."); return; }
-  }
-
-  try {
-    const payload = { email: currentUser.email, name };
-    if (newPassword) { payload.currentPassword = currentPassword; payload.newPassword = newPassword; }
-
-    const res  = await fetch("/update-settings", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-    const data = await res.json();
-    if (data.success) {
-      alert("Settings saved.");
-      closeSettings();
+      showToast("Reinvestment submitted.");
+      closeReinvest();
       await loadUser();
     } else {
-      alert(data.message || "Failed to save.");
+      showToast(data.message || "Reinvestment failed.", "error");
     }
   } catch {
-    alert("Something went wrong.");
+    showToast("Something went wrong.", "error");
   }
 }
 
-/* ── Profile popup ── */
-function openProfilePopup() {
-  const user = JSON.parse(localStorage.getItem("user"));
-  if (!user) return;
-  document.getElementById("profileName").innerText  = user.name  || "—";
-  document.getElementById("profileEmail").innerText = user.email || "—";
-  document.getElementById("profilePlan").innerText  = user.plan  || "No active plan";
-  document.getElementById("profileRank").innerText  = user.rank  || "Investor";
-  document.getElementById("profilePopup").style.display = "flex";
-}
-function closeProfilePopup() {
-  document.getElementById("profilePopup").style.display = "none";
-}
+/* ── Profile ── */
+function openProfile() {
+  const saved = JSON.parse(localStorage.getItem("user") || "null");
+  const name  = (currentUser && currentUser.name)  || (saved && saved.name)  || "—";
+  const email = (currentUser && currentUser.email) || (saved && saved.email) || "—";
+  const plan  = (currentUser && currentUser.litePlan) || "No active plan";
+  const rank  = (currentUser && currentUser.rank) || (saved && saved.rank) || "Investor";
 
-/* ── Auth ── */
-function logoutUser() {
-  localStorage.removeItem("user");
-  window.location.href = "index.html";
-}
-
-/* ── Sidebar (mobile) ── */
-function toggleSidebar() {
-  const sidebar  = document.querySelector(".sidebar");
-  const overlay  = document.getElementById("sidebarOverlay");
-  const isOpen   = sidebar.classList.contains("sidebar-open");
-  if (isOpen) {
-    sidebar.classList.remove("sidebar-open");
-    overlay.classList.remove("active");
-  } else {
-    sidebar.classList.add("sidebar-open");
-    overlay.classList.add("active");
-  }
-}
-
-function smoothScrollTo(id) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-}
-
-/* ── Balance hide/show ── */
-function toggleBalanceVisibility() {
-  balanceHidden = !balanceHidden;
-  localStorage.setItem("balanceHidden", balanceHidden);
-  if (!balanceHidden) {
-    const ids = ["portfolioBalance","expectedProfit","claimableProfit","investmentAmount","daysRemaining"];
-    ids.forEach(id => {
-      const el = document.getElementById(id);
-      if (el && el.dataset.real) el.innerText = el.dataset.real;
+  const container = document.getElementById("profileContent");
+  if (container) {
+    container.innerHTML = "";
+    [
+      ["Name", name],
+      ["Email", email],
+      ["Active Plan", plan],
+      ["Rank", rank]
+    ].forEach(([label, value]) => {
+      const row = document.createElement("div");
+      row.className = "profile-row";
+      const l = document.createElement("span");
+      l.className = "profile-row-label";
+      l.textContent = label;
+      const v = document.createElement("span");
+      v.className = "profile-row-value";
+      v.textContent = value;
+      row.appendChild(l);
+      row.appendChild(v);
+      container.appendChild(row);
     });
   }
+
+  openOverlay("profileOverlay");
+}
+
+function closeProfile() {
+  closeOverlay("profileOverlay");
+}
+
+function logoutUser() {
+  localStorage.removeItem("user");
+  window.location.href = "/index.html";
+}
+
+/* ── Balance visibility ── */
+function toggleBalanceVisibility() {
+  balanceHidden = !balanceHidden;
+  localStorage.setItem("liteBalanceHidden", balanceHidden);
   applyBalanceVisibility();
 }
 
 function applyBalanceVisibility() {
-  const ids = ["portfolioBalance","expectedProfit","claimableProfit","investmentAmount","daysRemaining"];
+  const ids = ["portfolioBalance", "expectedProfit", "claimableProfit", "investmentAmount", "daysRemaining", "todayProfit", "roiPercent"];
   const eye = document.getElementById("eyeIcon");
   ids.forEach(id => {
     const el = document.getElementById(id);
@@ -453,23 +494,37 @@ function applyBalanceVisibility() {
     if (balanceHidden) {
       if (el.innerText !== "••••") el.dataset.real = el.innerText;
       el.innerText = "••••";
+    } else {
+      if (el.dataset.real) el.innerText = el.dataset.real;
     }
   });
   if (eye) {
     eye.innerHTML = balanceHidden
-      ? `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/><line x1="3" y1="3" x2="21" y2="21"/>`
-      : `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+      ? '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/><line x1="3" y1="3" x2="21" y2="21"/>'
+      : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
   }
 }
 
-function showToast(message, type = "success") {
-  const toast = document.getElementById("toast");
-  toast.innerHTML = message;
-  toast.className = type;
-  toast.style.opacity = "1";
-  setTimeout(() => { toast.style.opacity = "0"; }, 2000);
+/* ── Helpers ── */
+function getUserEmail() {
+  if (currentUser && currentUser.email) return currentUser.email;
+  const saved = JSON.parse(localStorage.getItem("user") || "null");
+  return saved ? saved.email : null;
+}
+
+function showToast(msg, type = "success") {
+  const t = document.getElementById("toast");
+  if (!t) return;
+  t.textContent = msg;
+  t.className = type === "error" ? "error" : "";
+  t.style.opacity = "1";
+  clearTimeout(showToast._timer);
+  showToast._timer = setTimeout(() => { t.style.opacity = "0"; }, 2500);
 }
 
 window.addEventListener("load", () => {
+  // Safety net in case something above threw before the visibility
+  // line ran (shouldn't happen, but this guarantees the page isn't
+  // stuck hidden either way).
   document.body.style.visibility = "visible";
 });

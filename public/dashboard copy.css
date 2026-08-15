@@ -589,32 +589,9 @@ html, body {
 }
 
 .card-shimmer {
-  position: absolute;
-  top: -50%; left: -60%;
-  width: 60%; height: 200%;
-  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.18), transparent);
-  transform: rotate(20deg);
-  animation: card-shine 4s infinite;
-  pointer-events: none;
-}
-
-.black-card .card-shimmer {
-  background: linear-gradient(120deg, transparent, rgba(240,185,11,0.12), transparent);
-}
-
-@keyframes card-shine {
-  0%   { left: -60%; }
-  50%  { left: 130%; }
-  100% { left: 130%; }
-}
-
-.giai-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.giai-card:hover {
-  transform: translateY(-5px) rotate(-0.5deg);
-  box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+  position: absolute; inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.03) 50%, transparent 60%);
+  border-radius: 18px;
 }
 
 .card-top-row {

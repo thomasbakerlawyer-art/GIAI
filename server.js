@@ -2540,6 +2540,194 @@ app.post("/fix-investment-mode", async (req, res) => {
   res.json({ success: true });
 });
 
+/* --- LITE DEPOSIT --- */
+app.post("/request-lite-deposit", async (req, res) => {
+  const { email, amount, plan } = req.body;
+  await Deposit.create({
+    id: Date.now(), email, amount, plan,
+    representative: null,
+    accountType: "lite",
+    status: "PENDING",
+    date: new Date()
+  });
+  res.json({ success: true, message: "Deposit request submitted" });
+});
+
+app.post("/approve-lite-deposit", async (req, res) => {
+  try {
+    const { id } = req.body;
+    const deposit = await Deposit.findOne(findQuery(id));
+    if (!deposit) return res.json({ success: false, message: "Deposit not found" });
+    if (deposit.status === "APPROVED") return res.json({ success: false, message: "Already approved" });
+
+    await Deposit.findOneAndUpdate({ _id: deposit._id }, { $set: { status: "APPROVED" } });
+
+    const user = await User.findOne({ email: deposit.email });
+    if (user) {
+      const amount = Number(deposit.amount);
+      const newBalance = Number(user.liteBalance || 0) + amount;
+      const newInvestment = Number(user.liteInvestmentAmount || 0) + amount;
+
+      let plan, profitPercent, investmentDuration;
+      if (newInvestment >= 45000)      { plan = "Rapid Return";    profitPercent = 100.15; investmentDuration = 35; }
+      else if (newInvestment >= 15000) { plan = "Capital Boost";   profitPercent = 95;     investmentDuration = 22; }
+      else if (newInvestment >= 8000)  { plan = "Contact Manager"; profitPercent = 85;     investmentDuration = 14; }
+      else if (newInvestment >= 3000)  { plan = "Premium Plan";    profitPercent = 55;     investmentDuration = 5;  }
+      else if (newInvestment >= 1000)  { plan = "Standard Plan";   profitPercent = 45;     investmentDuration = 2;  }
+      else                             { plan = "Starter Plan";    profitPercent = 25;     investmentDuration = 1;  }
+
+      const liteTxns = user.liteTransactions || [];
+      liteTxns.unshift({ type: "DEPOSIT APPROVED", amount, date: new Date() });
+
+      await User.findOneAndUpdate({ _id: user._id }, { $set: {
+        liteBalance: newBalance,
+        liteInvestmentAmount: newInvestment,
+        liteInvestmentStart: Date.now(),
+        litePlan: plan,
+        liteProfitPercent: profitPercent,
+        liteInvestmentDuration: investmentDuration,
+        liteCycleCompleted: false,
+        liteTransactions: liteTxns
+      }});
+    }
+    res.json({ success: true, message: "Lite deposit approved" });
+  } catch (err) {
+    console.error("approve-lite-deposit:", err.message);
+    res.json({ success: false, message: err.message });
+  }
+});
+
+app.post("/request-lite-withdrawal", async (req, res) => {
+  try {
+    const { email, amount } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.json({ success: false, message: "User not found" });
+    if (Number(user.liteInvestmentAmount || 0) > 0) return res.json({ success: false, message: "Investment cycle still active." });
+    if (Number(amount) > Number(user.liteBalance || 0)) return res.json({ success: false, message: "Insufficient balance." });
+    await Withdrawal.create({
+      id: Date.now(), email, amount,
+      accountType: "lite",
+      status: "PENDING", date: new Date()
+    });
+    res.json({ success: true, message: "Withdrawal request submitted" });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+app.post("/approve-lite-withdrawal", async (req, res) => {
+  try {
+    const { id } = req.body;
+    const withdrawal = await Withdrawal.findOne(findQuery(id));
+    if (!withdrawal) return res.json({ success: false, message: "Not found" });
+    if (withdrawal.status === "APPROVED") return res.json({ success: false, message: "Already approved" });
+
+    const user = await User.findOne({ email: withdrawal.email });
+    if (!user) return res.json({ success: false, message: "User not found" });
+
+    const amount = Number(withdrawal.amount);
+    const newBalance = Math.max(0, Number(user.liteBalance || 0) - amount);
+
+    const liteTxns = user.liteTransactions || [];
+    liteTxns.unshift({ type: "WITHDRAWAL APPROVED", amount, date: new Date() });
+
+    const updates = { liteBalance: newBalance, liteTransactions: liteTxns };
+    if (newBalance <= 0) {
+      updates.litePlan = "None";
+      updates.liteInvestmentAmount = 0;
+      updates.liteInvestmentStart = 0;
+      updates.liteProfitPercent = 0;
+      updates.liteInvestmentDuration = 0;
+    }
+
+    await User.findOneAndUpdate({ _id: user._id }, { $set: updates });
+    await Withdrawal.findOneAndUpdate({ _id: withdrawal._id }, { $set: { status: "APPROVED" } });
+    res.json({ success: true, message: "Lite withdrawal approved" });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+/* --- GET LITE USER --- */
+app.post("/get-lite-user", async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.json({ success: false, message: "User not found" });
+
+    const now = Date.now();
+    const amount = Number(user.liteInvestmentAmount || 0);
+    const profitPercent = Number(user.liteProfitPercent || 0);
+    const duration = Number(user.liteInvestmentDuration || 0);
+    const start = Number(user.liteInvestmentStart || 0);
+
+    let expectedProfit = 0, claimableProfit = 0, todayProfit = 0;
+    let progress = 0, roi = 0, daysRemaining = 0;
+
+    const endTime = start + duration * 86400000;
+
+    if (amount > 0 && start && duration && now < endTime) {
+      expectedProfit = amount * (profitPercent / 100);
+      progress = Math.min(Math.max((now - start) / (endTime - start), 0), 1);
+      claimableProfit = expectedProfit * progress;
+      todayProfit = expectedProfit / duration;
+      roi = profitPercent * progress;
+      daysRemaining = Math.max(0, Math.ceil((endTime - now) / 86400000));
+
+      const liteHistory = user.litePortfolioHistory || [];
+      liteHistory.push({ time: now, claimableProfit, todayProfit, roi });
+      if (liteHistory.length > 100) liteHistory.shift();
+
+      await User.findOneAndUpdate({ _id: user._id }, { $set: { litePortfolioHistory: liteHistory } });
+    }
+
+    if (amount > 0 && start && now >= endTime) {
+      const profit = amount * (profitPercent / 100);
+      const newBalance = Number(user.liteBalance || 0) + profit;
+      const liteTxns = user.liteTransactions || [];
+      liteTxns.unshift({ type: "INVESTMENT CYCLE COMPLETED", amount: profit, date: new Date() });
+
+      await User.findOneAndUpdate({ _id: user._id }, { $set: {
+        liteBalance: newBalance,
+        liteInvestmentAmount: 0,
+        liteProfitPercent: 0,
+        liteInvestmentDuration: 0,
+        liteInvestmentStart: 0,
+        liteCycleCompleted: true,
+        liteTransactions: liteTxns
+      }});
+
+      const updated = await User.findOne({ email });
+      const pendingDeposits = await Deposit.countDocuments({ email, status: "PENDING", accountType: "lite" });
+      const pendingWithdrawals = await Withdrawal.countDocuments({ email, status: "PENDING", accountType: "lite" });
+      return res.json({
+        success: true,
+        user: {
+          ...updated.toObject(),
+          pendingDeposits, pendingWithdrawals,
+          expectedProfit: 0, claimableProfit: 0, progress: 1, roi: 0, daysRemaining: 0
+        }
+      });
+    }
+
+    const pendingDeposits = await Deposit.countDocuments({ email, status: "PENDING", accountType: "lite" });
+    const pendingWithdrawals = await Withdrawal.countDocuments({ email, status: "PENDING", accountType: "lite" });
+
+    res.json({
+      success: true,
+      user: {
+        ...user.toObject(),
+        pendingDeposits, pendingWithdrawals,
+        expectedProfit, claimableProfit, todayProfit,
+        progress, roi, daysRemaining
+      }
+    });
+  } catch (err) {
+    console.error("get-lite-user:", err.message);
+    res.json({ success: false, message: err.message });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
