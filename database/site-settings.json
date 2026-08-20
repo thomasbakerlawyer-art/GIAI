@@ -4,37 +4,52 @@
     "message": "kelly rachel is leading",
     "type": "urgent"
   },
-  "representatives": {
-    "Robert Rachel": {
-      "Tunisia": 50,
-      "Algeria": 0,
-      "Norway": 0,
-      "Germany": 0,
-      "France": 0
-    },
-    "Michael Scott": {
-      "Tunisia": 0,
-      "UK": 0,
-      "Italy": 0,
-      "Spain": 0,
-      "Belgium": 0
-    },
-    "Lincoln Hayes": {
-      "Tunisia": 40,
-      "Brazil": 0,
-      "Japan": 0,
-      "Singapore": 0,
-      "Dubai": 0
-    },
-    "Amber Agrawal": {
-      "Tunisia": 56,
-      "Australia": 1420,
-      "Malaysia": 1880,
-      "Thailand": 1032,
-      "Indonesia": 2540
-    }
+"representatives": {
+  "Robert Rachel": {
+    "Tunisia": 50,
+    "Algeria": 0,
+    "Norway": 0,
+    "Germany": 0,
+    "France": 0
   },
-  "counters": {
+  "Michael Scott": {
+    "Tunisia": 0,
+    "UK": 0,
+    "Italy": 0,
+    "Spain": 0,
+    "Belgium": 0
+  },
+  "Lincoln Hayes": {
+    "Tunisia": 40,
+    "Brazil": 0,
+    "Japan": 0,
+    "Singapore": 0,
+    "Dubai": 0
+  },
+  "Amber Agrawal": {
+    "Tunisia": 56,
+    "Australia": 1420,
+    "Malaysia": 1880,
+    "Thailand": 1032,
+    "Indonesia": 2540
+  },
+  "Aaliyah Kathe": {
+    "Norway": 0,
+    "Sweden": 0,
+    "Denmark": 0,
+    "UAE": 0,
+    "Qatar": 0
+  },
+  "Jyuon Yeon": {
+    "Malaysia": 0,
+    "South Korea": 0,
+    "Japan": 0,
+    "Thailand": 0,
+    "Singapore": 0
+  }
+},
+
+ "counters": {
     "Robert Rachel": {
       "paused": false,
       "Tunisia": {
@@ -119,33 +134,29 @@
         "paused": false
       }
     },
-    "Amber Agrawal": {
-      "paused": false,
-      "Tunisia": {
-        "current": 8581,
-        "speed": 4,
-        "paused": false
-      },
-      "Australia": {
-        "current": 10247,
-        "speed": 5,
-        "paused": false
-      },
-      "Malaysia": {
-        "current": 7386,
-        "speed": 3,
-        "paused": false
-      },
-      "Thailand": {
-        "current": 6475,
-        "speed": 2,
-        "paused": false
-      },
-      "Indonesia": {
-        "current": 12712,
-        "speed": 6,
-        "paused": false
-      }
-    }
-  }
+"Amber Agrawal": {
+  "paused": false,
+  "Tunisia":   { "current": 8581,  "speed": 4, "paused": false },
+  "Australia": { "current": 10247, "speed": 5, "paused": false },
+  "Malaysia":  { "current": 7386,  "speed": 3, "paused": false },
+  "Thailand":  { "current": 6475,  "speed": 2, "paused": false },
+  "Indonesia": { "current": 12712, "speed": 6, "paused": false }
+},
+"Aaliyah Kathe": {
+  "paused": false,
+  "Norway":      { "current": 0, "speed": 1, "paused": false },
+  "Sweden":      { "current": 0, "speed": 1, "paused": false },
+  "Denmark":     { "current": 0, "speed": 1, "paused": false },
+  "UAE":         { "current": 0, "speed": 1, "paused": false },
+  "Qatar":       { "current": 0, "speed": 1, "paused": false }
+},
+"Jyuon Yeon": {
+  "paused": false,
+  "Malaysia":    { "current": 0, "speed": 1, "paused": false },
+  "South Korea": { "current": 0, "speed": 1, "paused": false },
+  "Japan":       { "current": 0, "speed": 1, "paused": false },
+  "Thailand":    { "current": 0, "speed": 1, "paused": false },
+  "Singapore":   { "current": 0, "speed": 1, "paused": false }
+}
+}
 }

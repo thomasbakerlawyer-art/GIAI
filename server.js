@@ -77,9 +77,10 @@ function findQuery(id) {
   return { id: Number(id) };
 }
 
-async function getSiteSettings() {
-  let settings = await SiteSettings.findOne({});
+ async function getSiteSettings() {
+  let settings = await SiteSettings.findOne({}).maxTimeMS(5000);
   if (!settings) {
+
     settings = await SiteSettings.create({
       announcement: { enabled: false, message: "", type: "info" },
       representatives: {
@@ -87,6 +88,7 @@ async function getSiteSettings() {
         "Michael Scott":  { "Tunisia": 0, "UK": 0, "Italy": 0, "Spain": 0, "Belgium": 0 },
         "Lincoln Hayes":  { "Tunisia": 0, "Brazil": 0, "Japan": 0, "Singapore": 0, "Dubai": 0 },
         "Amber Agrawal":  { "Tunisia": 0, "Australia": 0, "Malaysia": 0, "Thailand": 0, "Indonesia": 0 },
+        "Jyuon Yeon": { "Malaysia": 0, "South Korea": 0, "Japan": 0, "Thailand": 0, "Singapore": 0 },
         "Aaliyah Kathe":  { "Norway": 0, "Sweden": 0, "Denmark": 0, "UAE": 0, "Qatar": 0 }
       },
       counters: {}
@@ -111,6 +113,7 @@ const repCountryMap = {
   "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
   "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
   "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"],
+  "Jyuon Yeon": ["Malaysia","South Korea","Japan","Thailand","Singapore"],
   "Aaliyah Kathe":  ["Norway","Sweden","Denmark","UAE","Qatar"]
 };
 
@@ -2015,6 +2018,19 @@ app.post("/admin-enable-manual-reinvestment", async (req, res) => {
   }
 });
 
+app.post("/admin-set-reinvest-min", async (req, res) => {
+  try {
+    const { email, votes } = req.body;
+    await User.findOneAndUpdate(
+      { email },
+      { $set: { customReinvestMinVotes: Number(votes) } }
+    );
+    res.json({ success: true });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
 app.post("/request-savings-card", async (req, res) => {
   try {
     const { email, employment, occupation, income } = req.body;
@@ -2726,6 +2742,38 @@ app.post("/get-lite-user", async (req, res) => {
     console.error("get-lite-user:", err.message);
     res.json({ success: false, message: err.message });
   }
+});
+
+app.post("/admin-reset-rep-counters", async (req, res) => {
+  const { representative } = req.body;
+  const settings = await getSiteSettings();
+
+  let reset = false;
+
+  if (settings.counters && settings.counters[representative]) {
+    const repCounters = settings.counters[representative];
+    for (const key in repCounters) {
+      if (typeof repCounters[key] === "object" && repCounters[key].current !== undefined) {
+        repCounters[key].current = 0;
+      }
+    }
+    reset = true;
+  }
+
+  if (settings.representatives && settings.representatives[representative]) {
+    const countries = settings.representatives[representative];
+    for (const country in countries) {
+      countries[country] = 0;
+    }
+    reset = true;
+  }
+
+  if (!reset) {
+    return res.json({ success: false, message: "Rep not found: " + representative });
+  }
+
+  await saveSiteSettings(settings);
+  res.json({ success: true });
 });
 
 const PORT = process.env.PORT || 3000;

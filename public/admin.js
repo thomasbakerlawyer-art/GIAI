@@ -72,6 +72,7 @@ function updateOverview() {
     if (statsWithdrawals) statsWithdrawals.innerText = allWithdrawals.length;
   }, 500);
 }
+
 /* ========================= */
 /* USERS                     */
 /* ========================= */
@@ -81,6 +82,7 @@ async function loadUsers() {
   allUsers = data.users || [];
   renderUsers();
 }
+
 function renderUsers() {
   const container = document.getElementById("userList");
   if (!container) return;
@@ -109,6 +111,7 @@ function renderUsers() {
           ${user.allowReinvestment ? " · Reinvestment Enabled ✓" : ""}
           ${user.cycleCompleted ? " · Cycle Completed" : ""}
         </p>` : ""}
+
         <div style="margin-top:12px;">
           <input type="number" id="balance-${user.email}" placeholder="Amount to add">
           <select id="planSelect-${user.email}">
@@ -122,10 +125,12 @@ function renderUsers() {
           </select>
           <button onclick="addBalance('${user.email}')">Add Balance</button>
         </div>
+
         <div style="margin-top:8px;">
           <input type="number" id="votes-${user.email}" placeholder="Votes to add">
           <button onclick="addVotes('${user.email}')">Add Votes</button>
         </div>
+
         <div style="margin-top:8px;">
           <select id="rep-${user.email}">
             <option>Michael Scott</option>
@@ -133,9 +138,11 @@ function renderUsers() {
             <option>Lincoln Hayes</option>
             <option>Amber Agrawal</option>
             <option>Aaliyah Kathe</option>
+            <option>Jyuon Yeon</option>
           </select>
           <button onclick="assignRep('${user.email}')">Assign Rep</button>
         </div>
+
         <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;">
           <button
             onclick="deactivateInvestment('${user.email}')"
@@ -162,15 +169,61 @@ function renderUsers() {
             ✅ Enable Reinvest
           </button>` : ""}
         </div>
-<select id="dashMode-${user.email}" style="padding:8px;border-radius:8px;background:#0b0b0b;color:#fff;border:1px solid #333;">
-  <option value="representative" ${(user.dashboardMode||"representative")==="representative"?"selected":""}>Representative Dashboard</option>
-  <option value="lite"      ${user.dashboardMode==="lite"     ?"selected":""}>Dashboard Lite</option>
-  <option value="savings"   ${user.dashboardMode==="savings"  ?"selected":""}>Dashboard Savings</option>
-</select>
-<button onclick="setDashboardMode('${user.email}')"
-  style="background:#6366f1;color:#fff;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px;">
-  Set Dashboard
-</button>
+
+        <select id="dashMode-${user.email}" style="padding:8px;border-radius:8px;background:#0b0b0b;color:#fff;border:1px solid #333;margin-top:10px;">
+          <option value="representative" ${(user.dashboardMode||"representative")==="representative"?"selected":""}>Representative Dashboard</option>
+          <option value="lite" ${user.dashboardMode==="lite"?"selected":""}>Dashboard Lite</option>
+          <option value="savings" ${user.dashboardMode==="savings"?"selected":""}>Dashboard Savings</option>
+        </select>
+        <button onclick="setDashboardMode('${user.email}')"
+          style="background:#6366f1;color:#fff;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px;">
+          Set Dashboard
+        </button>
+
+        <!-- ── TRANSACTION NOTE TOOL ── -->
+        <div style="margin-top:18px;background:#0b0b0b;border:1px solid #222;border-radius:12px;padding:16px;">
+          <p style="font-size:13px;color:#f0b90b;font-weight:700;margin-bottom:10px;">
+            📋 Send Transaction Note to User
+          </p>
+          <p style="font-size:12px;color:#666;margin-bottom:10px;">
+            This appears on the user's transaction history. Use it to explain an action you took.
+          </p>
+
+          <!-- Toggle to show/hide note on user's history -->
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+            <input type="checkbox" id="noteToggle-${user.email}"
+              style="width:16px;height:16px;accent-color:#f0b90b;cursor:pointer;">
+            <label style="font-size:13px;color:#aaa;cursor:pointer;"
+              onclick="document.getElementById('noteToggle-${user.email}').click()">
+              Show this note on user's transaction history
+            </label>
+          </div>
+
+          <!-- Transaction label (what shows as the type) -->
+          <input type="text"
+            id="noteType-${user.email}"
+            placeholder="Transaction label e.g. 'Bonus Credited' or 'Account Adjustment'"
+            style="width:100%;padding:10px 12px;background:#111;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;margin-bottom:8px;box-sizing:border-box;">
+
+          <!-- Custom message -->
+          <textarea
+            id="noteText-${user.email}"
+            placeholder="Optional message e.g. 'A bonus has been added to your account as part of our promotion.'"
+            rows="3"
+            style="width:100%;padding:10px 12px;background:#111;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;resize:vertical;box-sizing:border-box;margin-bottom:8px;font-family:inherit;"></textarea>
+
+          <!-- Amount (optional) -->
+          <input type="number"
+            id="noteAmount-${user.email}"
+            placeholder="Amount (optional, leave blank for $0)"
+            style="width:100%;padding:10px 12px;background:#111;border:1px solid #333;border-radius:8px;color:#fff;font-size:13px;margin-bottom:10px;box-sizing:border-box;">
+
+          <button onclick="sendAdminNote('${user.email}')"
+            style="width:100%;padding:11px;background:#f0b90b;color:#000;border:none;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;">
+            Send Note
+          </button>
+        </div>
+
       </div>
     </div>`;
   });
@@ -829,7 +882,8 @@ async function loadSiteControls() {
     "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
     "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
     "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"],
-    "Aaliyah Kathe": ["Norway","Sweden","Denmark","UAE","Qatar"]
+    "Aaliyah Kathe": ["Norway","Sweden","Denmark","UAE","Qatar"],
+    "Jyuon Yeon": ["Malaysia","South Korea","Japan","Thailand","Singapore"]
   };
   Object.entries(repConfig).forEach(([name, countries]) => {
     countries.forEach(country => {
@@ -850,7 +904,8 @@ async function saveSiteControls() {
     "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
     "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
     "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"],
-    "Aaliyah Kathe": ["Norway","Sweden","Denmark","UAE","Qatar"]
+    "Aaliyah Kathe": ["Norway","Sweden","Denmark","UAE","Qatar"],
+    "Jyuon Yeon": ["Malaysia","South Korea","Japan","Thailand","Singapore"]
   };
   const representatives = {};
   Object.entries(repConfig).forEach(([name, countries]) => {
@@ -877,7 +932,8 @@ const repCountryConfig = {
   "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
   "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
   "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"],
-  "Aaliyah Kathe": ["Norway","Sweden","Denmark","UAE","Qatar"]
+  "Aaliyah Kathe": ["Norway","Sweden","Denmark","UAE","Qatar"],
+  "Jyuon Yeon": ["Malaysia","South Korea","Japan","Thailand","Singapore"]
 };
 let counterPollInterval = null;
 async function loadCounterControls() {
@@ -1117,4 +1173,22 @@ async function rejectSavingsWithdrawal(id) {
   const data = await res.json();
   alert(data.message || (data.success ? "Rejected" : "Failed"));
   loadSavingsAccounts();
+}
+
+async function resetRepCounters(repName) {
+  if (!confirm(`Reset all votes for ${repName} to zero?`)) return;
+
+  const res = await fetch("/admin-reset-rep-counters", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ representative: repName })
+  });
+
+  const data = await res.json();
+  if (data.success) {
+    alert(`${repName} votes reset to zero.`);
+    loadCounterControls();
+  } else {
+    alert("Reset failed.");
+  }
 }

@@ -1062,7 +1062,7 @@ height:500px;
     height:48px;
     font-size:13px;
     border-radius:50%;
-}
+} s
 
 #lang-btn {
   background: #111;
@@ -4335,7 +4335,7 @@ opacity:1;
 }
 
 /* ============================================================
-   REINVEST BUTTON — LOCKED vs READY
+   REINVEST BUTTON â€” LOCKED vs READY
    ============================================================ */
 
 #reinvestBtn {
@@ -4545,7 +4545,7 @@ opacity:1;
 }
 
 .chat-header::before {
-  content: "🟢";
+  content: "ðŸŸ¢";
   font-size: 10px;
   margin-right: 8px;
 }
@@ -5109,7 +5109,7 @@ opacity:1;
 
 /* ========================= */
 
-/* SHIPMENT BUTTONS — FIXED SIZE */
+/* SHIPMENT BUTTONS â€” FIXED SIZE */
 
 /* ========================= */
 
@@ -5142,7 +5142,7 @@ opacity:1;
 
 /* ========================= */
 
-/* CARD SECTION — INDEX      */
+/* CARD SECTION â€” INDEX      */
 
 /* ========================= */
 
@@ -5371,7 +5371,7 @@ opacity:1;
   }
 }
 
-@media(max-width: 480px){/* Outer card is the ONLY card — balance lives directly inside it */
+@media(max-width: 480px){/* Outer card is the ONLY card â€” balance lives directly inside it */
 
 .portfolio-card {
     text-align: center;
@@ -5389,7 +5389,7 @@ opacity:1;
     margin: 0 0 25px;
   }
 
-/* Stats row — plain, no inner card background */
+/* Stats row â€” plain, no inner card background */
 
 .portfolio-stats {
     display: grid;
@@ -5483,13 +5483,13 @@ opacity:1;
 }
 
 .card-description-box summary::after {
-  content: "  ▸";
+  content: "  â–¸";
   color: #888;
   font-size: 0.8rem;
 }
 
 .card-description-box[open] summary::after {
-  content: "  ▾";
+  content: "  â–¾";
 }
 
 .card-description-box p {
@@ -5560,7 +5560,7 @@ opacity:1;
 
 /* ========================= */
 
-/* CARD ACTION BUTTONS — FIXED SIZE */
+/* CARD ACTION BUTTONS â€” FIXED SIZE */
 
 /* ========================= */
 
@@ -5746,7 +5746,7 @@ opacity:1;
   }
 }
 
-/* FIX 3: Welcome + name — keep gap from
+/* FIX 3: Welcome + name â€” keep gap from
    portfolio balance on mobile               */
 
 @media (max-width: 768px){.dashboard-top {
@@ -5755,10 +5755,10 @@ opacity:1;
 }
 
 /* ================================================
-   FIXES — paste at the very bottom of style.css
+   FIXES â€” paste at the very bottom of style.css
    ================================================ */
 
-/* FIX 1: Hamburger — NOT fixed, lives in the
+/* FIX 1: Hamburger â€” NOT fixed, lives in the
    dashboard-top row alongside the welcome text.
    Removes ALL conflicting position rules.        */
 
@@ -5840,7 +5840,7 @@ opacity:1;
   }
 }
 
-/* FIX 2: Withdraw button — always yellow,
+/* FIX 2: Withdraw button â€” always yellow,
    overrides the colorless/white version       */
 
 .withdraw-btn,
@@ -5857,7 +5857,7 @@ opacity:1;
   color: #000 !important;
 }
 
-/* FIX 3: Welcome + name — keep gap from
+/* FIX 3: Welcome + name â€” keep gap from
    portfolio balance on mobile               */
 
 @media (max-width: 768px){.dashboard-top {
@@ -5865,7 +5865,7 @@ opacity:1;
   }
 }
 
-/* FIX 4: Sidebar links — always a straight
+/* FIX 4: Sidebar links â€” always a straight
    vertical column, never wrap or grid       */
 
 .sidebar-links,
@@ -5931,7 +5931,7 @@ opacity:1;
 }
 
 /* ================================================
-   STATS CARD WITH DARK BACKGROUND — FINAL
+   STATS CARD WITH DARK BACKGROUND â€” FINAL
    Paste at the VERY BOTTOM of style.css,
    after every other rule, with nothing after it.
    ================================================ */
@@ -6001,7 +6001,7 @@ div.portfolio-card div.portfolio-buttons {
    Paste at the very bottom of style.css
    ================================================ */
 
-/* FIX 1: Live profit popup — fits on small screens,
+/* FIX 1: Live profit popup â€” fits on small screens,
    never cuts off the right edge                    */
 
 .live-profit-popup {
@@ -6027,7 +6027,7 @@ div.portfolio-card div.portfolio-buttons {
 .profit-plan   { font-size: 10px; }
 }
 
-/* FIX 2: Vision section — on mobile, video goes on
+/* FIX 2: Vision section â€” on mobile, video goes on
    top, then the 4 feature cards stack below as a
    2-column grid so the user doesn't have to scroll
    through all 4 single-column cards before seeing
@@ -6068,7 +6068,7 @@ div.portfolio-card div.portfolio-buttons {
     margin-bottom: 24px !important;
   }
 
-/* 4 cards as 2×2 grid — not 1 long column */
+/* 4 cards as 2Ã—2 grid â€” not 1 long column */
 
 .vision-grid {
     display: grid !important;
@@ -6091,7 +6091,7 @@ div.portfolio-card div.portfolio-buttons {
   }
 }
 
-/* FIX 3: Nav — on mobile keep logo + buttons in one
+/* FIX 3: Nav â€” on mobile keep logo + buttons in one
    row, don't stack them vertically                  */
 
 @media (max-width: 480px){.top-nav {
@@ -6119,7 +6119,7 @@ div.portfolio-card div.portfolio-buttons {
   }
 }
 
-/* FIX 4: Representatives section — on mobile, rep
+/* FIX 4: Representatives section â€” on mobile, rep
    photo goes full width on top, content below      */
 
 @media (max-width: 600px){.rep-card {
@@ -6155,10 +6155,10 @@ div.portfolio-card div.portfolio-buttons {
 }
 
 /* ================================================
-   MOBILE GRID FIXES — index.html sections
+   MOBILE GRID FIXES â€” index.html sections
    ================================================ */
 
-@media (max-width: 600px){/* Steps grid — How The GIAI System Works */
+@media (max-width: 600px){/* Steps grid â€” How The GIAI System Works */
 
 .steps-grid {
     grid-template-columns: 1fr !important;
@@ -6180,7 +6180,7 @@ div.portfolio-card div.portfolio-buttons {
     margin-bottom: 12px !important;
   }
 
-/* Rules grid — Competition Rules */
+/* Rules grid â€” Competition Rules */
 
 .rules-grid {
     grid-template-columns: 1fr !important;
@@ -6201,7 +6201,7 @@ div.portfolio-card div.portfolio-buttons {
     line-height: 1.6 !important;
   }
 
-/* Partner boxes — Trust section */
+/* Partner boxes â€” Trust section */
 
 .partner-boxes {
     grid-template-columns: 1fr 1fr !important;
@@ -6224,7 +6224,7 @@ div.portfolio-card div.portfolio-buttons {
     line-height: 1.5 !important;
   }
 
-/* Section titles — smaller on mobile */
+/* Section titles â€” smaller on mobile */
 
 .section-title {
     font-size: 28px !important;
@@ -6362,7 +6362,7 @@ line-height:1.5;
 }
 
 /* ================================================
-   FINAL FIX — GLOBAL REPRESENTATION SECTION MOBILE
+   FINAL FIX â€” GLOBAL REPRESENTATION SECTION MOBILE
    ================================================ */
 
 @media (max-width: 768px){.users-video-section {
@@ -6378,7 +6378,7 @@ line-height:1.5;
     width: 100% !important;
   }
 
-/* VIDEO — locked inside its box, never overlaps */
+/* VIDEO â€” locked inside its box, never overlaps */
 
 .users-video-box {
     position: relative !important;
@@ -6418,7 +6418,7 @@ line-height:1.5;
     margin-bottom: 20px !important;
   }
 
-/* 4 feature cards — clean 2x2 grid, no overlap */
+/* 4 feature cards â€” clean 2x2 grid, no overlap */
 
 .ronaldo-grid {
     display: grid !important;
@@ -6503,7 +6503,7 @@ body {
 }
 
 /* ================================================
-   FIX: TICKER OVERFLOW — the root cause
+   FIX: TICKER OVERFLOW â€” the root cause
    ================================================ */
 
 .ticker-wrap {
@@ -6528,7 +6528,7 @@ body {
   100% { transform: translateX(-100%); }
 }
 
-/* Body clamp — nothing escapes */
+/* Body clamp â€” nothing escapes */
 
 html, body {
   overflow-x: hidden !important;
@@ -6539,7 +6539,7 @@ html, body {
    FIX: ACTUAL OVERFLOW CULPRITS
    ================================================ */
 
-/* Glow orbs — clip them, never let them stretch the page */
+/* Glow orbs â€” clip them, never let them stretch the page */
 
 .glow, .glow2, .glow3 {
   overflow: hidden !important;
@@ -6677,7 +6677,7 @@ html, body {
 }
 
 /* ================================================
-   SIGNUP — CLOSE BUTTON
+   SIGNUP â€” CLOSE BUTTON
    ================================================ */
 
 .signup-close {
@@ -6712,7 +6712,7 @@ html, body {
 }
 
 /* ================================================
-   NAV — MOBILE FIX
+   NAV â€” MOBILE FIX
    ================================================ */
 
 @media (max-width: 480px){.top-nav {
@@ -7016,7 +7016,7 @@ body::before, body::after { display:none !important; }
 
 /* ========================= */
 
-/* STATS ROW — RESPONSIVE    */
+/* STATS ROW â€” RESPONSIVE    */
 
 /* ========================= */
 
@@ -7267,7 +7267,7 @@ body {
 
 /* ========================= */
 
-/* FORCE FIX — STOP VISION VIDEO FROM SHRINKING */
+/* FORCE FIX â€” STOP VISION VIDEO FROM SHRINKING */
 
 /* ========================= */
 

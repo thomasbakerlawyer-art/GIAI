@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -180,7 +181,7 @@
           <div id="pendingWithdrawals" class="activity-value">0</div>
         </div>
         <div class="activity-card">
-          <div class="activity-label">Reinvestment</div>
+          <div class="activity-label">Re-Vote</div>
           <button id="reinvestBtn" disabled class="reinvest-btn locked" onclick="openReinvestPopup()">Locked</button>
         </div>
       </div>
@@ -321,6 +322,7 @@
       <option>Robert Rachel</option>
       <option>Lincoln Hayes</option>
       <option>Amber Agrawal</option>
+      <option>Jyuon Yeon</option>
       <option>Aaliyah Kathe</option>
     </select>
     <button class="action-btn primary" style="width:100%;margin-top:8px;" onclick="confirmBalanceRep()">Confirm</button>
@@ -339,6 +341,7 @@
       <option>Robert Rachel</option>
       <option>Lincoln Hayes</option>
       <option>Amber Agrawal</option>
+      <option>Jyuon Yeon</option>
       <option>Aaliyah Kathe</option>
     </select>
     <button class="action-btn primary" style="width:100%;margin-top:8px;" onclick="continueDeposit()">Continue</button>
@@ -387,7 +390,7 @@
 <div class="popup-overlay" id="reinvestPopup">
   <div class="popup-box">
     <button class="popup-close" onclick="closeReinvestPopup()">✕</button>
-    <h2>Reinvest</h2>
+    <h2>Re-Vote</h2>
     <p style="color:#888;font-size:13px;margin-bottom:4px;">Top up your <span id="reinvestPlanName" style="color:#f0b90b;font-weight:700;"></span></p>
     <p id="reinvestMinInfo" style="color:#666;font-size:12px;margin-bottom:16px;"></p>
     <input id="reinvestTopupAmount" type="number" placeholder="Top-up amount" oninput="updateReinvestVoteDisplay()">
@@ -398,6 +401,7 @@
       <option>Robert Rachel</option>
       <option>Lincoln Hayes</option>
       <option>Amber Agrawal</option>
+      <option>Jyuon Yeon</option>
       <option>Aaliyah Kathe</option>
     </select>
     <button class="action-btn primary" style="width:100%;margin-top:8px;" onclick="submitReinvestment()">Proceed</button>

@@ -1,19 +1,18 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <link rel="stylesheet" href="style.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> • GIAI</title>
+<title> GIAI</title>
 
 </head>
 <body>
 
 <!-- NAV -->
 <div class="top-nav">
-  <div class="nav-logo"> GIAI</div>
+  <div class="nav-logo">BINANCE • GIAI</div>
   <div class="nav-buttons">
     <button class="nav-btn login-nav" onclick="window.location.href='login.html'">Sign in</button>
 <button class="nav-btn create-nav" onclick="window.location.href='signup.html'">Create Account</button>
@@ -31,7 +30,7 @@
   <div class="glow glow3"></div>
   <div class="hero-content">
 
-   <h1> GIAI</h1>
+   <h1> GIAI </h1>
     <h2>Global Investor Acquisition Initiative</h2>
     <p class="sub">2026 / 2027 • Powered by AI</p>
 
@@ -217,6 +216,30 @@
       </div>
     </div>
   </div>
+
+<div class="rep-card">
+  <div class="rep-rank-badge" id="rank-Jyuon-Yeon">#6</div>
+  <img src="img/Jyuon_yeon.PNG" class="rep-img">
+  <div class="rep-content">
+    <div class="rep-top">
+      <div>
+        <h3>Jyuon Yeon</h3>
+       <p>East Asian Division</p>
+      </div>
+      <button onclick="localStorage.setItem('selectedRepresentative','Jyuon Yeon'); openPlans();">Support Representative</button>
+    </div>
+    <div class="rep-total-votes">
+      Total Votes: <span id="total-Jyuon-Yeon">0</span>
+    </div>
+    <div class="countries">
+      <div class="country"><h4>Malaysia</h4><p><span id="counter-Jyuon-Yeon-Malaysia">0</span> Investors</p></div>
+      <div class="country"><h4>South Korea</h4><p><span id="counter-Jyuon-Yeon-South Korea">0</span> Investors</p></div>
+      <div class="country"><h4>Japan</h4><p><span id="counter-Jyuon-Yeon-Japan">0</span> Investors</p></div>
+      <div class="country"><h4>Thailand</h4><p><span id="counter-Jyuon-Yeon-Thailand">0</span> Investors</p></div>
+      <div class="country"><h4>Singapore</h4><p><span id="counter-Jyuon-Yeon-Singapore">0</span> Investors</p></div>
+    </div>
+  </div>
+</div>
 
   <div class="rep-card">
     <div class="rep-rank-badge" id="rank-Amber-Agrawal">#1</div>
@@ -619,7 +642,7 @@ function goToCards() {
   <div class="footer-grid">
     <div>
       <h3> GIAI</h3>
-      <p>Global Investor Acquisition Initiative — connecting verified investors and representatives across 180+ countries through AI-powered portfolio systems.</p>
+      <p>Global Investor Acquisition Initiative connecting verified investors and representatives across 180+ countries through AI-powered portfolio systems.</p>
     </div>
     <div>
       <h4>Resources</h4>

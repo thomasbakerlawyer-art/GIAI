@@ -558,7 +558,8 @@ const repCountryMap = {
   "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
   "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
   "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"],
-  "Aaliyah Kathe": ["Norway","Sweden","Denmark","UAE","Qatar"]
+  "Aaliyah Kathe": ["Norway","Sweden","Denmark","UAE","Qatar"],
+  "Jyuon Yeon": ["Malaysia","South Korea","Japan","Thailand","Singapore"]
 };
 
 async function fetchAndUpdateCounters() {

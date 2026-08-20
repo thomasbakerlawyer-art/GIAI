@@ -7,6 +7,7 @@ const repPictures = {
   "Robert Rachel": "img/IMG_robertrachel.PNG",
   "Lincoln Hayes": "img/IMG_lincolnhayes.PNG",
   "Amber Agrawal": "img/amberagrawal.PNG",
+  "Jyuon Yeon": "img/Jyuon_yeon.PNG",
   "Aaliyah Kathe": "img/Aaliyah_kathe.PNG"
 };
 
@@ -15,6 +16,7 @@ const repDivisions = {
   "Robert Rachel": "North African Division",
   "Lincoln Hayes": "Global Expansion",
   "Amber Agrawal": "Asia-Pacific Division",
+  "Jyuon Yeon": "East Asian Division",
   "Aaliyah Kathe": "Nordic & Middle East Division" 
 };
 
@@ -276,7 +278,7 @@ function updateReinvestButton() {
         btn.disabled = false;
         btn.classList.remove("reinvest-locked");
         btn.classList.add("reinvest-ready");
-        btn.innerText = "Reinvest Now";
+        btn.innerText = "Re-Vote Now";
         btn.onclick = () => openReinvestPopup();
       } else {
         btn.disabled = true;
@@ -292,7 +294,7 @@ function updateReinvestButton() {
     btn.disabled = false;
     btn.classList.remove("reinvest-locked");
     btn.classList.add("reinvest-ready");
-    btn.innerText = "Reinvest Now";
+    btn.innerText = "Re-Vote Now";
     btn.onclick = () => openReinvestPopup();
     return;
   }
@@ -300,7 +302,7 @@ function updateReinvestButton() {
   btn.disabled = true;
   btn.classList.remove("reinvest-ready");
   btn.classList.add("reinvest-locked");
-  btn.innerText = "Locked";
+  btn.innerText = "Voting Locked";
 }
 
 /* =========================
@@ -458,8 +460,8 @@ function scrollTransactions() {
 ========================= */
 
 function openDeposit() {
-  const balance = Number(currentUser.balance || 0);
-  const investing = Number(currentUser.investmentAmount || 0);
+  const balance = Number(currentUser?.balance || 0);
+  const investing = Number(currentUser?.investmentAmount || 0);
 
   if (balance > 0 && investing === 0) {
     document.getElementById("useBalanceInfo").innerText =
@@ -801,7 +803,7 @@ const planVoteMinimums = {
 
 function openReinvestPopup() {
   const plan = currentUser.plan || "Starter Plan";
-  const minVotes = planVoteMinimums[plan] || 1;
+ const minVotes = currentUser.customReinvestMinVotes || planVoteMinimums[plan] || 1;
   const minAmount = minVotes * 500;
 
   document.getElementById("reinvestPlanName").innerText = plan;
@@ -834,7 +836,7 @@ async function submitReinvestment() {
   if (!topup || topup <= 0) { alert("Please enter a top-up amount."); return; }
 
   const plan = currentUser.plan || "Starter Plan";
-  const minVotes = planVoteMinimums[plan] || 1;
+ const minVotes = currentUser.customReinvestMinVotes || planVoteMinimums[plan] || 1;
   const minTopup = minVotes * 500;
 
   if (topup < minTopup) {
