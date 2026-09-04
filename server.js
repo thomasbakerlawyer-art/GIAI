@@ -11,8 +11,7 @@ const app = express();
    MONGODB CONNECTION
 ========================= */
 
-const MONGODB_URI =
-"mongodb+srv://chikwadojesse97_db_user:Clements77@cluster0.kduyuld.mongodb.net/giai?appName=Cluster0";
+const MONGODB_URI = process.env.MONGO_URI || `mongodb+srv://chikwadojesse97_db_user:Clements77@cluster0.kduyuld.mongodb.net/giai?appName=Cluster0`;
 
 mongoose.connect(MONGODB_URI)
   .then(() => console.log("✅ Connected to MongoDB Atlas"))
@@ -23,8 +22,8 @@ const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "binance.bnb.team@gmail.com",
-    pass: "zxgw gzzu ioij pdrg"  // paste your 16-char app password here
+    user: process.env.EMAIL_USER || "binance.bnb.team@gmail.com",
+    pass: process.env.EMAIL_PASS || "zxgwgzzuioijpdrg"
   }
 });
 
@@ -2821,6 +2820,35 @@ app.post("/get-lite-user", async (req, res) => {
   } catch (err) {
     console.error("get-lite-user:", err.message);
     res.json({ success: false, message: err.message });
+  }
+});
+
+app.post("/reset-password", async (req, res) => {
+  const { email, newPassword } = req.body;
+
+  if (!newPassword || newPassword.length < 6) {
+    return res.json({
+      success: false,
+      message: "Password must be at least 6 characters."
+    });
+  }
+
+  try {
+    const result = await User.findOneAndUpdate(
+      { email: email },
+      { $set: { password: newPassword } },
+      { new: true }
+    );
+
+    if (!result) {
+      return res.json({ success: false, message: "Account not found." });
+    }
+
+    res.json({ success: true, message: "Password reset successfully." });
+
+  } catch (err) {
+    console.error("Reset password error:", err);
+    res.json({ success: false, message: "Something went wrong." });
   }
 });
 

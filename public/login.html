@@ -607,6 +607,9 @@ iframe.goog-te-balloon-frame {
 
 <script>
 
+// Add this at the top of your login page script
+localStorage.removeItem("user");
+
 async function login() {
   const email    = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
