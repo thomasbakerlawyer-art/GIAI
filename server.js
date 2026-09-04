@@ -20,11 +20,19 @@ mongoose.connect(MONGODB_URI)
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
   auth: {
     user: process.env.EMAIL_USER || "binance.bnb.team@gmail.com",
     pass: process.env.EMAIL_PASS || "zxgwgzzuioijpdrg"
-  }
+  },
+  tls: {
+    rejectUnauthorized: false
+  },
+  connectionTimeout: 30000,
+  greetingTimeout: 30000,
+  socketTimeout: 30000
 });
 
 async function sendAdminEmail(subject, body) {
