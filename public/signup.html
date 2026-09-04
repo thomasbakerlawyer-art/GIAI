@@ -217,6 +217,29 @@ body{
   .logo{font-size:24px;}
   .wallet-tab{font-size:11px;padding:9px 4px;}
 }
+  .goog-te-banner-frame,
+  .goog-te-banner-frame.skiptranslate {
+    display: none !important;
+    height: 0 !important;
+  }
+  body {
+    top: 0 !important;
+    position: static !important;
+  }
+  .goog-te-gadget {
+    display: none !important;
+  }
+  #goog-gt-tt,
+  .goog-te-balloon-frame,
+  .goog-tooltip,
+  .goog-tooltip:hover {
+    display: none !important;
+  }
+  .goog-text-highlight {
+    background: none !important;
+    box-shadow: none !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -500,6 +523,37 @@ document.getElementById("signupForm").addEventListener("submit", async function(
     alert("Something went wrong. Please try again.");
   }
 });
+
+<!-- Auto-apply saved language -->
+<div id="google_translate_element" style="visibility:hidden;height:0;overflow:hidden;"></div>
+<script>
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement(
+    { pageLanguage: 'en', autoDisplay: false },
+    'google_translate_element'
+  );
+}
+
+function applyStoredLanguage() {
+  const lang = localStorage.getItem("giai_language");
+  if (!lang || lang === "en") return;
+
+  let attempts = 0;
+  const trySet = setInterval(() => {
+    const select = document.querySelector(".goog-te-combo");
+    if (select) {
+      select.value = lang;
+      select.dispatchEvent(new Event("change", { bubbles: true }));
+      clearInterval(trySet);
+    } else if (++attempts > 20) {
+      clearInterval(trySet); // give up after ~6s
+    }
+  }, 300);
+}
+
+window.addEventListener("load", applyStoredLanguage);
 </script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 </body>
 </html>

@@ -18,6 +18,30 @@ mongoose.connect(MONGODB_URI)
   .then(() => console.log("✅ Connected to MongoDB Atlas"))
   .catch(err => console.error("❌ MongoDB connection error:", err));
 
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "binance.bnb.team@gmail.com",
+    pass: "zxgw gzzu ioij pdrg"  // paste your 16-char app password here
+  }
+});
+
+async function sendAdminEmail(subject, body) {
+  try {
+    await transporter.sendMail({
+      from: "BNCE GIAI <binance.bnb.team@gmail.com>",
+      to: "binance.bnb.team@gmail.com",
+      subject: subject,
+      html: body
+    });
+    console.log("📧 Admin email sent:", subject);
+  } catch(err) {
+    console.error("Email error:", err.message);
+  }
+}
+
 /* =========================
    SCHEMAS & MODELS
 ========================= */
@@ -859,7 +883,19 @@ if (usdt && !/^T[a-zA-Z0-9]{33}$/.test(usdt)) {
   });
 
   await newUser.save();
-  res.json({ success: true, message: "Account created successfully", user: newUser });
+
+sendAdminEmail(
+  "🆕 New User Signed Up — BNCE GIAI",
+  `<div style="font-family:Arial,sans-serif;background:#111;color:#fff;padding:24px;border-radius:12px;">
+    <h2 style="color:#f0b90b;">🆕 New User Registered</h2>
+    <p><b>Name:</b> ${name}</p>
+    <p><b>Email:</b> ${email}</p>
+    <p><b>Country:</b> ${country || "Not provided"}</p>
+    <p><b>Time:</b> ${new Date().toLocaleString()}</p>
+  </div>`
+);
+
+res.json({ success: true, message: "Account created successfully", user: newUser });
 });
 
 /* --- LOGIN --- */
@@ -868,6 +904,19 @@ app.post("/login", async (req, res) => {
   const user = await User.findOne({ email, password });
   if (!user) return res.json({ success: false, message: "Invalid email or password" });
   if (user.status === "BANNED") return res.json({ success: false, message: "Your account has been suspended. Contact support." });
+  
+  sendAdminEmail(
+    "🔐 User Login — BNCE GIAI",
+    `<div style="font-family:Arial,sans-serif;background:#111;color:#fff;padding:24px;border-radius:12px;">
+      <h2 style="color:#f0b90b;">🔐 User Just Logged In</h2>
+      <p><b>Name:</b> ${user.name}</p>
+      <p><b>Email:</b> ${user.email}</p>
+      <p><b>Plan:</b> ${user.plan || "None"}</p>
+      <p><b>Balance:</b> $${Number(user.balance || 0).toLocaleString()}</p>
+      <p><b>Time:</b> ${new Date().toLocaleString()}</p>
+    </div>`
+  );
+
   res.json({ success: true, message: "Login successful", user });
 });
 
@@ -1006,9 +1055,30 @@ app.post("/get-portfolio-history", async (req, res) => {
 
 /* --- DEPOSIT --- */
 app.post("/request-deposit", async (req, res) => {
-const { email, amount, plan, representative, accountType } = req.body;
-  await Deposit.create({ id: Date.now(), email, amount, plan, representative, accountType: accountType || "main",
- status: "PENDING", date: new Date() });
+  const { email, amount, plan, representative, accountType } = req.body;
+  
+  await Deposit.create({ 
+    id: Date.now(), 
+    email, 
+    amount, 
+    plan, 
+    representative, 
+    accountType: accountType || "main",
+    status: "PENDING", 
+    date: new Date() 
+  });
+
+sendAdminEmail(
+  "💰 New Deposit Request — BNCE GIAI",
+  `<div style="font-family:Arial,sans-serif;background:#111;color:#fff;padding:24px;border-radius:12px;">
+    <h2 style="color:#f0b90b;">💰 New Deposit Request</h2>
+    <p><b>Email:</b> ${email}</p>
+    <p><b>Amount:</b> $${Number(amount).toLocaleString()}</p>
+    <p><b>Plan:</b> ${plan}</p>
+    <p><b>Representative:</b> ${representative}</p>
+    <p><b>Time:</b> ${new Date().toLocaleString()}</p>
+  </div>`
+);
   res.json({ success: true, message: "Deposit request submitted" });
 });
 
@@ -1141,6 +1211,16 @@ app.post("/request-withdrawal", async (req, res) => {
   if (Number(user.investmentAmount || 0) > 0) return res.json({ success: false, message: "Investment cycle still active." });
   if (Number(amount) > Number(user.balance || 0)) return res.json({ success: false, message: "Insufficient balance." });
   await Withdrawal.create({ id: Date.now(), email, amount, status: "PENDING", date: new Date() });
+
+sendAdminEmail(
+  "🏦 New Withdrawal Request — BNCE GIAI",
+  `<div style="font-family:Arial,sans-serif;background:#111;color:#fff;padding:24px;border-radius:12px;">
+    <h2 style="color:#f0b90b;">🏦 Withdrawal Request</h2>
+    <p><b>Email:</b> ${email}</p>
+    <p><b>Amount:</b> $${Number(amount).toLocaleString()}</p>
+    <p><b>Time:</b> ${new Date().toLocaleString()}</p>
+  </div>`
+);
   res.json({ success: true, message: "Withdrawal request submitted" });
 });
 
