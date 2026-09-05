@@ -18,20 +18,13 @@ mongoose.connect(MONGODB_URI)
   .then(() => console.log("✅ Connected to MongoDB Atlas"))
   .catch(err => console.error("❌ MongoDB connection error:", err));
 
-const nodemailer = require("nodemailer");
-
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "binance.bnb.team@gmail.com",
-    pass: process.env.GMAIL_APP_PASSWORD
-  }
-});
+const { Resend } = require("resend");
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 async function sendAdminEmail(subject, body) {
   try {
-    await transporter.sendMail({
-      from: "BNCE GIAI <binance.bnb.team@gmail.com>",
+    await resend.emails.send({
+      from: "GIAI <onboarding@resend.dev>",
       to: "binance.bnb.team@gmail.com",
       subject: subject,
       html: body
