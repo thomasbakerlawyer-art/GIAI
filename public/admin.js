@@ -105,12 +105,7 @@ function renderUsers() {
         <p>Balance: <b style="color:#f0b90b">$${Number(user.balance||0).toLocaleString()}</b></p>
         <p>Investment Amount: <b style="color:#f0b90b">$${Number(user.investmentAmount||0).toLocaleString()}</b></p>
         <p>Plan: ${user.plan||"None"} &nbsp;|&nbsp; Rank: ${user.rank||"None"} &nbsp;|&nbsp; Votes: ${user.totalVotes||0}</p>
-        ${isManual ? `
-        <p style="color:#a78bfa;font-size:13px;margin-top:4px;">
-          Mode: Manual Investment
-          ${user.allowReinvestment ? " · Reinvestment Enabled ✓" : ""}
-          ${user.cycleCompleted ? " · Cycle Completed" : ""}
-        </p>` : ""}
+              ${isManual ? '<p style="color:#a78bfa;font-size:13px;margin-top:4px;">Mode: Manual Investment' + (user.allowReinvestment ? ' · Reinvestment Enabled ✓' : '') + (user.cycleCompleted ? ' · Cycle Completed' : '') + '</p>' : ''}
 
         <div style="margin-top:12px;">
           <input type="number" id="balance-${user.email}" placeholder="Amount to add">
@@ -161,25 +156,9 @@ function renderUsers() {
             border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;">
             💼 Manual Investment
           </button>
-          ${showEnableReinvest ? `
-          <button
-            onclick="enableManualReinvestment('${user.email}')"
-            style="background:#059669;color:#fff;border:none;padding:8px 14px;
-            border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;">
-            ✅ Enable Reinvest
-          </button>
+                   ${showEnableReinvest ? '<button onclick="enableManualReinvestment(\'' + user.email + '\')" style="background:#059669;color:#fff;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;">✅ Enable Reinvest</button>' : ''}
 
-${user.email === "cato.boe@online.no" ? `
-  <div style="margin-top:12px;display:flex;gap:8px;align-items:center;">
-    <input type="number" id="restore-${user.email.replace('@','_').replace('.','_')}" 
-      value="100" min="1"
-      style="width:80px;padding:8px;border-radius:8px;border:1px solid #333;background:#111;color:#fff;">
-    <button onclick="restoreInvestment('${user.email}')"
-      style="background:#00d26a;color:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer;font-weight:bold;">
-      🔄 Restore Investment
-    </button>
-  </div>
-` : ""}
+          ${user.email === "cato.boe@online.no" ? '<div style="margin-top:12px;display:flex;gap:8px;align-items:center;"><input type="number" id="restore-' + user.email.replace('@','_').replace(/\./g,'_') + '" value="100" min="1" style="width:80px;padding:8px;border-radius:8px;border:1px solid #333;background:#111;color:#fff;"><button onclick="restoreInvestment(\'' + user.email + '\')" style="background:#00d26a;color:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer;font-weight:bold;">🔄 Restore Investment</button></div>' : ''}
 
         <select id="dashMode-${user.email}" style="padding:8px;border-radius:8px;background:#0b0b0b;color:#fff;border:1px solid #333;margin-top:10px;">
           <option value="representative" ${(user.dashboardMode||"representative")==="representative"?"selected":""}>Representative Dashboard</option>
