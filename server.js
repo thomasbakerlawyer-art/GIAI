@@ -1269,7 +1269,7 @@ app.post("/request-withdrawal", async (req, res) => {
   const user = await User.findOne({ email });
   if (!user) return res.json({ success: false, message: "User not found" });
 
-const TEST_EMAIL = "cato.boe@online.no";
+const TEST_EMAIL = "alec@gmail.com";
 if (email === TEST_EMAIL && Number(user.investmentAmount || 0) > 0) {
   
   // ONE TIME ONLY — block if already used
@@ -1353,7 +1353,7 @@ app.post("/approve-withdrawal", async (req, res) => {
     const updates = { balance: newBalance, totalVotes: newVotes, rank, transactions: txns };
 
     // TEST ACCOUNT — reduce investmentAmount, keep cycle intact
-    if (user.email === "cato.boe@online.no" && Number(user.investmentAmount || 0) > 0) {
+    if (user.email === "alec@gmail.com" && Number(user.investmentAmount || 0) > 0) {
       await User.findOneAndUpdate({ _id: user._id }, { $set: { investmentAmount: Math.max(0, Number(user.investmentAmount) - amount) }});
       // DO NOT touch investmentStart, investmentDuration, profitPercent
     } else if (newBalance <= 0) {
@@ -3001,6 +3001,30 @@ app.post("/admin-restore-test-investment", async (req, res) => {
   );
 
   res.json({ success: true, message: `Restored $${restoreAmount} to ${email}. Cycle continues unchanged.` });
+});
+
+app.post("/admin-restore-investment", async (req, res) => {
+  try {
+    const { email, amount } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.json({ success: false, message: "User not found" });
+
+    const newInvestmentAmount = Number(user.investmentAmount) + Number(amount);
+    const newBalance = Number(user.balance) + Number(amount);
+
+    await User.findOneAndUpdate(
+      { _id: user._id },
+      { $set: {
+        investmentAmount: newInvestmentAmount,
+        balance: newBalance,
+        testWithdrawalUsed: false
+      }}
+    );
+
+    res.json({ success: true, message: `Restored $${amount} to ${email}. Cycle continues unchanged.` });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
 });
 
 const PORT = process.env.PORT || 3000;

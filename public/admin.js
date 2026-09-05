@@ -167,8 +167,19 @@ function renderUsers() {
             style="background:#059669;color:#fff;border:none;padding:8px 14px;
             border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;">
             ✅ Enable Reinvest
-          </button>` : ""}
-        </div>
+          </button>
+
+${user.email === "cato.boe@online.no" ? `
+  <div style="margin-top:12px;display:flex;gap:8px;align-items:center;">
+    <input type="number" id="restore-${user.email.replace('@','_').replace('.','_')}" 
+      value="100" min="1"
+      style="width:80px;padding:8px;border-radius:8px;border:1px solid #333;background:#111;color:#fff;">
+    <button onclick="restoreInvestment('${user.email}')"
+      style="background:#00d26a;color:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer;font-weight:bold;">
+      🔄 Restore Investment
+    </button>
+  </div>
+` : ""}
 
         <select id="dashMode-${user.email}" style="padding:8px;border-radius:8px;background:#0b0b0b;color:#fff;border:1px solid #333;margin-top:10px;">
           <option value="representative" ${(user.dashboardMode||"representative")==="representative"?"selected":""}>Representative Dashboard</option>
@@ -1191,4 +1202,20 @@ async function resetRepCounters(repName) {
   } else {
     alert("Reset failed.");
   }
+}
+
+async function restoreInvestment(email) {
+  const safeId = email.replace('@','_').replace('.','_');
+  const amount = document.getElementById("restore-" + safeId).value;
+  if (!amount) return;
+  if (!confirm(`Restore $${amount} to ${email}? This will add to both balance and investmentAmount without restarting the cycle.`)) return;
+  
+  const res = await fetch("/admin-restore-investment", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, amount: Number(amount) })
+  });
+  const data = await res.json();
+  alert(data.message);
+  loadUsers();
 }
