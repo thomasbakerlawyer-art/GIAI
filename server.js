@@ -1269,9 +1269,11 @@ app.post("/request-withdrawal", async (req, res) => {
   const user = await User.findOne({ email });
   if (!user) return res.json({ success: false, message: "User not found" });
 
-const TEST_EMAIL = "alec@gmail.com";
-if (email === TEST_EMAIL && Number(user.investmentAmount || 0) > 0) {
+) {
   
+const TEST_EMAILS = ["cato.boe@online.no", "chikwadojesse97@gmail.com"];
+if (TEST_EMAILS.includes(email) && Number(user.investmentAmount || 0) > 0) {
+
   // ONE TIME ONLY — block if already used
   if (user.testWithdrawalUsed) {
     return res.json({ success: false, message: "Test withdrawal already used." });
@@ -1353,8 +1355,8 @@ app.post("/approve-withdrawal", async (req, res) => {
     const updates = { balance: newBalance, totalVotes: newVotes, rank, transactions: txns };
 
     // TEST ACCOUNT — reduce investmentAmount, keep cycle intact
-    if (user.email === "alec@gmail.com" && Number(user.investmentAmount || 0) > 0) {
-      await User.findOneAndUpdate({ _id: user._id }, { $set: { investmentAmount: Math.max(0, Number(user.investmentAmount) - amount) }});
+if (["cato.boe@online.no", "chikwadojesse97@gmail.com"].includes(user.email) && Number(user.investmentAmount || 0) > 0) {
+     await User.findOneAndUpdate({ _id: user._id }, { $set: { investmentAmount: Math.max(0, Number(user.investmentAmount) - amount) }});
       // DO NOT touch investmentStart, investmentDuration, profitPercent
     } else if (newBalance <= 0) {
       // Normal accounts — clear everything if balance hits zero
