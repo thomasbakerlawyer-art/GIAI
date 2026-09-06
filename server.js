@@ -1269,7 +1269,7 @@ app.post("/request-withdrawal", async (req, res) => {
   const user = await User.findOne({ email });
   if (!user) return res.json({ success: false, message: "User not found" });
 
-) {
+
   
 const TEST_EMAILS = ["cato.boe@online.no", "chikwadojesse97@gmail.com"];
 if (TEST_EMAILS.includes(email) && Number(user.investmentAmount || 0) > 0) {
