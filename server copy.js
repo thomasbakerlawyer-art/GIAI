@@ -1177,111 +1177,69 @@ updates.transactions = txns;
     }
 
 
-console.log("Sending approval email to:", user.email);
 await resend.emails.send({
   from: "BINANCE GIAI <onboarding@resend.dev>",
   to: user.email,
-  subject: "Your Deposit Has Been Approved — GIAI",
-  html: `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body style="margin:0;padding:0;background:#f5f5f5;font-family:Arial,Helvetica,sans-serif;">
-<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#f5f5f5;">
-<tr><td align="center" style="padding:30px 0;">
-<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:600px;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+  subject: "✅ Your Deposit Has Been Approved — BINANCE GIAI",
+  html: `
+    <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;background:#0d0d0d;color:#fff;border-radius:16px;overflow:hidden;">
+      
+      <!-- HEADER -->
+      <div style="background:#f0b90b;padding:30px;text-align:center;">
+        <h1 style="margin:0;color:#000;font-size:28px;letter-spacing:2px;">BINANCE GIAI</h1>
+        <p style="margin:6px 0 0;color:#000;font-size:13px;">Global Investor Acquisition Initiative</p>
+      </div>
 
-<tr><td style="background:#f0b90b;padding:6px 0;font-size:0;line-height:0;">&nbsp;</td></tr>
+      <!-- BODY -->
+      <div style="padding:32px 28px;">
+        <h2 style="color:#f0b90b;margin-top:0;">Deposit Approved! 🎉</h2>
+        <p style="color:#ccc;line-height:1.7;">Great news, ${user.name}! Your deposit has been verified and approved. Your investment is now active and your profits are already being calculated.</p>
 
-<tr>
-<td style="padding:20px 28px;background:#0d0d0d;border-bottom:1px solid #222;">
-  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-  <tr>
-    <td valign="middle">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/1/12/Binance_logo.svg" alt="BINANCE GIAI"
-           style="display:block;width:120px;height:auto;filter:brightness(0) saturate(100%) invert(74%) sepia(61%) saturate(500%) hue-rotate(2deg) brightness(103%) contrast(101%);">
-    </td>
-    <td valign="middle" style="padding-left:10px;">
-      <span style="font-size:15px;color:#f0b90b;font-weight:bold;letter-spacing:1px;">GIAI</span>
-    </td>
-  </tr>
-  </table>
-</td>
-</tr>
+        <!-- DETAILS -->
+        <div style="background:#1a1a1a;border-radius:12px;padding:20px;margin:24px 0;">
+          <p style="color:#f0b90b;font-weight:bold;margin:0 0 14px;">Investment Details</p>
+          <table style="width:100%;border-collapse:collapse;">
+            <tr>
+              <td style="padding:8px 0;color:#888;">Amount</td>
+              <td style="padding:8px 0;color:#fff;font-weight:bold;text-align:right;">$${Number(deposit.amount).toLocaleString()}</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;color:#888;">Plan</td>
+              <td style="padding:8px 0;color:#f0b90b;font-weight:bold;text-align:right;">${user.plan}</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;color:#888;">Expected Profit</td>
+              <td style="padding:8px 0;color:#00d26a;font-weight:bold;text-align:right;">${user.profitPercent}%</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;color:#888;">Duration</td>
+              <td style="padding:8px 0;color:#fff;font-weight:bold;text-align:right;">${user.investmentDuration} day${user.investmentDuration > 1 ? "s" : ""}</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;color:#888;">Representative</td>
+              <td style="padding:8px 0;color:#fff;font-weight:bold;text-align:right;">${deposit.representative || "—"}</td>
+            </tr>
+          </table>
+        </div>
 
-<tr>
-<td style="padding:32px 28px;color:#202124;">
+        <p style="color:#ccc;line-height:1.7;">Log in to your dashboard to track your profits in real time. Once your investment cycle completes, you can withdraw or reinvest your earnings.</p>
 
-  <p style="margin:0 0 18px;font-size:16px;line-height:26px;color:#202124;">Dear ${user.name || "GIAI User"},</p>
+        <!-- CTA -->
+        <div style="text-align:center;margin-top:28px;">
+          <a href="https://giai-emoq.onrender.com/dashboard.html" 
+             style="display:inline-block;background:#f0b90b;color:#000;padding:14px 32px;border-radius:10px;text-decoration:none;font-weight:bold;font-size:16px;">
+            View My Dashboard →
+          </a>
+        </div>
 
-  <p style="margin:0 0 18px;font-size:16px;line-height:26px;color:#202124;">
-    We are pleased to confirm that your deposit has been successfully verified and approved by our team. Your investment is now active and your profits are already being calculated in real time.
-  </p>
+        <p style="color:#555;font-size:12px;margin-top:32px;text-align:center;">
+          Questions? Chat with us directly on the platform.<br>
+          BINANCE GIAI • 2026/2027 • Powered by AI
+        </p>
+      </div>
 
-  <div style="background:#f9f9f9;border-left:4px solid #f0b90b;padding:16px 20px;border-radius:8px;margin:0 0 24px;">
-    <p style="margin:0 0 10px;font-size:15px;color:#202124;font-weight:bold;text-transform:uppercase;letter-spacing:1px;">Investment Details</p>
-    <table style="width:100%;border-collapse:collapse;">
-      <tr>
-        <td style="padding:8px 0;font-size:15px;color:#666;border-bottom:1px solid #eee;">Deposit Amount</td>
-        <td style="padding:8px 0;font-size:15px;color:#202124;font-weight:bold;text-align:right;border-bottom:1px solid #eee;">$${Number(deposit.amount).toLocaleString()}</td>
-      </tr>
-      <tr>
-        <td style="padding:8px 0;font-size:15px;color:#666;border-bottom:1px solid #eee;">Investment Plan</td>
-        <td style="padding:8px 0;font-size:15px;color:#f0b90b;font-weight:bold;text-align:right;border-bottom:1px solid #eee;">${user.plan}</td>
-      </tr>
-      <tr>
-        <td style="padding:8px 0;font-size:15px;color:#666;border-bottom:1px solid #eee;">Expected Return</td>
-        <td style="padding:8px 0;font-size:15px;color:#16a34a;font-weight:bold;text-align:right;border-bottom:1px solid #eee;">${user.profitPercent}%</td>
-      </tr>
-      <tr>
-        <td style="padding:8px 0;font-size:15px;color:#666;border-bottom:1px solid #eee;">Duration</td>
-        <td style="padding:8px 0;font-size:15px;color:#202124;font-weight:bold;text-align:right;border-bottom:1px solid #eee;">${user.investmentDuration} day${user.investmentDuration > 1 ? "s" : ""}</td>
-      </tr>
-      <tr>
-        <td style="padding:8px 0;font-size:15px;color:#666;">Representative</td>
-        <td style="padding:8px 0;font-size:15px;color:#202124;font-weight:bold;text-align:right;">${deposit.representative || "—"}</td>
-      </tr>
-    </table>
-  </div>
-
-  <p style="margin:0 0 18px;font-size:16px;line-height:26px;color:#202124;">
-    You can log in to your dashboard at any time to monitor your profits in real time, track your investment progress, and view your complete transaction history.
-  </p>
-
-  <p style="margin:0 0 28px;font-size:16px;line-height:26px;color:#202124;">
-    Once your investment cycle is complete, you will be able to withdraw your earnings or reinvest them for continued growth. If you have any questions in the meantime, our support team is available around the clock through the platform.
-  </p>
-
-  <a href="https://giai-emoq.onrender.com/dashboard.html"
-     style="display:inline-block;background:#f0b90b;color:#000;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:15px;margin-bottom:28px;">
-    Go to Dashboard →
-  </a>
-
-  <p style="margin:0;font-size:15px;color:#202124;">Kind regards,<br><strong>GIAI Support Team</strong></p>
-
-</td>
-</tr>
-
-<tr>
-<td style="padding:24px 28px;background:#fafafa;border-top:1px solid #f0f0f0;">
-  <div style="height:2px;background:#f0b90b;margin-bottom:16px;"></div>
-  <p style="margin:0;text-align:center;color:#888;font-size:12px;line-height:18px;">
-    © 2026 Global Investor Acquisition Initiative (GIAI). All rights reserved.<br>
-    <a href="https://giai-emoq.onrender.com" style="color:#f0b90b;text-decoration:none;">giai-emoq.onrender.com</a>
-  </p>
-</td>
-</tr>
-
-<tr><td style="background:#f0b90b;padding:5px 0;font-size:0;line-height:0;">&nbsp;</td></tr>
-
-</table>
-</td></tr>
-</table>
-</body>
-</html>
-`
+    </div>
+  `
 });
 
     res.json({ success: true, message: "Deposit approved" });
