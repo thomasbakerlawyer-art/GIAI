@@ -561,7 +561,6 @@ const repCountryMap = {
   "Aaliyah Kathe": ["Norway","Sweden","Denmark","UAE","Qatar"],
   "Jyuon Yeon": ["Malaysia","South Korea","Japan","Thailand","Singapore"]
 };
-
 async function fetchAndUpdateCounters() {
   try {
     const res = await fetch("/counter-state");
@@ -587,12 +586,31 @@ async function fetchAndUpdateCounters() {
       if (totalEl) totalEl.innerText = total.toLocaleString();
     });
 
-    // Update rankings based on total votes
+    /* SORT AND REORDER CARDS BY VOTE TOTAL */
     const sorted = Object.entries(repTotals).sort((a, b) => b[1] - a[1]);
+
+    const container = document.querySelector(".representatives");
+    const title = container.querySelector(".section-title");
+
+    /* Update rank badges */
     sorted.forEach(([rep], index) => {
-      const rankEl = document.getElementById("rank-" + rep.replace(/\s+/g, "-"));
+      const repKey = rep.replace(/\s+/g, "-");
+      const rankEl = document.getElementById("rank-" + repKey);
       if (rankEl) rankEl.innerText = "#" + (index + 1);
     });
+
+    /* Reorder cards in the DOM */
+    sorted.forEach(([rep]) => {
+      const repKey = rep.replace(/\s+/g, "-");
+      const rankEl = document.getElementById("rank-" + repKey);
+      if (rankEl) {
+        const card = rankEl.closest(".rep-card");
+        if (card) container.appendChild(card);
+      }
+    });
+
+    /* Keep title at the top */
+    container.insertBefore(title, container.firstChild);
 
   } catch(e) {
     console.log("Counter fetch failed", e);
