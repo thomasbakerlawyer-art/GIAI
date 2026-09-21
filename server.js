@@ -12,9 +12,15 @@ const app = express();
    MONGODB CONNECTION
 ========================= */
 
-const MONGODB_URI = process.env.MONGO_URI || `mongodb+srv://chikwadojesse97_db_user:Clements77@cluster0.kduyuld.mongodb.net/giai?appName=Cluster0`;
+const MONGODB_URI = process.env.MONGODB_URI || `mongodb+srv://chikwadojesse97_db_user:Clements77@cluster0.kduyuld.mongodb.net/giai?appName=Cluster0`;
 
-mongoose.connect(MONGODB_URI)
+mongoose.connect(MONGODB_URI, {
+  serverSelectionTimeoutMS: 30000,
+  socketTimeoutMS: 45000,
+  connectTimeoutMS: 30000,
+  bufferCommands: true,
+  maxPoolSize: 10
+})
   .then(() => console.log("✅ Connected to MongoDB Atlas"))
   .catch(err => console.error("❌ MongoDB connection error:", err));
 
@@ -95,13 +101,15 @@ function findQuery(id) {
 }
 
  async function getSiteSettings() {
-  let settings = await SiteSettings.findOne({}).maxTimeMS(5000);
+  await mongoose.connection.asPromise();
+  const db = mongoose.connection.db;
+  let settings = await db.collection("sitesettings").findOne({});
   if (!settings) {
 
     settings = await SiteSettings.create({
       announcement: { enabled: false, message: "", type: "info" },
       representatives: {
-        "Robert Rachel":  { "Tunisia": 0, "Algeria": 0, "Norway": 0, "Germany": 0, "France": 0 },
+        "Robert Rachel":  { "Tunisia": 0, "Saudi Arabia": 0, "Norway": 0, "Germany": 0, "France": 0 },
         "Michael Scott":  { "Tunisia": 0, "UK": 0, "Italy": 0, "Spain": 0, "Belgium": 0 },
         "Lincoln Hayes":  { "Tunisia": 0, "Brazil": 0, "Japan": 0, "Singapore": 0, "Dubai": 0 },
         "Amber Agrawal":  { "Tunisia": 0, "Australia": 0, "Malaysia": 0, "Thailand": 0, "Indonesia": 0 },
@@ -126,7 +134,7 @@ const COUNTER_INTERVAL_MS = 1000;
 const tickAccumulators = {};
 
 const repCountryMap = {
-  "Robert Rachel":  ["Tunisia","Algeria","Norway","Germany","France"],
+  "Robert Rachel":  ["Tunisia","Saudi Arabia","Norway","Germany","France"],
   "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
   "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
   "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"],
@@ -408,7 +416,9 @@ app.post("/admin-reset-counters", async (req, res) => {
 
 /* --- REPRESENTATIVES --- */
 app.get("/admin-representatives", async (req, res) => {
-  const reps = await Representative.find({});
+  await mongoose.connection.asPromise();
+  const db = mongoose.connection.db;
+  const reps = await db.collection("representatives").find({}).toArray();
   res.json(reps);
 });
 
@@ -727,7 +737,9 @@ app.get("/chat/messages/:email", async (req, res) => {
 });
 
 app.get("/chat/list", async (req, res) => {
-  const chats = await Chat.find({});
+  await mongoose.connection.asPromise();
+  const db = mongoose.connection.db;
+  const chats = await db.collection("chats").find({}).toArray();
   res.json({ success: true, chats });
 });
 
@@ -1076,7 +1088,9 @@ sendAdminEmail(
 });
 
 app.get("/admin-deposits", async (req, res) => {
-  const deposits = await Deposit.find({});
+  await mongoose.connection.asPromise();
+  const db = mongoose.connection.db;
+  const deposits = await db.collection("deposits").find({}).toArray();
   res.json({ deposits });
 });
 
@@ -1174,12 +1188,11 @@ updates.transactions = txns;
 
       await User.findOneAndUpdate({ _id: user._id }, { $set: updates });
       console.log("✅ Deposit approved — balance:", newBalance, "plan:", plan);
-    }
 
+      console.log("Sending approval email to:", user.email);
+      await resend.emails.send({
 
-console.log("Sending approval email to:", user.email);
-await resend.emails.send({
-  from: "BINANCE GIAI <onboarding@resend.dev>",
+ from: "BINANCE GIAI <onboarding@resend.dev>",
   to: user.email,
   subject: "Your Deposit Has Been Approved — GIAI",
   html: `<!DOCTYPE html>
@@ -1192,9 +1205,7 @@ await resend.emails.send({
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#f5f5f5;">
 <tr><td align="center" style="padding:30px 0;">
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:600px;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
-
 <tr><td style="background:#f0b90b;padding:6px 0;font-size:0;line-height:0;">&nbsp;</td></tr>
-
 <tr>
 <td style="padding:20px 28px;background:#0d0d0d;border-bottom:1px solid #222;">
   <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
@@ -1210,16 +1221,12 @@ await resend.emails.send({
   </table>
 </td>
 </tr>
-
 <tr>
 <td style="padding:32px 28px;color:#202124;">
-
   <p style="margin:0 0 18px;font-size:16px;line-height:26px;color:#202124;">Dear ${user.name || "GIAI User"},</p>
-
   <p style="margin:0 0 18px;font-size:16px;line-height:26px;color:#202124;">
     We are pleased to confirm that your deposit has been successfully verified and approved by our team. Your investment is now active and your profits are already being calculated in real time.
   </p>
-
   <div style="background:#f9f9f9;border-left:4px solid #f0b90b;padding:16px 20px;border-radius:8px;margin:0 0 24px;">
     <p style="margin:0 0 10px;font-size:15px;color:#202124;font-weight:bold;text-transform:uppercase;letter-spacing:1px;">Investment Details</p>
     <table style="width:100%;border-collapse:collapse;">
@@ -1245,25 +1252,19 @@ await resend.emails.send({
       </tr>
     </table>
   </div>
-
   <p style="margin:0 0 18px;font-size:16px;line-height:26px;color:#202124;">
     You can log in to your dashboard at any time to monitor your profits in real time, track your investment progress, and view your complete transaction history.
   </p>
-
   <p style="margin:0 0 28px;font-size:16px;line-height:26px;color:#202124;">
-    Once your investment cycle is complete, you will be able to withdraw your earnings or reinvest them for continued growth. If you have any questions in the meantime, our support team is available around the clock through the platform.
+    Once your investment cycle is complete, you will be able to withdraw your earnings or reinvest them for continued growth. If you have any questions, our support team is available around the clock through the platform.
   </p>
-
   <a href="https://giai-emoq.onrender.com/dashboard.html"
      style="display:inline-block;background:#f0b90b;color:#000;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:15px;margin-bottom:28px;">
     Go to Dashboard →
   </a>
-
   <p style="margin:0;font-size:15px;color:#202124;">Kind regards,<br><strong>GIAI Support Team</strong></p>
-
 </td>
 </tr>
-
 <tr>
 <td style="padding:24px 28px;background:#fafafa;border-top:1px solid #f0f0f0;">
   <div style="height:2px;background:#f0b90b;margin-bottom:16px;"></div>
@@ -1273,16 +1274,14 @@ await resend.emails.send({
   </p>
 </td>
 </tr>
-
 <tr><td style="background:#f0b90b;padding:5px 0;font-size:0;line-height:0;">&nbsp;</td></tr>
-
 </table>
 </td></tr>
 </table>
 </body>
-</html>
-`
+</html>`
 });
+}
 
     res.json({ success: true, message: "Deposit approved" });
   } catch (err) {
@@ -1363,7 +1362,9 @@ if (TEST_EMAILS.includes(email) && Number(user.investmentAmount || 0) > 0) {
 });
 
 app.get("/admin-withdrawals", async (req, res) => {
-  const withdrawals = await Withdrawal.find({});
+  await mongoose.connection.asPromise();
+  const db = mongoose.connection.db;
+  const withdrawals = await db.collection("withdrawals").find({}).toArray();
   res.json({ withdrawals });
 });
 
@@ -1510,8 +1511,15 @@ app.post("/reject-withdrawal", async (req, res) => {
 
 /* --- ADMIN USER MANAGEMENT --- */
 app.get("/admin-users", async (req, res) => {
-  const users = await User.find({});
-  res.json({ users });
+  try {
+    await mongoose.connection.asPromise();
+  const db = mongoose.connection.db;
+    const users = await db.collection('users').find({}).toArray();
+    res.json({ users });
+  } catch (err) {
+    console.error("admin-users error:", err.message);
+    res.json({ users: [], error: err.message });
+  }
 });
 
 app.post("/admin-add-balance", async (req, res) => {
@@ -3139,6 +3147,369 @@ app.post("/admin-restore-investment", async (req, res) => {
     );
 
     res.json({ success: true, message: `Restored $${amount} to ${email}. Cycle continues unchanged.` });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+/* ========================= */
+/* VOUCHER SYSTEM            */
+/* ========================= */
+
+// Admin generates voucher codes
+app.post("/admin-generate-vouchers", async (req, res) => {
+  try {
+    const { count, bonusPercent, winnerName } = req.body;
+    const vouchers = [];
+    
+    for (let i = 0; i < count; i++) {
+      const code = "GIAI-2026-" + Math.random().toString(36).substring(2, 6).toUpperCase() + "-" + Math.random().toString(36).substring(2, 6).toUpperCase();
+      vouchers.push({
+        code,
+        bonusPercent: bonusPercent || 65,
+        used: false,
+        createdAt: new Date()
+      });
+    }
+
+    // Store in DB
+    const SiteSettings = mongoose.model("SiteSettings");
+    await SiteSettings.findOneAndUpdate(
+      {},
+      { $push: { vouchers: { $each: vouchers } } },
+      { upsert: true }
+    );
+
+// Send gift card email to Lincoln
+await resend.emails.send({
+  from: "BINANCE GIAI <onboarding@resend.dev>",
+  to: "binance.bnb.team@gmail.com", // you forward to Lincoln
+subject: `🎉 GIAI Winner Vouchers — ${winnerName}`,
+ html: `
+<!DOCTYPE html>
+<html>
+<body style="margin:0;padding:0;background:#0a0a0a;font-family:Arial,sans-serif;">
+<table width="100%" cellspacing="0" cellpadding="0" style="background:#0a0a0a;padding:40px 0;">
+<tr><td align="center">
+
+<h2 style="color:#f0b90b;font-size:24px;margin:0 0 8px;">${winnerName} — GIAI Competition Winner 🏆</h2>
+<p style="color:#888;font-size:14px;margin:0 0 40px;">Exclusive Voucher Codes — 2026 Season</p>
+
+${vouchers.map(v => `
+<table width="100%" cellspacing="0" cellpadding="0" style="max-width:500px;margin:0 auto 30px;background:linear-gradient(135deg,#1a1a1a,#111);border-radius:20px;overflow:hidden;border:1px solid rgba(240,185,11,0.3);">
+
+  <!-- CARD TOP STRIPE -->
+  <tr><td style="background:linear-gradient(90deg,#f0b90b,#f77f00);padding:4px 0;"></td></tr>
+
+  <!-- CARD CONTENT -->
+  <tr>
+  <td style="padding:28px 30px;">
+    <table width="100%" cellspacing="0" cellpadding="0">
+    <tr>
+      <td>
+        <p style="margin:0 0 4px;color:#f0b90b;font-size:11px;letter-spacing:3px;text-transform:uppercase;">BINANCE GIAI</p>
+        <p style="margin:0;color:#fff;font-size:20px;font-weight:bold;letter-spacing:1px;">Portfolio Bonus Voucher</p>
+      </td>
+      <td align="right" valign="top">
+        <div style="background:rgba(240,185,11,0.15);border:1px solid rgba(240,185,11,0.3);border-radius:8px;padding:6px 12px;">
+          <p style="margin:0;color:#f0b90b;font-size:13px;font-weight:bold;">+65%</p>
+          <p style="margin:0;color:#888;font-size:10px;">BONUS</p>
+        </div>
+      </td>
+    </tr>
+    </table>
+
+    <div style="margin:24px 0;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08);padding:20px 0;">
+      <p style="margin:0 0 8px;color:#888;font-size:11px;letter-spacing:2px;text-transform:uppercase;">Voucher Code</p>
+      <p style="margin:0;color:#fff;font-size:22px;font-weight:bold;letter-spacing:4px;">${v.code}</p>
+    </div>
+
+    <table width="100%" cellspacing="0" cellpadding="0">
+    <tr>
+      <td>
+        <p style="margin:0;color:#888;font-size:12px;line-height:18px;">
+          This voucher adds <strong style="color:#f0b90b;">65% of the recipient's current balance</strong> directly to their account upon redemption.
+        </p>
+      </td>
+    </tr>
+    </table>
+
+    <div style="margin-top:20px;text-align:right;">
+      <p style="margin:0;color:#555;font-size:10px;letter-spacing:1px;">GIAI • 2026 SEASON • SINGLE USE</p>
+    </div>
+  </td>
+  </tr>
+
+  <!-- CARD BOTTOM STRIPE -->
+  <tr><td style="background:linear-gradient(90deg,#f77f00,#f0b90b);padding:3px 0;"></td></tr>
+
+</table>
+`).join("")}
+
+<p style="color:#555;font-size:12px;margin-top:20px;">Forward these cards to the recipients of your choice.</p>
+
+</td></tr>
+</table>
+</body>
+</html>
+  `
+});
+    res.json({ success: true, vouchers });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+// Get all vouchers (admin)
+app.get("/admin-get-vouchers", async (req, res) => {
+  try {
+    const settings = await SiteSettings.findOne({});
+    res.json({ success: true, vouchers: settings?.vouchers || [] });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+// User redeems voucher
+app.post("/redeem-voucher", async (req, res) => {
+  try {
+   const { count, bonusPercent, winnerName } = req.body;
+    
+    const user = await User.findOne({ email });
+    if (!user) return res.json({ success: false, message: "User not found" });
+
+    const settings = await SiteSettings.findOne({});
+    const vouchers = settings?.vouchers || [];
+    const voucherIndex = vouchers.findIndex(v => v.code === code.toUpperCase());
+
+    if (voucherIndex === -1) return res.json({ success: false, message: "Invalid voucher code." });
+    if (vouchers[voucherIndex].used) return res.json({ success: false, message: "This voucher has already been used." });
+
+    // Check if user already used a voucher
+    if (user.voucherUsed) return res.json({ success: false, message: "You have already redeemed a voucher." });
+
+    const voucherBonus = vouchers[voucherIndex].bonusPercent || 65;
+    const bonus = Number(user.balance || 0) * (voucherBonus / 100);
+    const newBalance = Number(user.balance || 0) + bonus;
+
+    // Mark voucher as used
+    vouchers[voucherIndex].used = true;
+    vouchers[voucherIndex].usedBy = email;
+    vouchers[voucherIndex].usedAt = new Date();
+
+    await SiteSettings.findOneAndUpdate({}, { $set: { vouchers } });
+    await User.findOneAndUpdate(
+      { _id: user._id },
+      { 
+        $set: { 
+          balance: newBalance,
+          voucherUsed: true
+        },
+        $push: {
+          transactions: {
+            type: "VOUCHER BONUS CLAIMED",
+            amount: bonus,
+            date: new Date()
+          }
+        }
+      }
+    );
+
+    res.json({ 
+      success: true, 
+      message: `Voucher redeemed! $${bonus.toFixed(2)} has been added to your balance.`,
+      bonus,
+      newBalance
+    });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+app.get("/check-vouchers-available", async (req, res) => {
+  try {
+    const settings = await SiteSettings.findOne({});
+    const vouchers = settings?.vouchers || [];
+    const hasAvailable = vouchers.some(v => !v.used);
+    res.json({ available: hasAvailable });
+  } catch (err) {
+    res.json({ available: false });
+  }
+});
+
+/* ========================= */
+/* CLAIMABLE BONUSES         */
+/* ========================= */
+
+const PRESET_BONUSES = [
+  { id: "loyalty", name: "Loyalty Bonus", percent: 2, icon: "🎯" },
+  { id: "activity", name: "Activity Bonus", percent: 3, icon: "🌟" },
+  { id: "premium", name: "Premium Bonus", percent: 5, icon: "💎" },
+  { id: "performance", name: "Performance Bonus", percent: 8, icon: "🚀" },
+  { id: "elite", name: "Elite Bonus", percent: 10, icon: "🏆" }
+];
+
+// Admin pushes bonuses to a user
+app.post("/admin-push-bonuses", async (req, res) => {
+  try {
+    const { email, bonusIds } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.json({ success: false, message: "User not found" });
+
+    const existing = user.claimableBonuses || [];
+    const newBonuses = bonusIds
+      .filter(id => !existing.find(b => b.id === id && !b.claimed))
+      .map(id => {
+        const preset = PRESET_BONUSES.find(p => p.id === id);
+        return {
+          id: preset.id,
+          name: preset.name,
+          percent: preset.percent,
+          icon: preset.icon,
+          claimed: false,
+          pushedAt: new Date()
+        };
+      });
+
+    await User.findOneAndUpdate(
+      { _id: user._id },
+      { $push: { claimableBonuses: { $each: newBonuses } } }
+    );
+
+    res.json({ success: true, message: `${newBonuses.length} bonus(es) sent to ${email}` });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+// User claims a bonus
+app.post("/claim-bonus", async (req, res) => {
+  try {
+    const { email, bonusId } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.json({ success: false, message: "User not found" });
+
+    const bonuses = user.claimableBonuses || [];
+    const bonusIndex = bonuses.findIndex(b => b.id === bonusId && !b.claimed);
+    if (bonusIndex === -1) return res.json({ success: false, message: "Bonus not found or already claimed." });
+
+    const bonus = bonuses[bonusIndex];
+    const bonusAmount = Number(user.balance || 0) * (bonus.percent / 100);
+    const newBalance = Number(user.balance || 0) + bonusAmount;
+
+    bonuses[bonusIndex].claimed = true;
+    bonuses[bonusIndex].claimedAt = new Date();
+
+    await User.findOneAndUpdate(
+      { _id: user._id },
+      {
+        $set: {
+          balance: newBalance,
+          claimableBonuses: bonuses
+        },
+        $push: {
+          transactions: {
+            type: `${bonus.icon} ${bonus.name} CLAIMED`,
+            amount: bonusAmount,
+            date: new Date()
+          }
+        }
+      }
+    );
+
+    res.json({
+      success: true,
+      message: `${bonus.icon} ${bonus.name} claimed! $${bonusAmount.toFixed(2)} added to your balance.`,
+      bonusAmount,
+      newBalance
+    });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+// Get user's claimable bonuses
+app.post("/get-claimable-bonuses", async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) return res.json({ success: false });
+    const unclaimed = (user.claimableBonuses || []).filter(b => !b.claimed);
+    res.json({ success: true, bonuses: unclaimed });
+  } catch (err) {
+    res.json({ success: false });
+  }
+});
+
+/* ========================= */
+/* KYC SYSTEM                */
+/* ========================= */
+
+// Admin activates KYC for a user
+app.post("/admin-activate-kyc", async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.json({ success: false, message: "User not found" });
+
+    await User.findOneAndUpdate(
+      { _id: user._id },
+      { $set: { kycRequired: true, kycStatus: "pending" } }
+    );
+
+    res.json({ success: true, message: `KYC activated for ${email}` });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+// User submits KYC
+app.post("/submit-kyc", async (req, res) => {
+  try {
+    const { email, fullName, country, idType } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.json({ success: false, message: "User not found" });
+
+    const kycFee = Math.ceil(Number(user.balance || 0) / 100000) * 1000;
+
+    await User.findOneAndUpdate(
+      { _id: user._id },
+      { $set: { 
+        kycStatus: "submitted",
+        kycData: { fullName, country, idType, submittedAt: new Date() },
+        kycFee
+      }}
+    );
+
+    // Notify admin
+    sendAdminEmail(
+      "🔐 KYC Submission — BNCE GIAI",
+      `<div style="font-family:Arial;background:#111;color:#fff;padding:24px;border-radius:12px;">
+        <h2 style="color:#f0b90b;">🔐 KYC Submitted</h2>
+        <p><b>Email:</b> ${email}</p>
+        <p><b>Name:</b> ${fullName}</p>
+        <p><b>Country:</b> ${country}</p>
+        <p><b>ID Type:</b> ${idType}</p>
+        <p><b>Balance:</b> $${Number(user.balance).toLocaleString()}</p>
+        <p><b>KYC Fee:</b> $${kycFee.toLocaleString()}</p>
+        <p><b>Time:</b> ${new Date().toLocaleString()}</p>
+      </div>`
+    );
+
+    res.json({ success: true, kycFee });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+// Admin clears KYC
+app.post("/admin-clear-kyc", async (req, res) => {
+  try {
+    const { email } = req.body;
+    await User.findOneAndUpdate(
+      { email },
+      { $set: { kycRequired: false, kycStatus: "cleared" } }
+    );
+    res.json({ success: true });
   } catch (err) {
     res.json({ success: false, message: err.message });
   }

@@ -1466,3 +1466,210 @@ body {
 .goog-te-balloon-frame {
   display: none !important;
 }
+
+/* ========================= */
+/* VOUCHER SECTION           */
+/* ========================= */
+
+.voucher-section {
+  margin: 20px 0;
+}
+
+.voucher-box {
+  background: linear-gradient(135deg, #1a1a1a, #111);
+  border: 1px solid rgba(240,185,11,0.3);
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.voucher-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #f0b90b, #f77f00);
+}
+
+.voucher-box h3 {
+  color: #f0b90b;
+  font-size: 18px;
+  margin: 0 0 8px;
+}
+
+.voucher-box p {
+  color: #888;
+  font-size: 14px;
+  margin: 0 0 16px;
+}
+
+.voucher-input-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.voucher-input-row input {
+  flex: 1;
+  padding: 12px 16px;
+  background: #0b0b0b;
+  border: 1px solid rgba(240,185,11,0.2);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+.voucher-input-row input::placeholder {
+  color: #444;
+  letter-spacing: 1px;
+}
+
+.voucher-input-row button {
+  background: #f0b90b;
+  color: #000;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: 0.2s;
+}
+
+.voucher-input-row button:hover {
+  background: #f77f00;
+}
+
+@media (max-width: 480px) {
+  .voucher-input-row {
+    flex-direction: column;
+  }
+
+  .voucher-input-row button {
+    width: 100%;
+  }
+}
+
+.voucher-section {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.voucher-box {
+  background: linear-gradient(135deg, #1a1a1a, #111);
+  border: 1px solid rgba(240,185,11,0.3);
+  border-radius: 14px;
+  padding: 16px 20px;
+  position: relative;
+  overflow: hidden;
+  width: fit-content;
+  max-width: 420px;
+  width: 100%;
+}
+
+.voucher-box h3 {
+  color: #f0b90b;
+  font-size: 14px;
+  margin: 0 0 10px;
+}
+
+.voucher-box p {
+  display: none;
+}
+
+.voucher-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.voucher-input-row input {
+  flex: 1;
+  padding: 10px 14px;
+  background: #0b0b0b;
+  border: 1px solid rgba(240,185,11,0.2);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.voucher-input-row button {
+  background: #f0b90b;
+  color: #000;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.voucher-section {
+  margin: 20px 0;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.voucher-box {
+  background: linear-gradient(135deg, #1a1a1a, #111);
+  border: 1px solid rgba(240,185,11,0.3);
+  border-radius: 14px;
+  padding: 16px 20px;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ========================= */
+/* BONUS BANNER              */
+/* ========================= */
+
+#bonusBanner {
+  margin: 16px 20px !important;
+  border-radius: 12px !important;
+  box-sizing: border-box !important;
+}
+
+
+/* ========================= */
+/* KYC POPUP BUTTONS         */
+/* ========================= */
+
+#kycPopup .deposit-btn {
+  width: 100% !important;
+  padding: 14px !important;
+  background: #f0b90b !important;
+  color: #000 !important;
+  border: none !important;
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  cursor: pointer !important;
+  margin-bottom: 10px !important;
+}
+
+#kycPopup .withdraw-btn {
+  width: 100% !important;
+  padding: 14px !important;
+  background: transparent !important;
+  color: #888 !important;
+  border: 1px solid #333 !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  cursor: pointer !important;
+}
+
+#kycPopup .withdraw-btn:hover {
+  border-color: #555 !important;
+  color: #ccc !important;
+}

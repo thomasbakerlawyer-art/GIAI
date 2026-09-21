@@ -131,8 +131,20 @@ if (!data.success) {
 
 currentUser = data.user;
 updateDashboard();
-}
+loadClaimableBonuses();
 
+// Show voucher section if user hasn't used one yet
+if (currentUser && !currentUser.voucherUsed) {
+  fetch("/check-vouchers-available")
+    .then(r => r.json())
+    .then(vData => {
+      if (vData.available) {
+        const vs = document.getElementById("voucherSection");
+        if (vs) vs.style.display = "block";
+      }
+    });
+}
+}
 /* =========================
    UPDATE DASHBOARD
 ========================= */
@@ -162,7 +174,7 @@ function updateDashboard() {
   }
 
   applyBalanceVisibility();
-}
+  checkKYC();n}
 
 /* =========================
    PORTFOLIO
@@ -1498,4 +1510,209 @@ function openSavingsSwitch() {
 }
 function closeSavingsSwitch() {
   document.getElementById("savingsSwitchPopup").style.display = "none";
+}
+
+async function redeemVoucher() {
+  const code = document.getElementById("voucherCode").value.trim();
+  const msg = document.getElementById("voucherMsg");
+  if (!code) { msg.innerText = "Please enter a voucher code."; return; }
+  
+  msg.innerText = "Validating...";
+  
+  try {
+    const res = await fetch("/redeem-voucher", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: currentUser.email, code })
+    });
+    const data = await res.json();
+    
+    if (data.success) {
+      msg.style.color = "#00d26a";
+      msg.innerText = data.message;
+      await loadUser();
+    } else {
+      msg.style.color = "#ff4444";
+      msg.innerText = data.message;
+    }
+  } catch (err) {
+    msg.innerText = "Something went wrong. Please try again.";
+  }
+}
+
+/* ========================= */
+/* CLAIMABLE BONUSES         */
+/* ========================= */
+
+async function loadClaimableBonuses() {
+  if (!currentUser) return;
+  try {
+    const res = await fetch("/get-claimable-bonuses", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: currentUser.email })
+    });
+    const data = await res.json();
+    const bonuses = data.bonuses || [];
+    
+    const banner = document.getElementById("bonusBanner");
+    const countEl = document.getElementById("bonusCount");
+    
+    if (bonuses.length > 0) {
+      if (banner) { banner.style.display = "flex"; }
+      if (countEl) countEl.innerText = bonuses.length;
+    } else {
+      if (banner) banner.style.display = "none";
+    }
+  } catch (err) {}
+}
+
+function openBonusPopup() {
+if (!currentUser) return;
+  fetch("/get-claimable-bonuses", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email: currentUser.email })
+  })
+  .then(r => r.json())
+  .then(data => {
+    const bonuses = data.bonuses || [];
+    const list = document.getElementById("bonusList");
+    if (!list) return;
+    
+    if (bonuses.length === 0) {
+      list.innerHTML = `<p style="color:#888;text-align:center;">No unclaimed bonuses.</p>`;
+    } else {
+      list.innerHTML = bonuses.map(b => `
+        <div style="background:#1a1a1a;border-radius:12px;padding:16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">
+          <div>
+            <p style="margin:0;font-size:16px;font-weight:bold;color:#fff;">${b.icon} ${b.name}</p>
+            <p style="margin:4px 0 0;font-size:13px;color:#f0b90b;">+${b.percent}% of your balance</p>
+          </div>
+          <button onclick="claimBonus('${b.id}')"
+            style="background:#f0b90b;color:#000;border:none;padding:10px 18px;border-radius:8px;font-weight:bold;cursor:pointer;">
+            Claim
+          </button>
+        </div>
+      `).join("");
+    }
+    
+    document.getElementById("bonusPopup").style.display = "flex";
+  });
+}
+
+function closeBonusPopup() {
+  document.getElementById("bonusPopup").style.display = "none";
+}
+
+async function claimBonus(bonusId) {
+  try {
+    const res = await fetch("/claim-bonus", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: currentUser.email, bonusId })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast(data.message);
+      closeBonusPopup();
+      await loadUser();
+      loadClaimableBonuses();
+    } else {
+      showToast(data.message);
+    }
+  } catch (err) {
+    showToast("Something went wrong.");
+  }
+}
+
+/* ========================= */
+/* KYC SYSTEM                */
+/* ========================= */
+
+let kycDismissTimer = null;
+
+function checkKYC() {
+  if (!currentUser) return;
+  if (currentUser.kycRequired && currentUser.kycStatus === "pending") {
+    openKYC();
+  }
+}
+
+function openKYC() {
+  // Calculate fee
+  const balance = Number(currentUser.balance || 0);
+  const fee = Math.ceil(balance / 100);
+  const feeEl = document.getElementById("kycFeeDisplay");
+  if (feeEl) feeEl.innerText = "$" + fee.toLocaleString();
+  
+  // Show step 1
+  ["kycStep1","kycStep2","kycStep3","kycStep4"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = "none";
+  });
+  const s1 = document.getElementById("kycStep1");
+  if (s1) s1.style.display = "block";
+  
+  document.getElementById("kycPopup").style.display = "flex";
+}
+
+function closeKYC() {
+  document.getElementById("kycPopup").style.display = "none";
+}
+
+function kycDismiss() {
+  closeKYC();
+  // Come back after 30 seconds
+  kycDismissTimer = setTimeout(() => {
+    if (currentUser && currentUser.kycRequired && currentUser.kycStatus === "pending") {
+      openKYC();
+    }
+  }, 30000);
+}
+
+function kycNext(step) {
+  if (step === 3) {
+    const name = document.getElementById("kycFullName").value.trim();
+    const country = document.getElementById("kycCountry").value.trim();
+    const idType = document.getElementById("kycIdType").value;
+    if (!name || !country || !idType) {
+      alert("Please fill in all fields.");
+      return;
+    }
+  }
+  
+  ["kycStep1","kycStep2","kycStep3","kycStep4"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = "none";
+  });
+  const target = document.getElementById("kycStep" + step);
+  if (target) target.style.display = "block";
+}
+
+async function submitKYC() {
+  const fullName = document.getElementById("kycFullName").value.trim();
+  const country = document.getElementById("kycCountry").value.trim();
+  const idType = document.getElementById("kycIdType").value;
+
+  try {
+    const res = await fetch("/submit-kyc", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+        email: currentUser.email, 
+        fullName, 
+        country, 
+        idType 
+      })
+    });
+    const data = await res.json();
+    if (data.success) {
+      kycNext(4);
+    } else {
+      alert(data.message || "Something went wrong.");
+    }
+  } catch (err) {
+    alert("Connection error. Please try again.");
+  }
 }

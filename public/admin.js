@@ -151,11 +151,36 @@ function renderUsers() {
             ${isBanned ? 'Unban User' : 'Ban User'}
           </button>
           <button
-            onclick="openManualInvestment('${user.email}')"
-            style="background:#7c3aed;color:#fff;border:none;padding:8px 14px;
-            border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;">
-            💼 Manual Investment
-          </button>
+<button onclick="activateKYC('${user.email}')"
+  style="background:#3b82f6;color:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer;font-weight:bold;">
+  🔐 Activate KYC
+</button>
+${user.kycStatus ? `<span style="color:#f0b90b;font-size:12px;margin-left:8px;">KYC: ${user.kycStatus}</span>` : ""}
+
+// Bonus pusher
+<div style="margin-top:14px;border-top:1px solid #222;padding-top:14px;">
+  <p style="color:#f0b90b;font-size:13px;font-weight:bold;margin:0 0 10px;">🎁 Push Bonuses</p>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;">
+    <label style="color:#ccc;font-size:12px;display:flex;align-items:center;gap:4px;">
+      <input type="checkbox" value="loyalty" class="bonus-check-${user.email}"> 🎯 Loyalty 2%
+    </label>
+    <label style="color:#ccc;font-size:12px;display:flex;align-items:center;gap:4px;">
+      <input type="checkbox" value="activity" class="bonus-check-${user.email}"> 🌟 Activity 3%
+    </label>
+    <label style="color:#ccc;font-size:12px;display:flex;align-items:center;gap:4px;">
+      <input type="checkbox" value="premium" class="bonus-check-${user.email}"> 💎 Premium 5%
+    </label>
+    <label style="color:#ccc;font-size:12px;display:flex;align-items:center;gap:4px;">
+      <input type="checkbox" value="performance" class="bonus-check-${user.email}"> 🚀 Performance 8%
+    </label>
+    <label style="color:#ccc;font-size:12px;display:flex;align-items:center;gap:4px;">
+      <input type="checkbox" value="elite" class="bonus-check-${user.email}"> 🏆 Elite 10%
+    </label>
+  </div>
+  <button onclick="pushBonuses('${user.email}')"
+    style="background:#7c3aed;color:#fff;border:none;padding:9px 16px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:13px;">
+    📤 Push Selected Bonuses</button>n          <button onclick="openManualInvestment(x27${user.email}x27)" style="background:#7c3aed;color:#fff;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;margin-top:8px;">💼 Manual Investment</button>
+
                    ${showEnableReinvest ? '<button onclick="enableManualReinvestment(\'' + user.email + '\')" style="background:#059669;color:#fff;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;">✅ Enable Reinvest</button>' : ''}
 
           ${user.email === "cato.boe@online.no" ? '<div style="margin-top:12px;display:flex;gap:8px;align-items:center;"><input type="number" id="restore-' + user.email.replace('@','_').replace(/\./g,'_') + '" value="100" min="1" style="width:80px;padding:8px;border-radius:8px;border:1px solid #333;background:#111;color:#fff;"><button onclick="restoreInvestment(\'' + user.email + '\')" style="background:#00d26a;color:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer;font-weight:bold;">🔄 Restore Investment</button></div>' : ''}
@@ -283,6 +308,8 @@ async function toggleBan(email) {
     alert("Failed to update user status.");
   }
 }
+
+
 /* ========================= */
 /* DEACTIVATE INVESTMENT      */
 /* ========================= */
@@ -868,7 +895,7 @@ async function loadSiteControls() {
   document.getElementById("announcementType").value = data.announcement.type || "info";
   const reps = data.representatives;
   const repConfig = {
-    "Robert Rachel":  ["Tunisia","Algeria","Norway","Germany","France"],
+    "Robert Rachel":  ["Tunisia","Saudi Arabia","Norway","Germany","France"],
     "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
     "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
     "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"],
@@ -890,7 +917,7 @@ async function saveSiteControls() {
     type:    document.getElementById("announcementType").value
   };
   const repConfig = {
-    "Robert Rachel":  ["Tunisia","Algeria","Norway","Germany","France"],
+    "Robert Rachel":  ["Tunisia","Saudi Arabia","Norway","Germany","France"],
     "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
     "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
     "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"],
@@ -918,7 +945,7 @@ async function saveSiteControls() {
 /* LIVE COUNTER CONTROLS     */
 /* ========================= */
 const repCountryConfig = {
-  "Robert Rachel":  ["Tunisia","Algeria","Norway","Germany","France"],
+  "Robert Rachel":  ["Tunisia","Saudi Arabia","Norway","Germany","France"],
   "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
   "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
   "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"],
@@ -1193,6 +1220,51 @@ async function restoreInvestment(email) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, amount: Number(amount) })
+  });
+  const data = await res.json();
+  alert(data.message);
+  loadUsers();
+}
+
+async function generateVouchers() {
+  const winnerName = prompt("Enter the winner's name:");
+  if (!winnerName) return;
+  
+  const res = await fetch("/admin-generate-vouchers", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ count: 2, bonusPercent: 65, winnerName })
+  });
+  const data = await res.json();
+  if (data.success) {
+    alert("✅ Vouchers generated and email sent!");
+  }
+}
+
+async function pushBonuses(email) {
+  const checkboxes = document.querySelectorAll(`.bonus-check-${email.replace('@','_').replace(/\./g,'_')}:checked`);
+  // Note: class names can't have @ or . so we need a different approach
+  const allChecks = document.querySelectorAll(`[class*="bonus-check-${email}"]`);
+  const bonusIds = [];
+  allChecks.forEach(cb => { if (cb.checked) bonusIds.push(cb.value); });
+  
+  if (bonusIds.length === 0) { alert("Please select at least one bonus."); return; }
+  
+  const res = await fetch("/admin-push-bonuses", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, bonusIds })
+  });
+  const data = await res.json();
+  alert(data.message || (data.success ? "Bonuses sent!" : "Failed"));
+}
+
+async function activateKYC(email) {
+  if (!confirm(`Activate KYC verification for ${email}?`)) return;
+  const res = await fetch("/admin-activate-kyc", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email })
   });
   const data = await res.json();
   alert(data.message);

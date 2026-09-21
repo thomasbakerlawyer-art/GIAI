@@ -126,50 +126,71 @@
     </div>
   </div>
 
-  <!-- SITE CONTROLS -->
-  <div id="siteControlsSection" style="display:none;">
-    <h1>Site Controls</h1>
-    <p class="section-desc">These changes appear live on index.html for all visitors.</p>
 
-    <div class="admin-card" style="margin-top:24px;">
-      <h2>🔢 Live Counter Controls</h2>
-      <p class="card-desc">
-        Speed 1 = very slow (1 vote per ~60s). Speed 10 = fast (1 vote per ~6s).
-        Pause freezes a country. Reset sends everything back to zero.
-      </p>
+<!-- SITE CONTROLS -->
+<div id="siteControlsSection" style="display:none;">
+  <h1>Site Controls</h1>
+  <p class="section-desc">These changes appear live on index.html for all visitors.</p>
 
-      <div style="display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;">
-        <button onclick="resetAllCounters()"
-          style="background:#ff4444;color:#fff;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-weight:700;">
-          🔄 Reset All to Zero
-        </button>
-        <button onclick="saveCounterControls()"
-          style="background:#F0B90B;color:#000;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-weight:700;">
-          💾 Save Speed Settings
-        </button>
-      </div>
+  <!-- VOUCHER GENERATOR -->
+  <div class="admin-card" style="margin-top:24px;">
+    <h2>🎁 Winner Vouchers</h2>
+    <p class="card-desc">Generate 2 gift card vouchers for the competition winner. An email with both cards will be sent to you automatically.</p>
+    <button onclick="generateVouchers()" 
+      style="background:#f0b90b;color:#000;border:none;padding:12px 20px;border-radius:10px;font-weight:bold;cursor:pointer;margin-top:8px;">
+      🎁 Generate Winner Vouchers (2)
+    </button>
+  </div>
 
-      <!-- ROBERT RACHEL -->
-      <div class="rep-edit-block">
-<h3>Robert Rachel &nbsp;
-  <label style="font-size:0.8rem;font-weight:normal;">
-    Pause all: <input type="checkbox" id="pause-Robert-Rachel">
-  </label>
-  <button onclick="resetRepCounters('Robert Rachel')"
-    style="background:#ff4444;color:#fff;padding:4px 12px;border:none;border-radius:6px;cursor:pointer;font-weight:700;font-size:0.75rem;margin-left:12px;">
-    🔄 Reset
-  </button>
-</h3>
+  <div class="admin-card" style="margin-top:24px;">
+    <h2>🔢 Live Counter Controls</h2>
+    <p class="card-desc">
+      Speed 1 = very slow (1 vote per ~60s). Speed 10 = fast (1 vote per ~6s).
+      Pause freezes a country. Reset sends everything back to zero.
+    </p>
+    <div style="display:flex;gap:12px;margin-bottom:24px;flex-wrap:wrap;">
+      <button onclick="resetAllCounters()"
+        style="background:#ff4444;color:#fff;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-weight:700;">
+        🔄 Reset All to Zero
+      </button>
+      <button onclick="saveCounterControls()"
+        style="background:#F0B90B;color:#000;padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-weight:700;">
+        💾 Save Speed Settings
+      </button>
+    </div>
 
-       <div class="rep-edit-grid">
-          <div class="rep-edit-row"><label>Tunisia</label> Speed(1-10):<input type="number" id="cspeed-Robert-Rachel-Tunisia" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Robert-Rachel-Tunisia"> <span id="clive-Robert-Rachel-Tunisia" style="color:#f0b90b;margin-left:8px;">…</span></div>
-          <div class="rep-edit-row"><label>Algeria</label> Speed(1-10):<input type="number" id="cspeed-Robert-Rachel-Algeria" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox"id="cpause-Robert-Rachel-Algeria"  <span id="clive-Robert-Rachel-Algeria" style="color:#f0b90b;margin-left:8px;">…</span></div>
-          <div class="rep-edit-row"><label>Norway</label> Speed(1-10):<input type="number" id="cspeed-Robert-Rachel-Norway" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox"
-id="cpause-Robert-Rachel-Norway"<span id="clive-Robert-Rachel-Norway" style="color:#f0b90b;margin-left:8px;">…</span></div>
-          <div class="rep-edit-row"><label>Germany</label> Speed(1-10):<input type="number" id="cspeed-Robert-Rachel-Germany" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Robert-Rachel-Germany"> <span id="clive-Robert-Rachel-Germany" style="color:#f0b90b;margin-left:8px;">…</span></div>
-          <div class="rep-edit-row"><label>France</label> Speed(1-10):<input type="number" id="cspeed-Robert-Rachel-France" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Robert-Rachel-France"> <span id="clive-Robert-Rachel-France" style="color:#f0b90b;margin-left:8px;">…</span></div>
-        </div>
-      </div>
+<!-- ROBERT RACHEL -->
+
+<div class="rep-edit-block" style="margin-top:20px;">
+
+  <h3>Robert Rachel &nbsp;
+
+    <label style="font-size:0.8rem;font-weight:normal;">
+      Pause all: <input type="checkbox" id="pause-Robert-Rachel">
+    </label>
+
+    <button onclick="resetRepCounters('Robert Rachel')"
+      style="background:#ff4444;color:#fff;padding:4px 12px;border:none;border-radius:6px;cursor:pointer;font-weight:700;font-size:0.75rem;margin-left:12px;">
+      🔄 Reset
+    </button>
+
+  </h3>
+
+  <div class="rep-edit-grid">
+
+    <div class="rep-edit-row"><label>Tunisia</label> Speed(1-10):<input type="number" id="cspeed-Robert-Rachel-Tunisia" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Robert-Rachel-Tunisia"> <span id="clive-Robert-Rachel-Tunisia" style="color:#f0b90b;margin-left:8px;">…</span></div>
+
+    <div class="rep-edit-row"><label>Saudi Arabia</label> Speed(1-10):<input type="number" id="cspeed-Robert-Rachel-Saudi-Arabia" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Robert-Rachel-Saudi-Arabia"> <span id="clive-Robert-Rachel-Saudi-Arabia" style="color:#f0b90b;margin-left:8px;">…</span></div>
+
+    <div class="rep-edit-row"><label>Norway</label> Speed(1-10):<input type="number" id="cspeed-Robert-Rachel-Norway" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Robert-Rachel-Norway"> <span id="clive-Robert-Rachel-Norway" style="color:#f0b90b;margin-left:8px;">…</span></div>
+
+    <div class="rep-edit-row"><label>Germany</label> Speed(1-10):<input type="number" id="cspeed-Robert-Rachel-Germany" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Robert-Rachel-Germany"> <span id="clive-Robert-Rachel-Germany" style="color:#f0b90b;margin-left:8px;">…</span></div>
+
+    <div class="rep-edit-row"><label>France</label> Speed(1-10):<input type="number" id="cspeed-Robert-Rachel-France" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Robert-Rachel-France"> <span id="clive-Robert-Rachel-France" style="color:#f0b90b;margin-left:8px;">…</span></div>
+
+  </div>
+
+</div>
 
       <!-- MICHAEL SCOTT -->
       <div class="rep-edit-block" style="margin-top:20px;">
@@ -235,31 +256,6 @@ id="cpause-Robert-Rachel-Norway"<span id="clive-Robert-Rachel-Norway" style="col
   </div>
 </div>
 
-<!-- JYUON YEON -->
-<div class="rep-edit-block" style="margin-top:20px;">
-
-<h3>Jyuon Yeon &nbsp;
-  <label style="font-size:0.8rem;font-weight:normal;">
-    Pause all: <input type="checkbox" id="pause-Jyuon-Yeon">
-  </label>
-  <button onclick="resetRepCounters('Jyuon Yeon')"
-    style="background:#ff4444;color:#fff;padding:4px 12px;border:none;border-radius:6px;cursor:pointer;font-weight:700;font-size:0.75rem;margin-left:12px;">
-    🔄 Reset
-  </button>
-</h3>
-
- <div class="rep-edit-grid">
-    <div class="rep-edit-row"><label>Malaysia</label> Speed(1-10):<input type="number" id="cspeed-Jyuon-Yeon-Malaysia" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Jyuon-Yeon-Malaysia"> <span id="clive-Jyuon-Yeon-Malaysia" style="color:#f0b90b;margin-left:8px;">…</span></div>
- 
-<div class="rep-edit-row"><label>South Korea</label> Speed(1-10):<input type="number" id="cspeed-Jyuon-Yeon-South-Korea" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Jyuon-Yeon-South-Korea"> <span id="clive-Jyuon-Yeon-South-Korea" style="color:#f0b90b;margin-left:8px;">…</span></div>
-
-   <div class="rep-edit-row"><label>Japan</label> Speed(1-10):<input type="number" id="cspeed-Jyuon-Yeon-Japan" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Jyuon-Yeon-Japan"> <span id="clive-Jyuon-Yeon-Japan" style="color:#f0b90b;margin-left:8px;">…</span></div>
-
-    <div class="rep-edit-row"><label>Thailand</label> Speed(1-10):<input type="number" id="cspeed-Jyuon-Yeon-Thailand" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Jyuon-Yeon-Thailand"> <span id="clive-Jyuon-Yeon-Thailand" style="color:#f0b90b;margin-left:8px;">…</span></div>
-
-    <div class="rep-edit-row"><label>Singapore</label> Speed(1-10):<input type="number" id="cspeed-Jyuon-Yeon-Singapore" min="1" max="10" value="1" style="width:55px;"> Pause:<input type="checkbox" id="cpause-Jyuon-Yeon-Singapore"> <span id="clive-Jyuon-Yeon-Singapore" style="color:#f0b90b;margin-left:8px;">…</span></div>
-  </div>
-</div>
 
       <!-- AMBER AGRAWAL -->
       <div class="rep-edit-block" style="margin-top:20px;">

