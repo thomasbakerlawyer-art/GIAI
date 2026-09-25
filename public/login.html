@@ -6,6 +6,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login GIAI</title>
 <style>
+/* Kill the circular "Please wait..." translate spinner */
+.goog-te-spinner-pos,
+.goog-te-spinner-pos *,
+.goog-te-spinner-animation,
+.goog-te-spinner-text,
+img[alt="Please wait..."] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  pointer-events: none !important;
+}
+
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+iframe.goog-te-banner-frame {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+}
+
+.skiptranslate {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+  position: static !important;
+}
 
 * { margin:0; padding:0; box-sizing:border-box; }
 

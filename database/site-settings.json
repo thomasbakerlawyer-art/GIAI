@@ -7,7 +7,7 @@
 "representatives": {
   "Robert Rachel": {
     "Tunisia": 50,
-    "Saudi Arabia": 0,
+    "Egypt": 0,
     "Norway": 0,
     "Germany": 0,
     "France": 0
@@ -57,7 +57,7 @@
         "speed": 8,
         "paused": false
       },
-      "Saudi Arabia": {
+      "Egypt": {
         "current": 10202,
         "speed": 5,
         "paused": false

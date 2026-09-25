@@ -554,7 +554,7 @@ document.addEventListener("keydown", (e) => {
 // =========================
 
 const repCountryMap = {
-  "Robert Rachel":  ["Tunisia","Saudi Arabia","Norway","Germany","France"],
+  "Robert Rachel":  ["Tunisia","Egypt","Norway","Germany","France"],
   "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
   "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
   "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"],

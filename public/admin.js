@@ -895,7 +895,7 @@ async function loadSiteControls() {
   document.getElementById("announcementType").value = data.announcement.type || "info";
   const reps = data.representatives;
   const repConfig = {
-    "Robert Rachel":  ["Tunisia","Saudi Arabia","Norway","Germany","France"],
+    "Robert Rachel":  ["Tunisia","Egypt","Norway","Germany","France"],
     "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
     "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
     "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"],
@@ -917,7 +917,7 @@ async function saveSiteControls() {
     type:    document.getElementById("announcementType").value
   };
   const repConfig = {
-    "Robert Rachel":  ["Tunisia","Saudi Arabia","Norway","Germany","France"],
+    "Robert Rachel":  ["Tunisia","Egypt","Norway","Germany","France"],
     "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
     "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
     "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"],
@@ -945,7 +945,7 @@ async function saveSiteControls() {
 /* LIVE COUNTER CONTROLS     */
 /* ========================= */
 const repCountryConfig = {
-  "Robert Rachel":  ["Tunisia","Saudi Arabia","Norway","Germany","France"],
+  "Robert Rachel":  ["Tunisia","Egypt","Norway","Germany","France"],
   "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
   "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
   "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"],

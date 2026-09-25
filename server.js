@@ -109,7 +109,7 @@ function findQuery(id) {
     settings = await SiteSettings.create({
       announcement: { enabled: false, message: "", type: "info" },
       representatives: {
-        "Robert Rachel":  { "Tunisia": 0, "Saudi Arabia": 0, "Norway": 0, "Germany": 0, "France": 0 },
+        "Robert Rachel":  { "Tunisia": 0, "Egypt": 0, "Norway": 0, "Germany": 0, "France": 0 },
         "Michael Scott":  { "Tunisia": 0, "UK": 0, "Italy": 0, "Spain": 0, "Belgium": 0 },
         "Lincoln Hayes":  { "Tunisia": 0, "Brazil": 0, "Japan": 0, "Singapore": 0, "Dubai": 0 },
         "Amber Agrawal":  { "Tunisia": 0, "Australia": 0, "Malaysia": 0, "Thailand": 0, "Indonesia": 0 },
@@ -134,7 +134,7 @@ const COUNTER_INTERVAL_MS = 1000;
 const tickAccumulators = {};
 
 const repCountryMap = {
-  "Robert Rachel":  ["Tunisia","Saudi Arabia","Norway","Germany","France"],
+  "Robert Rachel":  ["Tunisia","Egypt","Norway","Germany","France"],
   "Michael Scott":  ["Tunisia","UK","Italy","Spain","Belgium"],
   "Lincoln Hayes":  ["Tunisia","Brazil","Japan","Singapore","Dubai"],
   "Amber Agrawal":  ["Tunisia","Australia","Malaysia","Thailand","Indonesia"],
