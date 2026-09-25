@@ -1558,8 +1558,11 @@ async function loadClaimableBonuses() {
     const banner = document.getElementById("bonusBanner");
     const countEl = document.getElementById("bonusCount");
     
-    if (bonuses.length > 0) {
-      if (banner) { banner.style.display = "flex"; }
+if (bonuses.length > 0) {
+      if (banner) {
+        banner.style.display = "flex";
+        banner.querySelector('span').innerHTML = `🎁 You have <strong>${bonuses.length}</strong> unclaimed bonus(es)! Click to claim.`;
+      }
       if (countEl) countEl.innerText = bonuses.length;
     } else {
       if (banner) banner.style.display = "none";
