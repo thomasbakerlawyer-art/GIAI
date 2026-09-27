@@ -3515,6 +3515,64 @@ app.post("/admin-clear-kyc", async (req, res) => {
   }
 });
 
+/* =========================
+   NETWORK VOTES — separate
+   from main GIAI site
+========================= */
+
+/* Serve the network page for any person ID */
+app.get("/network/:personId", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "network.html"));
+});
+
+/* GET votes for a person */
+app.get("/network-votes/:personId", async (req, res) => {
+  const { personId } = req.params;
+  try {
+    const db = mongoose.connection.db;
+    const doc = await db.collection("networkvotes").findOne({ personId });
+    if (!doc) return res.json({ votes: {}, locked: false });
+    res.json({ votes: doc.votes || {}, locked: doc.locked || false });
+  } catch (e) {
+    res.json({ votes: {}, locked: false });
+  }
+});
+
+/* POST — save and lock a person's vote */
+app.post("/network-votes/:personId", async (req, res) => {
+  const { personId } = req.params;
+  const { votes } = req.body;
+
+  const VALID_IDS = [
+    "ahmed-jb", "islam-essam", "cato-beo",
+    "sophie-schneider", "louis-theo"
+  ];
+
+  if (!VALID_IDS.includes(personId)) {
+    return res.json({ success: false, message: "Invalid person" });
+  }
+
+  try {
+    const db = mongoose.connection.db;
+
+    /* Check if already locked — don't allow re-locking */
+    const existing = await db.collection("networkvotes").findOne({ personId });
+    if (existing && existing.locked) {
+      return res.json({ success: false, message: "Already locked" });
+    }
+
+    await db.collection("networkvotes").updateOne(
+      { personId },
+      { $set: { personId, votes: { [personId]: votes }, locked: true, lockedAt: new Date() } },
+      { upsert: true }
+    );
+
+    res.json({ success: true });
+  } catch (e) {
+    res.json({ success: false, message: e.message });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {

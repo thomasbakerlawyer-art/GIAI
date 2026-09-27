@@ -1555,21 +1555,21 @@ async function loadClaimableBonuses() {
     const data = await res.json();
     const bonuses = data.bonuses || [];
     
-    const banner = document.getElementById("bonusBanner");
-    const countEl = document.getElementById("bonusCount");
-    
-if (bonuses.length > 0) {
-      if (banner) {
-        banner.style.display = "flex";
-        banner.querySelector('span').innerHTML = `🎁 You have <strong>${bonuses.length}</strong> unclaimed bonus(es)! Click to claim.`;
-      }
-      if (countEl) countEl.innerText = bonuses.length;
-    } else {
-      if (banner) banner.style.display = "none";
-    }
-  } catch (err) {}
-}
+const banner = document.getElementById("bonusBanner");
+const countEl = document.getElementById("bonusCount");
 
+if (bonuses.length > 0) {
+    if (banner) {
+        banner.style.display = "flex";
+        banner.querySelector("span").innerHTML =
+            `🎁 You have <strong>${bonuses.length}</strong> unclaimed bonus(es)! Click to claim.`;
+    }
+    if (countEl) countEl.innerText = bonuses.length;
+} else {
+    if (banner) banner.style.display = "none";
+}
+} catch(err) { console.error(err); }
+}
 function openBonusPopup() {
 if (!currentUser) return;
   fetch("/get-claimable-bonuses", {
