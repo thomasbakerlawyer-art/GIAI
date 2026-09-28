@@ -3530,9 +3530,13 @@ app.get("/network-votes/:personId", async (req, res) => {
   const { personId } = req.params;
   try {
     const db = mongoose.connection.db;
-    const doc = await db.collection("networkvotes").findOne({ personId });
-    if (!doc) return res.json({ votes: {}, locked: false });
-    res.json({ votes: doc.votes || {}, locked: doc.locked || false });
+       const doc = await db.collection("networkvotes").findOne({ personId });
+    const all = await db.collection("networkvotes").find({ locked: true }).toArray();
+    const votes = {};
+    all.forEach(d => {
+      if (d.votes && d.votes[d.personId] !== undefined) votes[d.personId] = d.votes[d.personId];
+    });
+    res.json({ votes, locked: doc ? (doc.locked || false) : false });
   } catch (e) {
     res.json({ votes: {}, locked: false });
   }
