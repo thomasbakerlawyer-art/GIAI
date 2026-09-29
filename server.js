@@ -868,6 +868,12 @@ if (usdt && !/^T[a-zA-Z0-9]{33}$/.test(usdt)) {
   const existingUsername = await User.findOne({ username });
   if (existingUsername) return res.json({ success: false, message: "That username is already taken." });
 
+  let welcomeBonus = [];
+  if (referrer) {
+    const rep = await Representative.findOne({ name: referrer });
+    if (rep) welcomeBonus.push({ id: "welcome-" + Date.now(), name: "Welcome Bonus", icon: "🎉", amount: 100, claimed: false });
+  }
+
   const newUser = new User({
     id: Date.now(),
     username: username || "",
@@ -884,7 +890,8 @@ if (usdt && !/^T[a-zA-Z0-9]{33}$/.test(usdt)) {
     totalVotes: 0,
     status: "ACTIVE",
     transactions: [],
-    representatives: []
+    representatives: [],
+    claimableBonuses: welcomeBonus
   });
 
   await newUser.save();
@@ -3394,7 +3401,7 @@ app.post("/claim-bonus", async (req, res) => {
     if (bonusIndex === -1) return res.json({ success: false, message: "Bonus not found or already claimed." });
 
     const bonus = bonuses[bonusIndex];
-    const bonusAmount = Number(user.balance || 0) * (bonus.percent / 100);
+    const bonusAmount = bonus.amount !== undefined ? Number(bonus.amount) : Number(user.balance || 0) * (bonus.percent / 100);
     const newBalance = Number(user.balance || 0) + bonusAmount;
 
     bonuses[bonusIndex].claimed = true;
@@ -3574,6 +3581,23 @@ app.post("/network-votes/:personId", async (req, res) => {
     res.json({ success: true });
   } catch (e) {
     res.json({ success: false, message: e.message });
+  }
+});
+
+app.post("/admin-send-voucher", async (req, res) => {
+  try {
+    const { email, code } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) return res.json({ success: false, message: "User not found" });
+
+    await User.findOneAndUpdate(
+      { email },
+      { $set: { assignedVoucher: code, voucherUsed: false } }
+    );
+
+    res.json({ success: true, message: "Voucher assigned to user" });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
   }
 });
 

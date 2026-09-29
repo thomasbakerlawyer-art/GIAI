@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -91,7 +92,7 @@
       </div>
 
 <!-- BONUS BANNER -->
-<div id="bonusBanner" style="display:none;background:linear-gradient(90deg,#f0b90b,#f77f00);padding:12px 20px;border-radius:12px;margin-bottom:16px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;" onclick="openBonusPopup()">
+<div id="bonusBanner" style="display:none;background:linear-gradient(90deg,#f0b90b,#f77f00);padding:12px 20px;border-radius:12px;margin-bottom:16px;cursor:pointer;align-items:center;justify-content:space-between;" onclick="openBonusPopup()">
   <span style="color:#000;font-weight:bold;font-size:14px;">🎁 You have <span id="bonusCount">0</span> unclaimed bonus(es)! Click to claim.</span>
   <span style="color:#000;font-size:20px;">→</span>
 </div>
@@ -665,7 +666,7 @@
 <script>function googleTranslateElementInit(){new google.translate.TranslateElement({pageLanguage:'en',autoDisplay:false},'google_translate_element');}</script>
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="dashboard.js"></script>
+<script src="dashboard.js?v=2"></script>
 <script src="portfolio.js"></script>
 
 <script>
@@ -734,5 +735,6 @@ function toggleTransactions(){
 window.addEventListener("load",()=>{ document.body.style.visibility="visible"; });
 </script>
 
+<div id="welcomeBonusPopup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:99999;align-items:center;justify-content:center;"><div style="background:#101010;border-radius:20px;padding:32px;max-width:340px;text-align:center;border:1px solid rgba(240,185,11,.3);"><div style="font-size:48px;margin-bottom:12px;">🎉</div><h2 style="color:#f0b90b;margin:0 0 8px;">Welcome Bonus!</h2><p style="color:#ccc;margin:0 0 20px;">You received a <strong style="color:#f0b90b;">$100</strong> welcome bonus.</p><button id="welcomeBonusOkBtn" style="background:#f0b90b;color:#000;font-weight:bold;padding:12px 32px;border:none;border-radius:10px;cursor:pointer;font-size:15px;">OK</button></div></div>
 </body>
 </html>

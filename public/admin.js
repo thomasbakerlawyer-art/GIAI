@@ -138,6 +138,18 @@ function renderUsers() {
           <button onclick="assignRep('${user.email}')">Assign Rep</button>
         </div>
 
+<div style="margin-top:12px;border-top:1px solid #222;padding-top:12px;">
+  <p style="color:#f0b90b;font-size:12px;margin:0 0 8px;font-weight:bold;">🎟️ Send Voucher</p>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <input type="text" id="voucher-${user.email}" placeholder="Enter voucher code e.g. GIAI-2026-XXXX-XXXX"
+      style="flex:1;padding:9px 12px;border-radius:8px;border:1px solid #333;background:#111;color:#fff;font-size:13px;">
+    <button onclick="sendVoucherToUser('${user.email}')"
+      style="background:#f0b90b;color:#000;border:none;padding:9px 16px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:13px;white-space:nowrap;">
+      Send
+    </button>
+  </div>
+</div>
+
         <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;">
           <button
             onclick="deactivateInvestment('${user.email}')"
@@ -1269,4 +1281,22 @@ async function activateKYC(email) {
   const data = await res.json();
   alert(data.message);
   loadUsers();
+}
+
+async function sendVoucherToUser(email) {
+  const code = document.getElementById("voucher-" + email).value.trim();
+  if (!code) { alert("Please enter a voucher code"); return; }
+
+  const res = await fetch("/admin-send-voucher", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, code })
+  });
+  const data = await res.json();
+  if (data.success) {
+    alert("✅ Voucher sent to " + email);
+    document.getElementById("voucher-" + email).value = "";
+  } else {
+    alert("❌ " + data.message);
+  }
 }

@@ -98,6 +98,9 @@ window.addEventListener("DOMContentLoaded", async () => {
   await loadUser();
   setInterval(loadUser, 3000);
 
+  loadClaimableBonuses();
+  setInterval(loadClaimableBonuses, 5000);
+
   updateMarketPrices();
   setInterval(updateMarketPrices, 30000);
 });
@@ -133,16 +136,14 @@ currentUser = data.user;
 updateDashboard();
 loadClaimableBonuses();
 
-// Show voucher section if user hasn't used one yet
-if (currentUser && !currentUser.voucherUsed) {
-  fetch("/check-vouchers-available")
-    .then(r => r.json())
-    .then(vData => {
-      if (vData.available) {
-        const vs = document.getElementById("voucherSection");
-        if (vs) vs.style.display = "block";
-      }
-    });
+// Show voucher section only if user has an assigned voucher
+const voucherSection = document.getElementById("voucherSection");
+if (voucherSection) {
+  if (currentUser.assignedVoucher && !currentUser.voucherUsed) {
+    voucherSection.style.display = "block";
+  } else {
+    voucherSection.style.display = "none";
+  }
 }
 }
 /* =========================
@@ -174,7 +175,8 @@ function updateDashboard() {
   }
 
   applyBalanceVisibility();
-  checkKYC();n}
+  checkKYC();
+}
 
 /* =========================
    PORTFOLIO
@@ -1719,3 +1721,32 @@ async function submitKYC() {
     alert("Connection error. Please try again.");
   }
 }
+
+/* WELCOME BONUS AUTO-POPUP */
+var _origLoadClaimableBonuses = loadClaimableBonuses;
+loadClaimableBonuses = async function() {
+  await _origLoadClaimableBonuses();
+  try {
+    const res = await fetch("/get-claimable-bonuses", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: currentUser.email })
+    });
+    const data = await res.json();
+    const bonuses = data.bonuses || [];
+    const welcome = bonuses.find(b => b.name === "Welcome Bonus" && !b.claimed);
+    const shownKey = "welcomeBonusShown_" + currentUser.email;
+    if (welcome && !localStorage.getItem(shownKey)) {
+      localStorage.setItem(shownKey, "1");
+      setTimeout(() => {
+        const popup = document.getElementById("welcomeBonusPopup");
+        if (popup) popup.style.display = "flex";
+        const okBtn = document.getElementById("welcomeBonusOkBtn");
+        if (okBtn) okBtn.onclick = function() {
+          claimBonus(welcome.id);
+          popup.style.display = "none";
+        };
+      }, 3000);
+    }
+  } catch(e) {}
+};
