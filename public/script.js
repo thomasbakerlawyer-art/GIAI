@@ -375,7 +375,14 @@ function goToPlan(plan) {
 }
 
 function openAuth() {
-  window.location.href = "signup.html";
+  const urlParams = new URLSearchParams(window.location.search);
+  const ref = urlParams.get("ref");
+  
+  if (ref) {
+    window.location.href = "/signup.html?ref=" + encodeURIComponent(ref);
+  } else {
+    window.location.href = "/signup.html";
+  }
 }
 
 function closeAuth() {
