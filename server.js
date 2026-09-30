@@ -3555,8 +3555,8 @@ app.post("/network-votes/:personId", async (req, res) => {
   const { votes } = req.body;
 
   const VALID_IDS = [
-    "ahmed-jb", "islam-essam", "cato-beo",
-    "sophie-schneider", "louis-theo"
+    "tn-8x42", "eg-9j17", "no-3q88",
+    "de-5m21", "fr-7k64"
   ];
 
   if (!VALID_IDS.includes(personId)) {
