@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en" id="pageHtml">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GIAI Grace Period Agreement</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#050505;font-family:Arial,sans-serif;color:#fff;min-height:100vh;padding:36px 20px 60px;}
+.container{max-width:700px;margin:0 auto;}
+.header{text-align:center;margin-bottom:24px;}
+.logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px;}
+.logo span{font-size:1.05rem;font-weight:900;color:#f0b90b;letter-spacing:3px;}
+.hline{width:50px;height:2px;background:#f0b90b;margin:10px auto;}
+.dlabel{font-size:0.68rem;color:#555;letter-spacing:2px;text-transform:uppercase;}
+.lang-bar{display:flex;gap:8px;justify-content:center;margin:14px 0 22px;flex-wrap:wrap;}
+.lbtn{background:#111;border:1px solid rgba(240,185,11,0.2);color:#999;padding:5px 14px;border-radius:20px;font-size:0.75rem;cursor:pointer;transition:0.2s;}
+.lbtn.active{background:#f0b90b;color:#000;font-weight:700;}
+.ref{text-align:center;margin-bottom:22px;}
+.ref span{background:rgba(240,185,11,0.07);border:1px solid rgba(240,185,11,0.18);border-radius:20px;padding:4px 16px;font-size:0.72rem;color:#f0b90b;letter-spacing:1px;}
+.steps{display:flex;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);margin-bottom:26px;}
+.step{flex:1;padding:11px 6px;text-align:center;font-size:0.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#555;background:rgba(255,255,255,0.02);border-right:1px solid rgba(255,255,255,0.08);}
+.step:last-child{border-right:none;}
+.step.active{background:rgba(240,185,11,0.09);color:#f0b90b;}
+.step.done{background:rgba(0,210,106,0.07);color:#00d26a;}
+.snum{font-size:0.95rem;display:block;margin-bottom:2px;}
+.card{background:#0f0f0f;border:1px solid rgba(240,185,11,0.13);border-radius:16px;padding:26px;margin-bottom:18px;}
+.card h3{color:#f0b90b;font-size:0.85rem;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;padding-bottom:11px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.card p{color:#ccc;font-size:0.9rem;line-height:1.85;margin-bottom:13px;}
+.card p:last-of-type{margin-bottom:0;}
+.gold{color:#f0b90b;}
+.fl{font-size:0.7rem;color:#777;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;display:block;margin-top:13px;}
+.fi{width:100%;padding:10px 13px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:10px;color:#fff;font-size:0.9rem;outline:none;transition:border-color 0.2s;}
+.fi:focus{border-color:rgba(240,185,11,0.45);}
+.fi::placeholder{color:#383838;}
+.fi:disabled{opacity:0.4;cursor:not-allowed;background:rgba(255,255,255,0.02);}
+textarea.fi{resize:vertical;}
+.sig-wrap{position:relative;margin-top:6px;margin-bottom:4px;}
+.sig-canvas{width:100%;height:80px;background:rgba(255,255,255,0.03);border:1px dashed rgba(240,185,11,0.3);border-radius:10px;cursor:crosshair;display:block;touch-action:none;}
+.sig-canvas.signed{border-color:rgba(0,210,106,0.4);border-style:solid;}
+.sig-canvas.disabled-canvas{pointer-events:none;opacity:0.45;}
+.clrbtn{position:absolute;top:6px;right:8px;background:transparent;border:none;color:#555;font-size:0.72rem;cursor:pointer;}
+.clrbtn:hover{color:#f0b90b;}
+.cb-row{display:flex;align-items:flex-start;gap:11px;margin-top:13px;cursor:pointer;}
+.cb-row input{width:16px;height:16px;margin-top:3px;accent-color:#f0b90b;flex-shrink:0;cursor:pointer;}
+.cb-row label{font-size:0.83rem;color:#aaa;line-height:1.65;cursor:pointer;}
+.sbtn{width:100%;padding:14px;background:#f0b90b;border:none;border-radius:12px;color:#000;font-size:0.95rem;font-weight:800;cursor:pointer;letter-spacing:0.5px;margin-top:18px;box-shadow:0 0 18px rgba(240,185,11,0.25);transition:all 0.2s;}
+.sbtn:hover{opacity:0.88;transform:translateY(-1px);}
+.sbtn:disabled{opacity:0.35;cursor:not-allowed;transform:none;box-shadow:none;}
+.signed-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(0,210,106,0.08);border:1px solid rgba(0,210,106,0.22);border-radius:8px;padding:6px 13px;color:#00d26a;font-size:0.78rem;font-weight:700;margin-bottom:10px;}
+.success-box{display:none;background:rgba(0,210,106,0.06);border:1px solid rgba(0,210,106,0.22);border-radius:12px;padding:22px;text-align:center;margin-top:16px;}
+.success-box h3{color:#00d26a;margin-bottom:9px;}
+.success-box p{color:#aaa;font-size:0.85rem;line-height:1.75;}
+.locked-overlay{display:none;text-align:center;padding:12px;background:rgba(255,255,255,0.02);border-radius:10px;font-size:0.8rem;color:#555;border:1px solid rgba(255,255,255,0.06);margin-bottom:12px;}
+.fnote{text-align:center;margin-top:22px;font-size:0.68rem;color:#252525;line-height:1.8;}
+@media(max-width:480px){.card{padding:16px 14px;}.steps .step{font-size:0.6rem;padding:9px 3px;}}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="logo">
+      <svg width="24" height="24" viewBox="0 0 126.61 126.61" xmlns="http://www.w3.org/2000/svg"><g fill="#f0b90b"><path d="M38.73 53.2L63.3 28.63l24.59 24.59 14.3-14.3L63.3 0 24.43 38.9z"/><path d="M0 63.31l14.3-14.31 14.31 14.31-14.31 14.3z"/><path d="M38.73 73.41L63.3 98l24.59-24.57 14.31 14.29-38.9 38.9-38.9-38.88z"/><path d="M98 63.31l14.3-14.31 14.31 14.3-14.31 14.32z"/><path d="M77.83 63.3L63.3 48.78 52.59 59.49l-1.27 1.27-2.6 2.6 14.58 14.57 14.54-14.54-.01-.09z"/></g></svg>
+      <span>BINANCE &middot; GIAI</span>
+    </div>
+    <div class="hline"></div>
+    <div class="dlabel" id="dlabel">Grace Period Agreement &mdash; Official Document</div>
+  </div>
+
+  <div class="lang-bar">
+    <button class="lbtn active" onclick="setLang('en',this)">&#127468;&#127463; English</button>
+    <button class="lbtn" onclick="setLang('ar',this)">&#127462;&#127466; Arabic</button>
+  </div>
+
+  <div class="ref"><span>REF: GIAI-EGY-2026-GP-001 &nbsp;|&nbsp; <span id="divLbl">Egypt Division</span></span></div>
+
+  <div class="steps">
+    <div class="step active" id="s1"><span class="snum" id="s1n">1</span><span id="s1t">Rep Signs</span></div>
+    <div class="step" id="s2"><span class="snum" id="s2n">2</span><span id="s2t">Opener Signs</span></div>
+    <div class="step" id="s3"><span class="snum" id="s3n">3</span><span id="s3t">Complete</span></div>
+  </div>
+
+  <!-- AGREEMENT TEXT -->
+  <div class="card">
+    <h3 id="agTitle">Official Grace Period Agreement</h3>
+    <p id="ag1">Following the formal appeal submitted by <strong class="gold">Miss Robert Rachel</strong>, designated representative of the North African Investment Division, regarding the circumstances that prevented the Egypt Division opener from activating their account, BINANCE GIAI has reviewed the case in full. After careful consideration, and in the interest of fairness to both the representative and the voters registered under this division, the board has approved this grace period arrangement.</p>
+    <p id="ag2">This document constitutes an official agreement between <strong class="gold">BINANCE GIAI</strong>, <strong class="gold">Miss Robert Rachel</strong>, and the assigned Egypt Division opener <strong class="gold">Eslam Essam Abdelwahab Nassar</strong>.</p>
+    <p id="ag3">It is important to note that the GIAI voting platform operates on a fully automated system. Voters choose their vote, lock it in immediately, and upon locking, the vote is committed directly to the database. The system is programmed to function this way with no manual intervention. This grace period represents an exceptional and temporary bypass of the standard automated process, approved strictly on a case-by-case basis.</p>
+    <p id="ag4">During the grace period, voters from the <strong class="gold">Egypt Division</strong> will be permitted to cast their votes. These votes will be <strong class="gold">held in a pending state</strong> and will not be committed to the main database until the division opener officially activates their account. All pending votes will be tracked and recorded separately. No votes will be lost.</p>
+    <p id="ag5">Once <strong class="gold">Eslam Essam Abdelwahab Nassar</strong> activates their opener account on or before the agreed date, all pending votes will be transferred and permanently recorded in full.</p>
+    <p id="ag6">In the meantime, to keep the opener account active and prevent it from being flagged as dormant or closed by the system, <strong class="gold">Eslam Essam Abdelwahab Nassar</strong> is required to activate at least the <strong class="gold">Starter Plan ($200)</strong> on the platform. This plan runs the same way as all other investment plans and returns the standard 25% at the end of the cycle. However, the Starter Plan does not count as a voting contribution toward any representative, as each vote on the platform is valued at $500. The sole purpose of activating this plan at this stage is to keep the account running and in good standing. The $200 can also be paid in installments if needed, until the full amount is reached.</p>
+  </div>
+
+  <!-- RACHEL SECTION -->
+  <div class="card" id="rachelCard">
+    <h3 id="rachelTitle">Representative Confirmation &mdash; Miss Robert Rachel</h3>
+    <div class="signed-badge" id="rachelBadge" style="display:none;">&#9989; <span id="rachelSignedLbl">Signed</span></div>
+
+    <span class="fl" id="rachelNameLbl">Full Name</span>
+    <input class="fi" id="rachelName" type="text" placeholder="Robert Rachel">
+
+    <span class="fl" id="rachelDateLbl">Date</span>
+    <input class="fi" id="rachelDate" type="date">
+
+    <span class="fl" id="rachelSigLbl">Signature &mdash; Draw Below</span>
+    <div class="sig-wrap">
+      <canvas class="sig-canvas" id="rachelCanvas" width="640" height="80"></canvas>
+      <button class="clrbtn" id="rachelClr" onclick="clearSig('rachel')">Clear</button>
+    </div>
+    <p style="font-size:0.7rem;color:#444;margin-top:3px;" id="rachelSigHint">Use your mouse or finger to sign above.</p>
+
+    <div class="cb-row">
+      <input type="checkbox" id="rachelCb">
+      <label for="rachelCb" id="rachelCbLbl">I, Miss Robert Rachel, designated representative of the North African Investment Division, confirm that I have reviewed this grace period arrangement, support the terms outlined above, and agree on behalf of my division.</label>
+    </div>
+
+    <button class="sbtn" id="rachelBtn" onclick="submitRachel()"><span id="rachelBtnLbl">Confirm and Sign</span></button>
+  </div>
+
+  <!-- ESLAM SECTION -->
+  <div class="card" id="eslamCard">
+    <h3 id="eslamTitle">Opener Agreement &mdash; Eslam Essam Abdelwahab Nassar</h3>
+    <div class="locked-overlay" id="eslamLock"><span id="eslamLockLbl">This section will be available once the representative has signed above.</span></div>
+    <div class="signed-badge" id="eslamBadge" style="display:none;">&#9989; <span id="eslamSignedLbl">Signed</span></div>
+
+    <span class="fl" id="eslamNameLbl">Full Name (as registered)</span>
+    <input class="fi" id="eslamName" type="text" placeholder="Eslam Essam Abdelwahab Nassar" disabled>
+
+    <span class="fl" id="eslamActDateLbl">Date You Will Activate Your Opener Account</span>
+    <input class="fi" id="eslamDate" type="date" disabled>
+
+    <span class="fl" id="eslamTimeLbl">Preferred Time</span>
+    <input class="fi" id="eslamTime" type="time" disabled>
+
+    <span class="fl" id="eslamNotesLbl">Additional Notes (optional)</span>
+    <textarea class="fi" id="eslamNotes" rows="3" placeholder="Any additional context..." disabled></textarea>
+
+    <span class="fl" id="eslamSigLbl">Signature &mdash; Draw Below</span>
+    <div class="sig-wrap">
+      <canvas class="sig-canvas disabled-canvas" id="eslamCanvas" width="640" height="80"></canvas>
+      <button class="clrbtn" id="eslamClr" onclick="clearSig('eslam')" disabled>Clear</button>
+    </div>
+    <p style="font-size:0.7rem;color:#444;margin-top:3px;" id="eslamSigHint">Use your mouse or finger to sign above.</p>
+
+    <div class="cb-row">
+      <input type="checkbox" id="eslamCb1" disabled>
+      <label for="eslamCb1" id="eslamCb1Lbl">I, Eslam Essam Abdelwahab Nassar, confirm that I have read and understood the grace period terms above. I agree to activate my opener account on or before the selected date, and I acknowledge that all pending votes will be held until I do so.</label>
+    </div>
+    <div class="cb-row">
+      <input type="checkbox" id="eslamCb2" disabled>
+      <label for="eslamCb2" id="eslamCb2Lbl">I confirm that I will activate the Starter Plan ($200, or by installments) to keep my account active during this period, and I agree this does not count as a vote toward any representative.</label>
+    </div>
+    <div class="cb-row">
+      <input type="checkbox" id="eslamCb3" disabled>
+      <label for="eslamCb3" id="eslamCb3Lbl">I confirm that this arrangement is fair and I have no objections to the terms set forth by BINANCE GIAI and my designated representative, Miss Robert Rachel.</label>
+    </div>
+
+    <button class="sbtn" id="eslamBtn" onclick="submitEslam()" disabled><span id="eslamBtnLbl">Sign and Submit Agreement</span></button>
+
+    <div class="success-box" id="eslamSuccess">
+      <h3>&#9989; <span id="successTitle">Agreement Complete</span></h3>
+      <p id="successBody">Both parties have signed. The grace period is now officially active for the Egypt Division. Voter activity will be recorded and held pending until your opener account is activated. The GIAI team will follow up before your selected date.<br><br><strong>Reference: GIAI-EGY-2026-GP-001</strong></p>
+    </div>
+  </div>
+
+  <div class="fnote" id="fnote">This is an official BINANCE GIAI document &mdash; Reference: GIAI-EGY-2026-GP-001<br>Egypt Division Grace Period Agreement &mdash; Issued by BINANCE GIAI Board</div>
+
+</div>
+<script>
+var rachelSigned = false;
+var eslamSigned = false;
+var drawing = false;
+var lastX = 0, lastY = 0;
+var currentLang = 'en';
+
+// Setup canvases
+window.addEventListener('DOMContentLoaded', function(){
+  setupCanvas('rachel');
+  // eslam canvas set up but disabled until rachel signs
+});
+
+function setupCanvas(who) {
+  var canvas = document.getElementById(who + 'Canvas');
+  canvas.width = canvas.offsetWidth || 640;
+  var ctx = canvas.getContext('2d');
+  ctx.strokeStyle = '#f0b90b';
+  ctx.lineWidth = 2;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+
+  function getPos(e) {
+    var rect = canvas.getBoundingClientRect();
+    var sx = canvas.width / rect.width;
+    var sy = canvas.height / rect.height;
+    if (e.touches) return { x:(e.touches[0].clientX-rect.left)*sx, y:(e.touches[0].clientY-rect.top)*sy };
+    return { x:(e.clientX-rect.left)*sx, y:(e.clientY-rect.top)*sy };
+  }
+  canvas.addEventListener('mousedown', function(e){ drawing=true; var p=getPos(e); lastX=p.x; lastY=p.y; });
+  canvas.addEventListener('mousemove', function(e){ if(!drawing) return; var p=getPos(e); var c=canvas.getContext('2d'); c.strokeStyle='#f0b90b'; c.lineWidth=2; c.lineCap='round'; c.beginPath(); c.moveTo(lastX,lastY); c.lineTo(p.x,p.y); c.stroke(); lastX=p.x; lastY=p.y; canvas.classList.add('signed'); });
+  canvas.addEventListener('mouseup', function(){ drawing=false; });
+  canvas.addEventListener('mouseleave', function(){ drawing=false; });
+  canvas.addEventListener('touchstart', function(e){ e.preventDefault(); drawing=true; var p=getPos(e); lastX=p.x; lastY=p.y; }, {passive:false});
+  canvas.addEventListener('touchmove', function(e){ e.preventDefault(); if(!drawing) return; var p=getPos(e); var c=canvas.getContext('2d'); c.strokeStyle='#f0b90b'; c.lineWidth=2; c.lineCap='round'; c.beginPath(); c.moveTo(lastX,lastY); c.lineTo(p.x,p.y); c.stroke(); lastX=p.x; lastY=p.y; canvas.classList.add('signed'); }, {passive:false});
+  canvas.addEventListener('touchend', function(){ drawing=false; });
+}
+
+function clearSig(who) {
+  var canvas = document.getElementById(who + 'Canvas');
+  var ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  canvas.classList.remove('signed');
+}
+
+function hasSig(who) {
+  var canvas = document.getElementById(who + 'Canvas');
+  var ctx = canvas.getContext('2d');
+  var px = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+  for (var i = 3; i < px.length; i += 4) { if (px[i] > 0) return true; }
+  return false;
+}
+
+function submitRachel() {
+  var name = document.getElementById('rachelName').value.trim();
+  var date = document.getElementById('rachelDate').value;
+  var cb   = document.getElementById('rachelCb').checked;
+  if (!name) { alert(currentLang==='ar' ? 'يرجى إدخال اسمك.' : 'Please enter your name.'); return; }
+  if (!date) { alert(currentLang==='ar' ? 'يرجى تحديد التاريخ.' : 'Please select the date.'); return; }
+  if (!hasSig('rachel')) { alert(currentLang==='ar' ? 'يرجى رسم توقيعك.' : 'Please draw your signature.'); return; }
+  if (!cb) { alert(currentLang==='ar' ? 'يرجى الموافقة على الشروط.' : 'Please confirm the agreement checkbox.'); return; }
+
+  // Lock Rachel section
+  rachelSigned = true;
+  document.getElementById('rachelName').disabled = true;
+  document.getElementById('rachelDate').disabled = true;
+  document.getElementById('rachelCb').disabled = true;
+  document.getElementById('rachelCanvas').classList.add('disabled-canvas');
+  document.getElementById('rachelClr').disabled = true;
+  document.getElementById('rachelBtn').disabled = true;
+  document.getElementById('rachelBtn').innerHTML = currentLang==='ar' ? '<span>تم التوقيع</span>' : '<span>Signed</span>';
+  document.getElementById('rachelBadge').style.display = 'inline-flex';
+
+  // Update step 1
+  document.getElementById('s1').className = 'step done';
+  document.getElementById('s1n').textContent = '\u2713';
+  document.getElementById('s2').className = 'step active';
+
+  // Unlock Eslam section
+  document.getElementById('eslamLock').style.display = 'none';
+  ['eslamName','eslamDate','eslamTime','eslamNotes','eslamCb1','eslamCb2','eslamCb3','eslamBtn'].forEach(function(id){
+    document.getElementById(id).disabled = false;
+  });
+  document.getElementById('eslamCanvas').classList.remove('disabled-canvas');
+  document.getElementById('eslamClr').disabled = false;
+  setupCanvas('eslam');
+  document.getElementById('eslamCard').scrollIntoView({ behavior:'smooth' });
+}
+
+function submitEslam() {
+  var name = document.getElementById('eslamName').value.trim();
+  var date = document.getElementById('eslamDate').value;
+  var time = document.getElementById('eslamTime').value;
+  var cb1  = document.getElementById('eslamCb1').checked;
+  var cb2  = document.getElementById('eslamCb2').checked;
+  var cb3  = document.getElementById('eslamCb3').checked;
+  if (!name) { alert(currentLang==='ar' ? 'يرجى إدخال اسمك.' : 'Please enter your full name.'); return; }
+  if (!date) { alert(currentLang==='ar' ? 'يرجى تحديد التاريخ.' : 'Please select the activation date.'); return; }
+  if (!time) { alert(currentLang==='ar' ? 'يرجى تحديد الوقت.' : 'Please select the time.'); return; }
+  if (!hasSig('eslam')) { alert(currentLang==='ar' ? 'يرجى رسم توقيعك.' : 'Please draw your signature.'); return; }
+  if (!cb1||!cb2||!cb3) { alert(currentLang==='ar' ? 'يرجى الموافقة على جميع الشروط.' : 'Please agree to all terms.'); return; }
+
+  eslamSigned = true;
+  ['eslamName','eslamDate','eslamTime','eslamNotes','eslamCb1','eslamCb2','eslamCb3','eslamBtn'].forEach(function(id){
+    document.getElementById(id).disabled = true;
+  });
+  document.getElementById('eslamCanvas').classList.add('disabled-canvas');
+  document.getElementById('eslamClr').disabled = true;
+  document.getElementById('eslamBtn').innerHTML = currentLang==='ar' ? '<span>تم التوقيع والتقديم</span>' : '<span>Signed and Submitted</span>';
+  document.getElementById('eslamBadge').style.display = 'inline-flex';
+  document.getElementById('s2').className = 'step done';
+  document.getElementById('s2n').textContent = '\u2713';
+  document.getElementById('s3').className = 'step done';
+  document.getElementById('s3n').textContent = '\u2713';
+  document.getElementById('eslamSuccess').style.display = 'block';
+  document.getElementById('eslamSuccess').scrollIntoView({ behavior:'smooth' });
+}
+
+// TRANSLATIONS
+var T = {
+  en: {
+    dlabel:'Grace Period Agreement', divLbl:'Egypt Division',
+    s1t:'Rep Signs', s2t:'Opener Signs', s3t:'Complete',
+    agTitle:'Official Grace Period Agreement',
+    ag1:'Following the formal appeal submitted by <strong class="gold">Miss Robert Rachel</strong>, designated representative of the North African Investment Division, regarding the circumstances that prevented the Egypt Division opener from activating their account, BINANCE GIAI has reviewed the case in full. After careful consideration, and in the interest of fairness to both the representative and the voters registered under this division, the board has approved this grace period arrangement.',
+    ag2:'This document constitutes an official agreement between <strong class="gold">BINANCE GIAI</strong>, <strong class="gold">Miss Robert Rachel</strong>, and the assigned Egypt Division opener <strong class="gold">Eslam Essam Abdelwahab Nassar</strong>.',
+    ag3:'It is important to note that the GIAI voting platform operates on a fully automated system. Voters choose their vote, lock it in immediately, and upon locking, the vote is committed directly to the database. The system is programmed to function this way with no manual intervention. This grace period represents an exceptional and temporary bypass of the standard automated process, approved strictly on a case-by-case basis.',
+    ag4:'During the grace period, voters from the <strong class="gold">Egypt Division</strong> will be permitted to cast their votes. These votes will be <strong class="gold">held in a pending state</strong> and will not be committed to the main database until the division opener officially activates their account. All pending votes will be tracked and recorded separately. No votes will be lost.',
+    ag5:'Once <strong class="gold">Eslam Essam Abdelwahab Nassar</strong> activates their opener account on or before the agreed date, all pending votes will be transferred and permanently recorded in full.',
+    ag6:'In the meantime, to keep the opener account active and prevent it from being flagged as dormant or closed by the system, <strong class="gold">Eslam Essam Abdelwahab Nassar</strong> is required to activate at least the <strong class="gold">Starter Plan ($200)</strong> on the platform. This plan runs the same way as all other investment plans and returns the standard 25% at the end of the cycle. However, the Starter Plan does not count as a voting contribution toward any representative, as each vote on the platform is valued at $500. The sole purpose of activating this plan at this stage is to keep the account running and in good standing. The $200 can also be paid in installments if needed, until the full amount is reached.',
+    rachelTitle:'Representative Confirmation', rachelNameLbl:'Full Name', rachelDateLbl:'Date', rachelSigLbl:'Signature', rachelSigHint:'Use your mouse or finger to sign above.',
+    rachelCbLbl:'I, Miss Robert Rachel, designated representative of the North African Investment Division, confirm that I have reviewed this grace period arrangement, support the terms outlined above, and agree on behalf of my division.',
+    rachelBtnLbl:'Confirm and Sign', rachelSignedLbl:'Signed',
+    eslamTitle:'Opener Agreement', eslamNameLbl:'Full Name (as registered)', eslamActDateLbl:'Date You Will Activate Your Opener Account', eslamTimeLbl:'Preferred Time', eslamNotesLbl:'Additional Notes (optional)', eslamSigLbl:'Signature', eslamSigHint:'Use your mouse or finger to sign above.',
+    eslamCb1Lbl:'I, Eslam Essam Abdelwahab Nassar, confirm that I have read and understood the grace period terms above. I agree to activate my opener account on or before the selected date, and I acknowledge that all pending votes will be held until I do so.',
+    eslamCb2Lbl:'I confirm that I will activate the Starter Plan ($200, or by installments) to keep my account active during this period, and I agree this does not count as a vote toward any representative.',
+    eslamCb3Lbl:'I confirm that this arrangement is fair and I have no objections to the terms set forth by BINANCE GIAI and my designated representative, Miss Robert Rachel.',
+    eslamBtnLbl:'Sign and Submit Agreement', eslamSignedLbl:'Signed',
+    eslamLockLbl:'This section will be available once the representative has signed above.',
+    successTitle:'Agreement Complete',
+    successBody:'Both parties have signed. The grace period is now officially active for the Egypt Division. Voter activity will be recorded and held pending until your opener account is activated. The GIAI team will follow up before your selected date.<br><br><strong>Reference: GIAI-EGY-2026-GP-001</strong>',
+    rachelClr:'Clear', eslamClr:'Clear',
+    fnote:'This is an official BINANCE GIAI document. Reference: GIAI-EGY-2026-GP-001<br>Egypt Division Grace Period Agreement. Issued by BINANCE GIAI Board'
+  },
+  ar: {
+    dlabel:'\u0627\u062a\u0641\u0627\u0642\u064a\u0629 \u0641\u062a\u0631\u0629 \u0627\u0644\u0633\u0645\u0627\u062d', divLbl:'\u0642\u0633\u0645 \u0645\u0635\u0631',
+    s1t:'\u062a\u0648\u0642\u064a\u0639 \u0627\u0644\u0645\u0645\u062b\u0644\u0629', s2t:'\u062a\u0648\u0642\u064a\u0639 \u0627\u0644\u0641\u0627\u062a\u062d', s3t:'\u0645\u0643\u062a\u0645\u0644',
+    agTitle:'\u0627\u062a\u0641\u0627\u0642\u064a\u0629 \u0641\u062a\u0631\u0629 \u0627\u0644\u0633\u0645\u0627\u062d \u0627\u0644\u0631\u0633\u0645\u064a\u0629',
+    ag1:'\u0628\u0646\u0627\u0621\u064b \u0639\u0644\u0649 \u0627\u0644\u0637\u0639\u0646 \u0627\u0644\u0631\u0633\u0645\u064a \u0627\u0644\u0645\u0642\u062f\u0651\u0645 \u0645\u0646 <strong class="gold">\u0627\u0644\u0622\u0646\u0633\u0629 \u0631\u0648\u0628\u0631\u062a \u0631\u0627\u0634\u064a\u0644</strong>\u060c \u0627\u0644\u0645\u0645\u062b\u0644\u0629 \u0627\u0644\u0645\u0639\u064a\u0651\u0646\u0629 \u0644\u0642\u0633\u0645 \u0627\u0633\u062a\u062b\u0645\u0627\u0631 \u0634\u0645\u0627\u0644 \u0623\u0641\u0631\u064a\u0642\u064a\u0627\u060c \u0628\u0634\u0623\u0646 \u0627\u0644\u0638\u0631\u0648\u0641 \u0627\u0644\u062a\u064a \u062d\u0627\u0644\u062a \u062f\u0648\u0646 \u062a\u0641\u0639\u064a\u0644 \u062d\u0633\u0627\u0628 \u0641\u0627\u062a\u062d \u0642\u0633\u0645 \u0645\u0635\u0631\u060c \u0631\u0627\u062c\u0639\u062a BINANCE GIAI \u0627\u0644\u0642\u0636\u064a\u0629 \u0648\u0648\u0627\u0641\u0642 \u0627\u0644\u0645\u062c\u0644\u0633 \u0639\u0644\u0649 \u0645\u0646\u062d \u0641\u062a\u0631\u0629 \u0633\u0645\u0627\u062d.',
+    ag2:'\u062a\u064f\u0639\u062f\u0651 \u0647\u0630\u0647 \u0627\u0644\u0648\u062b\u064a\u0642\u0629 \u0627\u062a\u0641\u0627\u0642\u064a\u0629 \u0631\u0633\u0645\u064a\u0629 \u0628\u064a\u0646 <strong class="gold">BINANCE GIAI</strong>\u060c <strong class="gold">\u0627\u0644\u0622\u0646\u0633\u0629 \u0631\u0648\u0628\u0631\u062a \u0631\u0627\u0634\u064a\u0644</strong>\u060c \u0648\u0641\u0627\u062a\u062d \u0642\u0633\u0645 \u0645\u0635\u0631 <strong class="gold">\u0625\u0633\u0644\u0627\u0645 \u0639\u0635\u0627\u0645 \u0639\u0628\u062f\u0627\u0644\u0648\u0647\u0627\u0628 \u0646\u0635\u0627\u0631</strong>.',
+    ag3:'\u062a\u062c\u062f\u0631 \u0627\u0644\u0625\u0634\u0627\u0631\u0629 \u0625\u0644\u0649 \u0623\u0646 \u0645\u0646\u0635\u0629 GIAI \u062a\u0639\u0645\u0644 \u0628\u0646\u0638\u0627\u0645 \u0622\u0644\u064a \u0628\u0627\u0644\u0643\u0627\u0645\u0644. \u064a\u062e\u062a\u0627\u0631 \u0627\u0644\u0645\u0635\u0648\u062a\u0648\u0646 \u0623\u0635\u0648\u0627\u062a\u0647\u0645\u060c \u064a\u062b\u0628\u062a\u0648\u0646\u0647\u0627 \u0641\u0648\u0631\u064b\u0627\u060c \u0648\u062a\u064f\u062d\u0641\u0638 \u0645\u0628\u0627\u0634\u0631\u0629\u064b \u0641\u064a \u0642\u0627\u0639\u062f\u0629 \u0627\u0644\u0628\u064a\u0627\u0646\u0627\u062a. \u0647\u0630\u0647 \u0627\u0644\u0641\u062a\u0631\u0629 \u0627\u0633\u062a\u062b\u0646\u0627\u0621 \u0645\u0624\u0642\u062a.',
+    ag4:'\u062e\u0644\u0627\u0644 \u0641\u062a\u0631\u0629 \u0627\u0644\u0633\u0645\u0627\u062d\u060c \u064a\u064f\u0633\u0645\u062d \u0644\u0644\u0645\u0635\u0648\u062a\u064a\u0646 \u0645\u0646 <strong class="gold">\u0642\u0633\u0645 \u0645\u0635\u0631</strong> \u0628\u0627\u0644\u062a\u0635\u0648\u064a\u062a. \u0633\u062a\u0638\u0644 \u0647\u0630\u0647 \u0627\u0644\u0623\u0635\u0648\u0627\u062a <strong class="gold">\u0645\u0639\u0644\u0651\u0642\u0629</strong> \u062d\u062a\u0649 \u064a\u064f\u0641\u0639\u0651\u0644 \u0627\u0644\u0641\u0627\u062a\u062d \u062d\u0633\u0627\u0628\u0647. \u0644\u0646 \u062a\u0636\u064a\u0639 \u0623\u064a \u0623\u0635\u0648\u0627\u062a.',
+    ag5:'\u0628\u0645\u062c\u0631\u062f \u062a\u0641\u0639\u064a\u0644 <strong class="gold">\u0625\u0633\u0644\u0627\u0645 \u0639\u0635\u0627\u0645 \u0639\u0628\u062f\u0627\u0644\u0648\u0647\u0627\u0628 \u0646\u0635\u0627\u0631</strong> \u0644\u062d\u0633\u0627\u0628\u0647 \u0641\u064a \u0627\u0644\u062a\u0627\u0631\u064a\u062e \u0627\u0644\u0645\u062a\u0641\u0642 \u0639\u0644\u064a\u0647\u060c \u0633\u062a\u064f\u062d\u0648\u0651\u0644 \u062c\u0645\u064a\u0639 \u0627\u0644\u0623\u0635\u0648\u0627\u062a \u0648\u062a\u064f\u0633\u062c\u0651\u0644 \u0628\u0635\u0641\u0629 \u062f\u0627\u0626\u0645\u0629.',
+    ag6:'\u0641\u064a \u063a\u0636\u0648\u0646 \u0630\u0644\u0643\u060c \u0648\u0644\u0644\u062d\u0641\u0627\u0638 \u0639\u0644\u0649 \u0627\u0644\u062d\u0633\u0627\u0628 \u0646\u0634\u0637\u064b\u0627 \u0648\u0645\u0646\u0639\u0647 \u0645\u0646 \u0623\u0646 \u064a\u064f\u0635\u0646\u0651\u0641 \u063e\u064a\u0631 \u0646\u0634\u0637 \u0623\u0648 \u0645\u063a\u0644\u0642\u064b\u0627\u060c \u0645\u0637\u0644\u0648\u0628 \u0645\u0646 <strong class="gold">\u0625\u0633\u0644\u0627\u0645 \u0639\u0635\u0627\u0645</strong> \u062a\u0641\u0639\u064a\u0644 <strong class="gold">\u062e\u0637\u0629 \u0627\u0644\u0628\u062f\u0627\u064a\u0629 (200\u0020\u062f\u0648\u0644\u0627\u0631)</strong>. \u062a\u0639\u0645\u0644 \u0647\u0630\u0647 \u0627\u0644\u062e\u0637\u0629 \u0643\u0633\u0627\u0626\u0631 \u062e\u0637\u0637 \u0627\u0644\u0627\u0633\u062a\u062b\u0645\u0627\u0631 \u0648\u062a\u0639\u064a\u062f 25% \u0641\u0627\u0626\u062f\u0629. \u0625\u0644\u0627 \u0623\u0646\u0647\u0627 \u0644\u0627 \u062a\u064f\u062d\u062a\u0633\u0628 \u0643\u0635\u0648\u062a \u0644\u0644\u0645\u0645\u062b\u0644. \u064a\u0645\u0643\u0646 \u062f\u0641\u0639 \u0627\u0644  200 \u062f\u0648\u0644\u0627\u0631 \u0639\u0644\u0649 \u062f\u0641\u0639\u0627\u062a \u0625\u0630\u0627 \u0644\u0632\u0645.',
+    rachelTitle:'\u062a\u0623\u0643\u064a\u062f \u0627\u0644\u0645\u0645\u062b\u0644\u0629', rachelNameLbl:'\u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0643\u0627\u0645\u0644', rachelDateLbl:'\u0627\u0644\u062a\u0627\u0631\u064a\u062e', rachelSigLbl:'\u0627\u0644\u062a\u0648\u0642\u064a\u0639', rachelSigHint:'\u0627\u0631\u0633\u0645 \u062a\u0648\u0642\u064a\u0639\u0643 \u0623\u0639\u0644\u0627\u0647.',
+    rachelCbLbl:'\u0623\u0646\u0627\u060c \u0627\u0644\u0622\u0646\u0633\u0629 \u0631\u0648\u0628\u0631\u062a \u0631\u0627\u0634\u064a\u0644\u060c \u0623\u0648\u0627\u0641\u0642 \u0639\u0644\u0649 \u0634\u0631\u0648\u0637 \u0641\u062a\u0631\u0629 \u0627\u0644\u0633\u0645\u0627\u062d \u0628\u0627\u0644\u0643\u0627\u0645\u0644.',
+    rachelBtnLbl:'\u062a\u0623\u0643\u064a\u062f \u0648\u062a\u0648\u0642\u064a\u0639', rachelSignedLbl:'\u0645\u0648\u0642\u0651\u0639\u0629',
+    eslamTitle:'\u0627\u062a\u0641\u0627\u0642\u064a\u0629 \u0627\u0644\u0641\u0627\u062a\u062d', eslamNameLbl:'\u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0643\u0627\u0645\u0644', eslamActDateLbl:'\u062a\u0627\u0631\u064a\u062e \u062a\u0641\u0639\u064a\u0644 \u062d\u0633\u0627\u0628\u0643', eslamTimeLbl:'\u0627\u0644\u0648\u0642\u062a \u0627\u0644\u0645\u0641\u0636\u0651\u0644', eslamNotesLbl:'\u0645\u0644\u0627\u062d\u0638\u0627\u062a', eslamSigLbl:'\u0627\u0644\u062a\u0648\u0642\u064a\u0639', eslamSigHint:'\u0627\u0631\u0633\u0645 \u062a\u0648\u0642\u064a\u0639\u0643 \u0623\u0639\u0644\u0627\u0647.',
+    eslamCb1Lbl:'\u0623\u0646\u0627\u060c \u0625\u0633\u0644\u0627\u0645 \u0639\u0635\u0627\u0645 \u0639\u0628\u062f\u0627\u0644\u0648\u0647\u0627\u0628 \u0646\u0635\u0627\u0631\u060c \u0623\u0642\u0631\u0651 \u0628\u0634\u0631\u0648\u0637 \u0641\u062a\u0631\u0629 \u0627\u0644\u0633\u0645\u0627\u062d \u0648\u0623\u0648\u0627\u0641\u0642 \u0639\u0644\u0649 \u062a\u0641\u0639\u064a\u0644 \u062d\u0633\u0627\u0628\u064a \u0641\u064a \u0627\u0644\u062a\u0627\u0631\u064a\u062e \u0627\u0644\u0645\u062d\u062f\u062f.',
+    eslamCb2Lbl:'\u0623\u0642\u0631\u0651 \u0628\u062a\u0641\u0639\u064a\u0644 \u062e\u0637\u0629 \u0627\u0644\u0628\u062f\u0627\u064a\u0629 (200 \u062f\u0648\u0644\u0627\u0631 \u0623\u0648 \u0628\u0627\u0644\u062a\u0642\u0633\u064a\u0637) \u0644\u0644\u062d\u0641\u0627\u0638 \u0639\u0644\u0649 \u062d\u0633\u0627\u0628\u064a \u0646\u0634\u0637\u064b\u0627.',
+    eslamCb3Lbl:'\u0623\u0642\u0631\u0651 \u0628\u0623\u0646 \u0647\u0630\u0627 \u0627\u0644\u062a\u0631\u062a\u064a\u0628 \u0639\u0627\u062f\u0644 \u0648\u0644\u064a\u0633 \u0644\u062f\u064a\u0651 \u0623\u064a \u0627\u0639\u062a\u0631\u0627\u0636.',
+    eslamBtnLbl:'\u062a\u0648\u0642\u064a\u0639 \u0648\u062a\u0642\u062f\u064a\u0645 \u0627\u0644\u0627\u062a\u0641\u0627\u0642\u064a\u0629', eslamSignedLbl:'\u0645\u0648\u0642\u0651\u0639',
+    eslamLockLbl:'\u0633\u064a\u062a\u0648\u0641\u0631 \u0647\u0630\u0627 \u0627\u0644\u0642\u0633\u0645 \u0628\u0639\u062f \u062a\u0648\u0642\u064a\u0639 \u0627\u0644\u0645\u0645\u062b\u0644\u0629.',
+    successTitle:'\u0627\u0644\u0627\u062a\u0641\u0627\u0642\u064a\u0629 \u0645\u0643\u062a\u0645\u0644\u0629',
+    successBody:'\u0648\u0642\u0651\u0639 \u0627\u0644\u0637\u0631\u0641\u0627\u0646. \u0641\u062a\u0631\u0629 \u0627\u0644\u0633\u0645\u0627\u062d \u0633\u0627\u0631\u064a\u0629 \u0631\u0633\u0645\u064a\u064b\u0627 \u0644\u0642\u0633\u0645 \u0645\u0635\u0631. <strong>\u0645\u0631\u062c\u0639: GIAI-EGY-2026-GP-001</strong>',
+    rachelClr:'\u0645\u0633\u062d', eslamClr:'\u0645\u0633\u062d',
+    fnote:'\u0648\u062b\u064a\u0642\u0629 \u0631\u0633\u0645\u064a\u0629 \u0645\u0646 BINANCE GIAI. \u0645\u0631\u062c\u0639: GIAI-EGY-2026-GP-001'
+  }
+};
+
+function setLang(lang, btn) {
+  currentLang = lang;
+  document.querySelectorAll('.lbtn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('pageHtml').setAttribute('dir', lang==='ar'?'rtl':'ltr');
+  var t = T[lang];
+  var fields = ['dlabel','divLbl','s1t','s2t','s3t','agTitle','ag1','ag2','ag3','ag4','ag5','ag6',
+    'rachelTitle','rachelNameLbl','rachelDateLbl','rachelSigLbl','rachelSigHint','rachelCbLbl','rachelBtnLbl','rachelSignedLbl',
+    'eslamTitle','eslamNameLbl','eslamActDateLbl','eslamTimeLbl','eslamNotesLbl','eslamSigLbl','eslamSigHint',
+    'eslamCb1Lbl','eslamCb2Lbl','eslamCb3Lbl','eslamBtnLbl','eslamSignedLbl','eslamLockLbl',
+    'successTitle','successBody','rachelClr','eslamClr','fnote'];
+  fields.forEach(function(id){
+    var el = document.getElementById(id);
+    if(el && t[id]) el.innerHTML = t[id];
+  });
+}
+</script>
+</body>
+</html>
