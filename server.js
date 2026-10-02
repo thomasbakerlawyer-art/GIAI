@@ -3601,6 +3601,53 @@ app.post("/admin-send-voucher", async (req, res) => {
   }
 });
 
+/* =========================
+   GRACE PERIOD AGREEMENTS
+========================= */
+const agreementSchema = new mongoose.Schema({}, { strict: false });
+const Agreement = mongoose.model("Agreement", agreementSchema);
+
+app.get("/agreement/status/:ref", async (req, res) => {
+  try {
+    const doc = await Agreement.findOne({ ref: req.params.ref });
+    res.json({ success: true, agreement: doc || null });
+  } catch (e) {
+    res.json({ success: false, agreement: null });
+  }
+});
+
+app.post("/agreement/confirm", async (req, res) => {
+  try {
+    const { ref, role, name, date, time, notes } = req.body;
+    if (!ref || !role || !name || !date) {
+      return res.json({ success: false, message: "Missing required fields." });
+    }
+    if (role !== "rep" && role !== "opener") {
+      return res.json({ success: false, message: "Invalid role." });
+    }
+
+    const existing = await Agreement.findOne({ ref });
+
+    if (role === "opener" && (!existing || !existing.rep)) {
+      return res.json({ success: false, message: "Representative must confirm first." });
+    }
+    if (existing && existing[role]) {
+      return res.json({ success: false, message: "Already confirmed." });
+    }
+
+    await Agreement.findOneAndUpdate(
+      { ref },
+      { $set: { ref, [role]: { name, date, time: time || "", notes: notes || "", confirmedAt: new Date() } } },
+      { upsert: true }
+    );
+    const updated = await Agreement.findOne({ ref });
+
+    res.json({ success: true, agreement: updated });
+  } catch (e) {
+    res.json({ success: false, message: e.message });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
