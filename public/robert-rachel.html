@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Robert Rachel — GIAI Representative Portal</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: #050505;
+  font-family: Arial, sans-serif;
+  color: #fff;
+  min-height: 100vh;
+  padding: 40px 20px 80px;
+}
+
+.portal-logo {
+  text-align: center;
+  font-size: 13px;
+  color: #f0b90b;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.rep-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #0f0f0f;
+  border: 1px solid rgba(240,185,11,0.2);
+  border-radius: 20px;
+  padding: 24px 28px;
+  max-width: 700px;
+  margin: 0 auto 16px;
+}
+
+.rep-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #f0b90b;
+  flex-shrink: 0;
+}
+
+.rep-info h1 { font-size: 26px; margin-bottom: 4px; }
+.rep-info p { color: #f0b90b; font-size: 13px; margin-bottom: 8px; }
+
+.rep-badge {
+  display: inline-block;
+  background: rgba(240,185,11,0.12);
+  border: 1px solid rgba(240,185,11,0.3);
+  color: #f0b90b;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  padding: 3px 12px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.total-votes-card {
+  max-width: 700px;
+  margin: 0 auto 30px;
+  background: linear-gradient(135deg, #1a1200, #0f0f0f);
+  border: 1px solid rgba(240,185,11,0.3);
+  border-radius: 16px;
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.total-votes-card h2 {
+  color: #888;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.total-votes-card .number {
+  font-size: 52px;
+  font-weight: 900;
+  color: #f0b90b;
+  line-height: 1;
+}
+
+.total-votes-card .label {
+  font-size: 14px;
+  color: #555;
+  margin-top: 4px;
+}
+
+.live-dot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #00d26a;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.live-dot::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: #00d26a;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity:1; transform:scale(1); }
+  50% { opacity:0.4; transform:scale(1.3); }
+}
+
+.countries-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.country-section {
+  background: #0f0f0f;
+  border: 1px solid rgba(240,185,11,0.12);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.country-header {
+  padding: 14px 18px;
+  background: #111;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.country-name {
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.country-count {
+  background: rgba(240,185,11,0.15);
+  color: #f0b90b;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.country-locked {
+  padding: 20px 18px;
+  color: #333;
+  font-size: 13px;
+  text-align: center;
+}
+
+.voter-list {
+  padding: 8px 0;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.voter-list::-webkit-scrollbar { width: 4px; }
+.voter-list::-webkit-scrollbar-thumb { background: #222; border-radius: 4px; }
+
+.voter-item {
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  transition: opacity 0.5s;
+}
+
+.voter-item.new-entry {
+  animation: slideIn 0.5s ease;
+}
+
+.voter-item.fading {
+  opacity: 0.35;
+}
+
+@keyframes slideIn {
+  from { opacity:0; transform:translateY(-12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.voter-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f0b90b, #f77f00);
+  color: #000;
+  font-weight: 700;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.voter-info { flex: 1; }
+.voter-name { font-size: 13px; color: #ddd; font-weight: 600; }
+.voter-time { font-size: 11px; color: #444; margin-top: 2px; }
+.voter-votes { font-size: 12px; color: #f0b90b; font-weight: bold; white-space: nowrap; }
+
+@media(max-width:600px) {
+  .rep-card { flex-direction:column; text-align:center; }
+  .total-votes-card { flex-direction:column; gap:12px; text-align:center; }
+  .countries-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="portal-logo">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/1/12/Binance_logo.svg"
+    style="width:110px;filter:brightness(0) saturate(100%) invert(74%) sepia(61%) saturate(500%) hue-rotate(2deg) brightness(103%) contrast(101%);display:block;margin:0 auto 8px;">
+  GIAI — Representative Portal
+</div>
+
+<div class="rep-card">
+  <img src="/img/IMG_robertrachel.PNG" class="rep-img" alt="Robert Rachel">
+  <div class="rep-info">
+   <h1>Robert Rachel
+
+<svg width="22" height="22" viewBox="0 0 24 24" style="vertical-align:middle;margin-left:6px;">
+  <path d="M12 2l2.4 3.2L18 4l-.8 3.8L21 10l-3 2 .8 3.8-3.6-.8L12 18l-3.2-3-3.6.8.8-3.8L3 10l3.8-2.2L6 4l3.6 1.2z" fill="#1d9bf0"/>
+  <path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>
+</h1>
+    <p>North African Investment Division</p>
+    <span class="rep-badge">✓ Verified Representative</span>
+  </div>
+</div>
+
+<div class="total-votes-card">
+  <div>
+    <h2>Total Votes</h2>
+    <div class="number" id="totalVotes">—</div>
+    <div class="label">Across all countries</div>
+  </div>
+  <div class="live-dot">LIVE</div>
+</div>
+
+<div class="countries-grid" id="countriesGrid"></div>
+
+<script>
+
+const COUNTRY_CONFIG = [
+  { name:"Tunisia", flag:"🇹🇳", locked:false },
+  { name:"Egypt",   flag:"🇪🇬", locked:true  },
+  { name:"Norway",  flag:"🇳🇴", locked:false },
+  { name:"Germany", flag:"🇩🇪", locked:false },
+  { name:"France",  flag:"🇫🇷", locked:false },
+];
+
+const NAMES = {
+  Tunisia: ["Mohamed Ben Ali","Ahmed Trabelsi","Karim Haddad","Youssef Masmoudi","Hichem Ben Youssef","Sami Chaabane","Nabil Jebali","Rami Bouaziz","Tarek Gharbi","Slim Belhaj","Ines Khemiri","Sonia Meddeb","Fatma Zouari","Amira Saidi","Nadia Hammami","Leila Dridi","Rania Cherif","Dorra Mansouri","Hajer Bouzid","Emna Ayari","Walid Sfar","Zied Karray","Malek Oueslati","Firas Ghannouchi","Bilel Riahi"],
+  Egypt:   [],
+  Norway:  ["Lars Bakker","Erik Johansen","Ole Andersen","Tor Christensen","Bjorn Hansen","Magnus Nilsen","Håkon Berg","Sven Larsen","Ingrid Solberg","Astrid Dahl","Silje Holm","Kari Strand","Marit Lund","Hilde Moen","Tonje Vik","Anne Nygaard","Liv Eriksen","Ragna Svendsen","Elin Haugen","Britt Olsen","Per Gunnarsen","Trond Aaberg","Geir Haaland","Steinar Vold","Rune Mikalsen"],
+  Germany: ["Klaus Müller","Hans Schmidt","Dieter Fischer","Werner Weber","Thomas Schneider","Michael Meyer","Stefan Wagner","Andreas Becker","Christian Hoffmann","Markus Richter","Sabine Koch","Andrea Bauer","Monika Schäfer","Petra Braun","Ursula Wolf","Gabi Zimmermann","Heike Krause","Brigitte Hartmann","Claudia Lange","Ute Schmitt","Ralf Zimmermann","Jochen Brandt","Uwe Vogt","Bernd Kühn","Horst Neumann"],
+  France:  ["Jean Dupont","Pierre Martin","Michel Bernard","François Petit","Jacques Durand","Philippe Leroy","Alain Moreau","Christophe Simon","Laurent Blanc","Nicolas Thomas","Marie Dubois","Sophie Robert","Isabelle Richard","Nathalie Lefevre","Sylvie Moreau","Céline Girard","Valérie Bonnet","Sandrine Fournier","Aurélie Garnier","Julie Chevalier","Stéphane Renard","Bruno Mercier","Olivier Faure","Pascal Vidal","Thierry Guérin"],
+};
+
+// Track state per country
+const state = {};
+COUNTRY_CONFIG.forEach(c => {
+  state[c.name] = {
+    votes: 0,
+    voters: [],
+    usedNames: new Set(),
+    namePool: [...(NAMES[c.name] || [])]
+  };
+});
+
+let previousCounts = {};
+
+function getUnusedName(country) {
+  const pool = state[country].namePool;
+  const used = state[country].usedNames;
+  const available = pool.filter(n => !used.has(n));
+  if (available.length === 0) {
+    state[country].usedNames.clear();
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+  const name = available[Math.floor(Math.random() * available.length)];
+  state[country].usedNames.add(name);
+  return name;
+}
+
+function randomVoteCount() {
+  const weights = [40, 28, 18, 9, 5];
+  const r = Math.random() * 100;
+  let cumulative = 0;
+  for (let i = 0; i < weights.length; i++) {
+    cumulative += weights[i];
+    if (r < cumulative) return i + 1;
+  }
+  return 1;
+}
+
+function timeAgo(ms) {
+  const mins = Math.floor(ms / 60000);
+  if (mins < 1) return "just now";
+  if (mins < 60) return mins + "m ago";
+  return Math.floor(mins / 60) + "h ago";
+}
+
+function buildVoterItem(voter, isNew) {
+  const div = document.createElement("div");
+  div.className = "voter-item" + (isNew ? " new-entry" : "");
+  div.innerHTML = `
+    <div class="voter-avatar">${voter.name.charAt(0)}</div>
+    <div class="voter-info">
+      <div class="voter-name">${voter.name}</div>
+      <div class="voter-time" data-ts="${voter.ts}">${timeAgo(Date.now() - voter.ts)}</div>
+    </div>
+    <div class="voter-votes">+${voter.voteCount} vote${voter.voteCount > 1 ? "s" : ""}</div>
+  `;
+  return div;
+}
+
+function renderCountry(c, newVoter) {
+  const existing = document.getElementById("country-" + c.name);
+  if (!existing) return;
+
+  const s = state[c.name];
+  const header = existing.querySelector(".country-count");
+  if (header) header.innerText = s.votes + " votes";
+
+  if (c.locked) return;
+
+  let list = existing.querySelector(".voter-list");
+  if (!list) return;
+
+  if (newVoter) {
+    // Add new voter at top
+    const item = buildVoterItem(newVoter, true);
+    list.insertBefore(item, list.firstChild);
+
+    // Fade older items
+    const items = list.querySelectorAll(".voter-item");
+    items.forEach((el, i) => {
+      if (i > 0) el.classList.add("fading");
+      if (i > 12) el.remove();
+    });
+  }
+}
+
+function buildCountryCard(c) {
+  const div = document.createElement("div");
+  div.className = "country-section";
+  div.id = "country-" + c.name;
+
+  const s = state[c.name];
+
+  let content = "";
+  if (c.locked) {
+    content = `<div class="country-locked">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:6px;">
+    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+  </svg>
+  <br>This region opens soon
+</div>`;
+  } else if (s.voters.length === 0) {
+    content = `<div class="voter-list"></div>`;
+  } else {
+    const list = document.createElement("div");
+    list.className = "voter-list";
+    [...s.voters].reverse().forEach(v => {
+      list.appendChild(buildVoterItem(v, false));
+    });
+    content = list.outerHTML;
+  }
+
+  div.innerHTML = `
+    <div class="country-header">
+      <div class="country-name"><span>${c.flag}</span>${c.name}</div>
+      <div class="country-count">${s.votes} votes</div>
+    </div>
+    ${content}
+  `;
+  return div;
+}
+
+function animateTotal(target) {
+  const el = document.getElementById("totalVotes");
+  const current = parseInt(el.innerText) || 0;
+  if (current === target) return;
+  const diff = target - current;
+  const steps = 25;
+  let i = 0;
+  const t = setInterval(() => {
+    i++;
+    el.innerText = Math.round(current + (diff / steps) * i);
+    if (i >= steps) { el.innerText = target; clearInterval(t); }
+  }, 20);
+}
+
+// Update timestamps every minute
+setInterval(() => {
+  document.querySelectorAll(".voter-time[data-ts]").forEach(el => {
+    const ts = parseInt(el.getAttribute("data-ts"));
+    el.innerText = timeAgo(Date.now() - ts);
+  });
+}, 60000);
+
+// Seed initial voters based on vote counts
+function seedVoters(country, totalVotes) {
+  const s = state[country];
+  if (s.voters.length > 0) return;
+
+  let remaining = totalVotes;
+  const now = Date.now();
+
+  while (remaining > 0) {
+    const vc = Math.min(randomVoteCount(), remaining);
+    const name = getUnusedName(country);
+    const msAgo = Math.floor(Math.random() * 7200000); // up to 2h ago
+    s.voters.push({ name, voteCount: vc, ts: now - msAgo });
+    remaining -= vc;
+  }
+
+  s.voters.sort((a, b) => b.ts - a.ts);
+}
+
+async function fetchAndUpdate() {
+  try {
+    const res = await fetch("/robert-rachel-stats");
+    const data = await res.json();
+    if (!data.success) return;
+
+    let totalChanged = false;
+
+    COUNTRY_CONFIG.forEach(c => {
+      if (c.locked) return;
+      const newCount = data.countries[c.name] || 0;
+      const oldCount = previousCounts[c.name] || 0;
+      const diff = newCount - oldCount;
+
+      if (diff > 0 && previousCounts[c.name] !== undefined) {
+        // New votes came in — add new voter entries
+        let remaining = diff;
+        while (remaining > 0) {
+          const vc = Math.min(randomVoteCount(), remaining);
+          const voter = { name: getUnusedName(c.name), voteCount: vc, ts: Date.now() };
+          state[c.name].voters.unshift(voter);
+          state[c.name].votes += vc;
+          renderCountry(c, voter);
+          remaining -= vc;
+        }
+        totalChanged = true;
+      } else if (previousCounts[c.name] === undefined) {
+        // First load — seed existing votes
+        state[c.name].votes = newCount;
+        seedVoters(c.name, newCount);
+      }
+
+      previousCounts[c.name] = newCount;
+    });
+
+    // Rebuild grid on first load
+    if (Object.keys(previousCounts).length === COUNTRY_CONFIG.length && !document.getElementById("country-Tunisia")) {
+      const grid = document.getElementById("countriesGrid");
+      grid.innerHTML = "";
+      COUNTRY_CONFIG.forEach(c => grid.appendChild(buildCountryCard(c)));
+    }
+
+    // Update total
+    let total = 0;
+    COUNTRY_CONFIG.forEach(c => { total += state[c.name].votes; });
+    animateTotal(total);
+
+  } catch(e) {
+    console.warn("Portal fetch error:", e);
+  }
+}
+
+// First load then poll every 5 seconds
+fetchAndUpdate().then(() => {
+  const grid = document.getElementById("countriesGrid");
+  grid.innerHTML = "";
+  COUNTRY_CONFIG.forEach(c => grid.appendChild(buildCountryCard(c)));
+
+  let total = 0;
+  COUNTRY_CONFIG.forEach(c => { total += state[c.name].votes; });
+  animateTotal(total);
+});
+
+setInterval(fetchAndUpdate, 5000);
+
+</script>
+</body>
+</html>

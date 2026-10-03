@@ -3648,6 +3648,33 @@ app.post("/agreement/confirm", async (req, res) => {
   }
 });
 
+/* =========================
+   ROBERT RACHEL PORTAL
+========================= */
+
+app.get("/robert-rachel-stats", async (req, res) => {
+  try {
+    const db = mongoose.connection.db;
+    const settings = await db.collection("sitesettings").findOne({});
+    
+    const repData = settings?.counters?.["Robert Rachel"] || {};
+    const countries = ["Tunisia", "Egypt", "Norway", "Germany", "France"];
+    
+    const result = {};
+    let total = 0;
+    
+    countries.forEach(country => {
+      const votes = Number(repData[country]?.current || 0);
+      result[country] = votes;
+      total += votes;
+    });
+    
+    res.json({ success: true, countries: result, total });
+  } catch(err) {
+    res.json({ success: false, countries: {}, total: 0 });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
